@@ -1,0 +1,4 @@
+CREATE TABLE Database_Types (
+    id   INTEGER PRIMARY KEY NOT NULL UNIQUE,
+    name TEXT NOT NULL
+);

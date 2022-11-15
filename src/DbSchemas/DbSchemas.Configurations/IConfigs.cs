@@ -8,18 +8,14 @@ namespace DbSchemas.Configurations;
 
 public interface IConfigs
 {
-    public string DataFolderName { get; }
-    public DirectoryInfo DataFolder { get; }
-
-    //public string DatabaseFileName { get; }
-    //public FileInfo DatabaseFile { get; }
+    public string ProgramDataFolderName { get; }
+    public DirectoryInfo ProgramDataFolder { get; }
 
     public DirectoryInfo ApplicationDirectory { get; }
 
-    //public FileInfo DatabaseTemplateFile { get; }
-
-    //public string SqliteExeFileName { get; }
-    //public FileInfo SqliteExeFile { get; }
+    public FileInfo DatabaseTemplateFile { get; }
+    public string DatabaseFileName { get; }
+    public FileInfo DatabaseFile { get; }
 
     //public string GuiFileName { get; }
     //public DirectoryInfo GuiFileDirectory { get; }
