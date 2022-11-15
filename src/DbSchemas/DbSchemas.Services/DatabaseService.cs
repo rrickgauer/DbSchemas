@@ -84,4 +84,17 @@ public class DatabaseService
         return numRecords > 0;
     }
 
+    /// <summary>
+    /// Delete the database with the matching id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<bool> DeleteDatabaseAsync(long id)
+    {
+        var numRecords = await _repo.DeleteAsync(id);
+
+        return numRecords > 0;
+    }
+
+
 }

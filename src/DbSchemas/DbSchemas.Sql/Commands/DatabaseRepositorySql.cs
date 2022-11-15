@@ -47,4 +47,11 @@ public sealed class DatabaseRepositorySql
             file = @file
         WHERE
             id = @id;";
+
+
+    public const string Delete = @"
+        DELETE FROM
+            DATABASES
+        WHERE
+            id = @id;";
 }

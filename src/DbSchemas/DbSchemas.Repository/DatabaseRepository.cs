@@ -2,12 +2,7 @@
 using DbSchemas.Domain.Models;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbSchemas.Repository;
 
@@ -55,7 +50,11 @@ public class DatabaseRepository
         return numRecords;
     }
 
-
+    /// <summary>
+    /// Update the given database record in the table
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
     public async Task<int> UpdateAsync(Database database)
     {
         SqliteCommand command = new(DatabaseRepositorySql.Insert);
@@ -69,8 +68,12 @@ public class DatabaseRepository
         return numRecords;
     }
 
-
-    private void SetModifyCommandParms(SqliteCommand command, Database database)
+    /// <summary>
+    /// Setup the modify command parms
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="database"></param>
+    private static void SetModifyCommandParms(SqliteCommand command, Database database)
     {
         command.Parameters.AddWithValue("@name", database.Name);
         command.Parameters.AddWithValue("@database_type_id", (long)database.DatabaseType);
@@ -79,6 +82,22 @@ public class DatabaseRepository
         command.Parameters.AddWithValue("@host", string.IsNullOrEmpty(database.Host) ? DBNull.Value : database.Host);
         command.Parameters.AddWithValue("@password", string.IsNullOrEmpty(database.Password) ? DBNull.Value : database.Password);
         command.Parameters.AddWithValue("@file", string.IsNullOrEmpty(database.File) ? DBNull.Value : database.File);
+    }
+
+    /// <summary>
+    /// Delete the record
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<int> DeleteAsync(long id)
+    {
+        SqliteCommand command = new(DatabaseRepositorySql.Delete);
+
+        command.Parameters.AddWithValue("@id", id);
+
+        var numRecords = await _connection.ModifyAsync(command);
+
+        return numRecords;
     }
 
 

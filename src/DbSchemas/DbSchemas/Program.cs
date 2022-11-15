@@ -46,6 +46,7 @@ var databases = await databaseService.GetDatabasesAsync();
 
 
 
+await databaseService.DeleteDatabaseAsync(26);
 
 
 int x = 0;
