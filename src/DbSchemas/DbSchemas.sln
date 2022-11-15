@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Services", "DbSch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Assets", "DbSchemas.Assets\DbSchemas.Assets.csproj", "{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Sql", "DbSchemas.Sql\DbSchemas.Sql.csproj", "{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Sql", "DbSchemas.Sql\DbSchemas.Sql.csproj", "{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Domain", "DbSchemas.Domain\DbSchemas.Domain.csproj", "{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Repository", "DbSchemas.Repository\DbSchemas.Repository.csproj", "{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Mappers", "DbSchemas.Mappers\DbSchemas.Mappers.csproj", "{3DB57795-7D85-43A8-8A6D-797A681AA422}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
