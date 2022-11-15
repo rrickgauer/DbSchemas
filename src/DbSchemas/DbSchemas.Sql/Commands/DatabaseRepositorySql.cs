@@ -32,4 +32,19 @@ public sealed class DatabaseRepositorySql
                 @password,
                 @file
             );";
+
+
+    public const string Update = @"
+        UPDATE
+            Databases
+        SET
+            name = @name,
+            database_type_id = @database_type_id,
+            database_name = @database_name,
+            username = @username,
+            host = @host,
+            password = @password,
+            file = @file
+        WHERE
+            id = @id;";
 }

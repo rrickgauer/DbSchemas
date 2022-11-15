@@ -55,7 +55,7 @@ public class DatabaseService
     }
 
     /// <summary>
-    /// Save the database
+    /// Create the database
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
@@ -70,4 +70,18 @@ public class DatabaseService
 
         return numRecords > 0;
     }
+
+
+    /// <summary>
+    /// Save the database
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public async Task<bool> SaveDatabaseAsync(Database database)
+    {
+        var numRecords = await _repo.UpdateAsync(database);
+
+        return numRecords > 0;
+    }
+
 }

@@ -25,6 +25,8 @@ programDataService.SetupProgramData();
 var databaseService = serviceProvider.GetRequiredService<DatabaseService>();
 var databases = await databaseService.GetDatabasesAsync();
 
+
+
 // insert the database
 //Database newDatabase = new()
 //{
@@ -34,6 +36,16 @@ var databases = await databaseService.GetDatabasesAsync();
 //};
 
 //var insertResult = await databaseService.InsertDatabaseAsync(newDatabase);
+
+
+
+//// udpate database
+//var updateDb = databases.Last();
+//updateDb.Name = "shit fuck cunt ass";
+//await databaseService.SaveDatabaseAsync(updateDb);
+
+
+
 
 
 int x = 0;

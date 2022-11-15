@@ -39,18 +39,16 @@ public class DatabaseRepository
         return table;
     }
 
-
+    /// <summary>
+    /// Insert a new record into the database table
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
     public async Task<int> InsertAsync(Database database)
     {
         SqliteCommand command = new(DatabaseRepositorySql.Insert);
 
-        command.Parameters.AddWithValue("@name", database.Name);
-        command.Parameters.AddWithValue("@database_type_id", (long)database.DatabaseType);
-        command.Parameters.AddWithValue("@database_name", string.IsNullOrEmpty(database.DatabaseName) ? DBNull.Value : database.DatabaseName);
-        command.Parameters.AddWithValue("@username", string.IsNullOrEmpty(database.Username) ? DBNull.Value : database.Username);
-        command.Parameters.AddWithValue("@host", string.IsNullOrEmpty(database.Host) ? DBNull.Value : database.Host);
-        command.Parameters.AddWithValue("@password", string.IsNullOrEmpty(database.Password) ? DBNull.Value : database.Password);
-        command.Parameters.AddWithValue("@file", string.IsNullOrEmpty(database.File) ? DBNull.Value : database.File);
+        SetModifyCommandParms(command, database);
 
         var numRecords = await _connection.ModifyAsync(command);
 
@@ -58,7 +56,30 @@ public class DatabaseRepository
     }
 
 
-    
+    public async Task<int> UpdateAsync(Database database)
+    {
+        SqliteCommand command = new(DatabaseRepositorySql.Insert);
 
-    
+        SetModifyCommandParms(command, database);
+
+        command.Parameters.AddWithValue("@id", database.Id);
+
+        var numRecords = await _connection.ModifyAsync(command);
+
+        return numRecords;
+    }
+
+
+    private void SetModifyCommandParms(SqliteCommand command, Database database)
+    {
+        command.Parameters.AddWithValue("@name", database.Name);
+        command.Parameters.AddWithValue("@database_type_id", (long)database.DatabaseType);
+        command.Parameters.AddWithValue("@database_name", string.IsNullOrEmpty(database.DatabaseName) ? DBNull.Value : database.DatabaseName);
+        command.Parameters.AddWithValue("@username", string.IsNullOrEmpty(database.Username) ? DBNull.Value : database.Username);
+        command.Parameters.AddWithValue("@host", string.IsNullOrEmpty(database.Host) ? DBNull.Value : database.Host);
+        command.Parameters.AddWithValue("@password", string.IsNullOrEmpty(database.Password) ? DBNull.Value : database.Password);
+        command.Parameters.AddWithValue("@file", string.IsNullOrEmpty(database.File) ? DBNull.Value : database.File);
+    }
+
+
 }
