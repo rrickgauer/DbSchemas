@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas", "DbSchemas\DbSchemas.csproj", "{CD136E6B-C426-4AA5-B6CB-C1289925F496}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas", "DbSchemas\DbSchemas.csproj", "{CD136E6B-C426-4AA5-B6CB-C1289925F496}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Configurations", "DbSchemas.Configurations\DbSchemas.Configurations.csproj", "{B922CF97-7193-4B60-8ABD-5CF392CF0593}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{CD136E6B-C426-4AA5-B6CB-C1289925F496}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD136E6B-C426-4AA5-B6CB-C1289925F496}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD136E6B-C426-4AA5-B6CB-C1289925F496}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
