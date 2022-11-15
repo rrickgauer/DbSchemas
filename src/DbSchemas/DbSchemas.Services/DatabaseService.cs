@@ -25,6 +25,21 @@ public class DatabaseService
     }
 
     /// <summary>
+    /// Get the database with the matching id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<Database?> GetDatabaseAsync(long id)
+    {
+        var databases = await GetDatabasesAsync();
+
+        var result = databases.Where(db => db.Id == id).FirstOrDefault();
+
+        return result;
+    }
+
+
+    /// <summary>
     /// Get all the databases
     /// </summary>
     /// <returns></returns>
