@@ -2,8 +2,6 @@
 
 This class is responsible for setting up and maintaining the user's sqlite database file.
 
-
-
 *****************************************************************************************/
 
 using DbSchemas.Configurations;
@@ -24,15 +22,34 @@ public class ProgramDataService
         _configs = configs;
     }
 
-
-    public void InitProgramDataFiles()
+    /// <summary>
+    /// Sets up the user's program data.
+    /// This needs to be run at the application start up.
+    /// </summary>
+    public void SetupProgramData()
     {
-        // make sure program data folder exists
+        EnsureProgramDataFolderExists();
+        EnsureUserDatabaseFileExists();
+    }
+
+    /// <summary>
+    /// Makes sure the program data folder exists.
+    /// Creates it if not.
+    /// </summary>
+    private void EnsureProgramDataFolderExists()
+    {
         if (!_configs.ProgramDataFolder.Exists)
         {
             Directory.CreateDirectory(_configs.ProgramDataFolder.FullName);
         }
+    }
 
+    /// <summary>
+    /// Ensures the user's app data sqlite file exists.
+    /// Copies over the template file if not.
+    /// </summary>
+    private void EnsureUserDatabaseFileExists()
+    {
         if (!_configs.DatabaseFile.Exists)
         {
             File.Copy(_configs.DatabaseTemplateFile.FullName, _configs.DatabaseFile.FullName);
