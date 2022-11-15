@@ -27,6 +27,15 @@ public class ProgramDataService
 
     public void InitProgramDataFiles()
     {
+        // make sure program data folder exists
+        if (!_configs.ProgramDataFolder.Exists)
+        {
+            Directory.CreateDirectory(_configs.ProgramDataFolder.FullName);
+        }
 
+        if (!_configs.DatabaseFile.Exists)
+        {
+            File.Copy(_configs.DatabaseTemplateFile.FullName, _configs.DatabaseFile.FullName);
+        }
     }
 }

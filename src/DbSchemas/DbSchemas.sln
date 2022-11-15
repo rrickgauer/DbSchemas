@@ -5,7 +5,13 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas", "DbSchemas\DbSchemas.csproj", "{CD136E6B-C426-4AA5-B6CB-C1289925F496}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Configurations", "DbSchemas.Configurations\DbSchemas.Configurations.csproj", "{B922CF97-7193-4B60-8ABD-5CF392CF0593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Configurations", "DbSchemas.Configurations\DbSchemas.Configurations.csproj", "{B922CF97-7193-4B60-8ABD-5CF392CF0593}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Services", "DbSchemas.Services\DbSchemas.Services.csproj", "{8423A02F-59B9-4080-A9D9-B7A4F0F6C6DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Assets", "DbSchemas.Assets\DbSchemas.Assets.csproj", "{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Sql", "DbSchemas.Sql\DbSchemas.Sql.csproj", "{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B922CF97-7193-4B60-8ABD-5CF392CF0593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8423A02F-59B9-4080-A9D9-B7A4F0F6C6DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8423A02F-59B9-4080-A9D9-B7A4F0F6C6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8423A02F-59B9-4080-A9D9-B7A4F0F6C6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8423A02F-59B9-4080-A9D9-B7A4F0F6C6DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD01926-3D9D-4CC3-A1FC-A68E14A73E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
