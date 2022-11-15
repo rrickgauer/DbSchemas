@@ -18,4 +18,9 @@ public class MysqlDatabase : IDatabase
     {
         DatabaseConnectionRecord = databaseConnectionRecord;
     }
+
+    public async Task<IEnumerable<TableSchema>> GetSchemasAsync()
+    {
+        return new List<TableSchema>();
+    }
 }

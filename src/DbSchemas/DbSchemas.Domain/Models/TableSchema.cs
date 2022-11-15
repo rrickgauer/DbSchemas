@@ -8,10 +8,16 @@ namespace DbSchemas.Domain.Models;
 
 public class TableSchema
 {
-    public uint? Position { get; set; } = 0;
-    public string? Name { get; set; }
-    public string? Type { get; set; }
-    public bool? IsNullable { get; set; } = true;
-    public object? DefaultValue { get; set; }
-    public object? Extra { get; set; }
+    public string TableName { get; set; }
+    public List<ColumnDefinition> Columns { get; set; } = new();
+
+    public TableSchema(string tableName)
+    {
+        TableName = tableName;
+    }
+
+    public TableSchema(string tableName, List<ColumnDefinition> columns) : this(tableName)
+    {
+        Columns = columns;
+    }
 }

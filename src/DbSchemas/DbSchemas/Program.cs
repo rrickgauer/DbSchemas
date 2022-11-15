@@ -26,5 +26,7 @@ var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecor
 var databaseRecords = await databaseService.GetDatabasesAsync();
 
 
+var dumpResult = await databaseRecords.ToList()[25].GetSchemasAsync();
+
 int x = 0;
 
