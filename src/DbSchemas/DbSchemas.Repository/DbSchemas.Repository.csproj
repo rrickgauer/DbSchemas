@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
+    <ProjectReference Include="..\DbSchemas.Domain\DbSchemas.Domain.csproj" />
     <ProjectReference Include="..\DbSchemas.Sql\DbSchemas.Sql.csproj" />
   </ItemGroup>
 

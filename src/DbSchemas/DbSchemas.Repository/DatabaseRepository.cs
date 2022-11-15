@@ -1,4 +1,5 @@
 ﻿using DbSchemas.Configurations;
+using DbSchemas.Domain.Models;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;
 using System;
@@ -36,6 +37,24 @@ public class DatabaseRepository
         DataTable table = await _connection.FetchAllAsync(command);
 
         return table;
+    }
+
+
+    public async Task<int> InsertAsync(Database database)
+    {
+        SqliteCommand command = new(DatabaseRepositorySql.Insert);
+
+        command.Parameters.AddWithValue("@name", database.Name);
+        command.Parameters.AddWithValue("@database_type_id", (long)database.DatabaseType);
+        command.Parameters.AddWithValue("@database_name", string.IsNullOrEmpty(database.DatabaseName) ? DBNull.Value : database.DatabaseName);
+        command.Parameters.AddWithValue("@username", string.IsNullOrEmpty(database.Username) ? DBNull.Value : database.Username);
+        command.Parameters.AddWithValue("@host", string.IsNullOrEmpty(database.Host) ? DBNull.Value : database.Host);
+        command.Parameters.AddWithValue("@password", string.IsNullOrEmpty(database.Password) ? DBNull.Value : database.Password);
+        command.Parameters.AddWithValue("@file", string.IsNullOrEmpty(database.File) ? DBNull.Value : database.File);
+
+        var numRecords = await _connection.ModifyAsync(command);
+
+        return numRecords;
     }
 
 

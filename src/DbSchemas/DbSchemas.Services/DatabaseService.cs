@@ -53,4 +53,21 @@ public class DatabaseService
 
         return databases;
     }
+
+    /// <summary>
+    /// Save the database
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public async Task<bool> InsertDatabaseAsync(Database database)
+    {
+        var numRecords = await _repo.InsertAsync(database);
+
+        var databases = await GetDatabasesAsync();
+        var newDatabase = databases.OrderBy(database => database.Id).Last();
+
+        database.Id = newDatabase.Id;
+
+        return numRecords > 0;
+    }
 }

@@ -1,4 +1,6 @@
 ﻿using DbSchemas.Configurations;
+using DbSchemas.Domain.Enums;
+using DbSchemas.Domain.Models;
 using DbSchemas.Repository;
 using DbSchemas.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,17 @@ programDataService.SetupProgramData();
 // get the databases
 var databaseService = serviceProvider.GetRequiredService<DatabaseService>();
 var databases = await databaseService.GetDatabasesAsync();
+
+// insert the database
+//Database newDatabase = new()
+//{
+//    DatabaseName = "database_name",
+//    DatabaseType = DatabaseType.MySql,
+//    Name = "This is the newest one",
+//};
+
+//var insertResult = await databaseService.InsertDatabaseAsync(newDatabase);
+
 
 int x = 0;
 
