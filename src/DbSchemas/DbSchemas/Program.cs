@@ -11,9 +11,9 @@ ServiceCollection serviceCollection = new();
 serviceCollection.AddScoped<IConfigs, ConfigurationProduction>();
 
 serviceCollection.AddScoped<ProgramDataService>();
-serviceCollection.AddScoped<DatabaseService>();
+serviceCollection.AddScoped<DatabaseConnectionRecordService>();
 
-serviceCollection.AddScoped<DatabaseRepository>();
+serviceCollection.AddScoped<DatabaseConnectionRecordRepository>();
 
 var serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -22,7 +22,7 @@ var programDataService = serviceProvider.GetRequiredService<ProgramDataService>(
 programDataService.SetupProgramData();
 
 // get the databases
-var databaseService = serviceProvider.GetRequiredService<DatabaseService>();
+var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
 var databases = await databaseService.GetDatabasesAsync();
 
 

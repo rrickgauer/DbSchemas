@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Services;
 
-public class DatabaseService
+public class DatabaseConnectionRecordService
 {
-    private DatabaseRepository _repo;
-    private IModelMapper<Database> _mapper;
+    private DatabaseConnectionRecordRepository _repo;
+    private IModelMapper<DatabaseConnectionRecord> _mapper;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="repo"></param>
-    public DatabaseService(DatabaseRepository repo)
+    public DatabaseConnectionRecordService(DatabaseConnectionRecordRepository repo)
     {
         _repo = repo;
         _mapper = new DatabaseMapper();
@@ -29,7 +29,7 @@ public class DatabaseService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<Database?> GetDatabaseAsync(long id)
+    public async Task<DatabaseConnectionRecord?> GetDatabaseAsync(long id)
     {
         var databases = await GetDatabasesAsync();
 
@@ -43,7 +43,7 @@ public class DatabaseService
     /// Get all the databases
     /// </summary>
     /// <returns></returns>
-    public async Task<IEnumerable<Database>> GetDatabasesAsync()
+    public async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabasesAsync()
     {
         // fetch the database table
         var table = await _repo.SelectAllAsync();
@@ -59,7 +59,7 @@ public class DatabaseService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<bool> InsertDatabaseAsync(Database database)
+    public async Task<bool> InsertDatabaseAsync(DatabaseConnectionRecord database)
     {
         var numRecords = await _repo.InsertAsync(database);
 
@@ -77,7 +77,7 @@ public class DatabaseService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<bool> SaveDatabaseAsync(Database database)
+    public async Task<bool> SaveDatabaseAsync(DatabaseConnectionRecord database)
     {
         var numRecords = await _repo.UpdateAsync(database);
 

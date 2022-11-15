@@ -1,4 +1,11 @@
-﻿using DbSchemas.Domain.Enums;
+﻿/**
+
+This represents a record in the user's program database for database connections.
+
+
+ */ 
+
+using DbSchemas.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Domain.Models;
 
-public class Database
+public class DatabaseConnectionRecord
 {
     public long? Id { get; set; }
     public string? Name { get; set; }
