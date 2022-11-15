@@ -1,5 +1,5 @@
 ﻿using DbSchemas.Domain.Enums;
-using DbSchemas.Domain.Models;
+using DbSchemas.Domain.Records;
 using System;
 using System.Collections.Generic;
 using System.Data;

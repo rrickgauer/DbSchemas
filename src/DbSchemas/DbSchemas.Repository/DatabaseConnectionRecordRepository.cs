@@ -1,5 +1,5 @@
 ﻿using DbSchemas.Configurations;
-using DbSchemas.Domain.Models;
+using DbSchemas.Domain.Records;
 using DbSchemas.Repository.Misc;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;

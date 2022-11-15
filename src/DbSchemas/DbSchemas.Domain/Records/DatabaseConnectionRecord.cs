@@ -1,9 +1,8 @@
-﻿/**
+﻿/*******************************************************************************
 
 This represents a record in the user's program database for database connections.
 
-
- */ 
+********************************************************************************/
 
 using DbSchemas.Domain.Enums;
 using System;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbSchemas.Domain.Models;
+namespace DbSchemas.Domain.Records;
 
 public class DatabaseConnectionRecord
 {

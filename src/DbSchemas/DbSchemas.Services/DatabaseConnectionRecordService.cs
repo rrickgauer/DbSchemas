@@ -1,4 +1,6 @@
-﻿using DbSchemas.Domain.Models;
+﻿using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
+using DbSchemas.Domain.Records;
 using DbSchemas.Mappers;
 using DbSchemas.Repository;
 using System;
@@ -24,14 +26,42 @@ public class DatabaseConnectionRecordService
         _mapper = new DatabaseMapper();
     }
 
+
+    /// <summary>
+    /// Get all the user's databases
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<IDatabase>> GetDatabasesAsync()
+    {
+        var databaseRecords = await GetDatabaseConnectionRecordsAsync();
+
+        var databases = databaseRecords.Select(record => SetupDatabaseObject(record));
+
+        return databases;
+    }
+
+
+    private static IDatabase SetupDatabaseObject(DatabaseConnectionRecord record)
+    {
+        IDatabase database = record.DatabaseType switch
+        {
+            DatabaseType.SQLite => new SqliteDatabase(record),
+            _ => new MysqlDatabase(record),
+        };
+
+        return database;
+    }
+
+
+
     /// <summary>
     /// Get the database with the matching id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<DatabaseConnectionRecord?> GetDatabaseAsync(long id)
+    public async Task<DatabaseConnectionRecord?> GetDatabaseConnectionRecordAsync(long id)
     {
-        var databases = await GetDatabasesAsync();
+        var databases = await GetDatabaseConnectionRecordsAsync();
 
         var result = databases.Where(db => db.Id == id).FirstOrDefault();
 
@@ -43,7 +73,7 @@ public class DatabaseConnectionRecordService
     /// Get all the databases
     /// </summary>
     /// <returns></returns>
-    public async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabasesAsync()
+    public async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabaseConnectionRecordsAsync()
     {
         // fetch the database table
         var table = await _repo.SelectAllAsync();
@@ -63,7 +93,7 @@ public class DatabaseConnectionRecordService
     {
         var numRecords = await _repo.InsertAsync(database);
 
-        var databases = await GetDatabasesAsync();
+        var databases = await GetDatabaseConnectionRecordsAsync();
         var newDatabase = databases.OrderBy(database => database.Id).Last();
 
         database.Id = newDatabase.Id;
