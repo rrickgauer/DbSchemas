@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Domain.Enums;
 
-public enum DatabaseType : int
+public enum DatabaseType : long
 {
     MySql = 1,
     SQLite = 2,

@@ -9,9 +9,9 @@ namespace DbSchemas.Domain.Models;
 
 public class Database
 {
-    public int? Id { get; set; }
+    public long? Id { get; set; }
     public string? Name { get; set; }
-    public DatabaseType? DatabaseType { get; set; }
+    public DatabaseType DatabaseType { get; set; } = DatabaseType.MySql;
     public string? DatabaseName { get; set; }
     public string? Username { get; set; }
     public string? Host { get; set; }
