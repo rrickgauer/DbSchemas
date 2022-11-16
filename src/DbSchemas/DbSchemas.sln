@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Repository", "DbS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Mappers", "DbSchemas.Mappers\DbSchemas.Mappers.csproj", "{3DB57795-7D85-43A8-8A6D-797A681AA422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Dumpers", "DbSchemas.Dumpers\DbSchemas.Dumpers.csproj", "{5E346E35-D264-42B8-8FB8-6FC2010B717C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Dumpers", "DbSchemas.Dumpers\DbSchemas.Dumpers.csproj", "{5E346E35-D264-42B8-8FB8-6FC2010B717C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.WpfGui", "DbSchemas.WpfGui\DbSchemas.WpfGui.csproj", "{4CD1EDE8-C935-4D3F-AE3D-C41B1143E6EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD1EDE8-C935-4D3F-AE3D-C41B1143E6EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD1EDE8-C935-4D3F-AE3D-C41B1143E6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD1EDE8-C935-4D3F-AE3D-C41B1143E6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD1EDE8-C935-4D3F-AE3D-C41B1143E6EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
