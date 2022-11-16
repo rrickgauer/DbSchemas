@@ -5,6 +5,8 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     DispatcherUnhandledException="OnDispatcherUnhandledException"
     Exit="OnExit"
+    xmlns:customConverters="clr-namespace:DbSchemas.WpfGui.Converters"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Startup="OnStartup">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +14,57 @@
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+
+
+            <!--Converters-->
+            <customConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <customConverters:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
+            <customConverters:TimeSpanToDateTimeConverter x:Key="TimeSpanConverter" />
+            <customConverters:ColorConverterMore x:Key="ColorConverter" />
+            <customConverters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            <customConverters:NullPropertyToVisibilityConverter x:Key="NullPropertyToVisibilityConverter" />
+
+            <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
+            <sys:Boolean x:Key="TrueValue">True</sys:Boolean>
+
+            <!--Card border container style-->
+            <Style TargetType="Border" x:Key="CardBorderStyle">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{DynamicResource ControlFillColorDefault}" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+                <Setter Property="BorderThickness" Value="{StaticResource CardBorderThemeThickness}" />
+                <Setter Property="Padding" Value="{StaticResource CardPadding}" />
+                <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+            </Style>
+
+            <!--Tag circle display-->
+            <Style TargetType="{x:Type Ellipse}" x:Key="TagCircleStyle">
+                <Setter Property="Height" Value="15" />
+                <Setter Property="Width" Value="15" />
+            </Style>
+
+            <!--Style for list view items that removes the selection border-->
+            <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <ContentPresenter />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--Style for the top border element for pages-->
+            <Style x:Key="PageBorderStyle" TargetType="Border">
+                <!--<Setter Property="Padding" Value="20" />-->
+                <Setter Property="Margin" Value="18,0,18,18" />
+            </Style>
+
         </ResourceDictionary>
+
+
     </Application.Resources>
 </Application>

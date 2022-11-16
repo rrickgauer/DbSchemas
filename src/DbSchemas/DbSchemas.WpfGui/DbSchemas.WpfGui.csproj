@@ -30,4 +30,8 @@
     <Resource Include="Assets\applicationIcon-256.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\UserControls\" />
+  </ItemGroup>
+
 </Project>
