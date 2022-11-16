@@ -1,7 +1,9 @@
-﻿using DbSchemas.Domain.Models;
+﻿using DbSchemas.Domain.ColumnMappers;
+using DbSchemas.Domain.Models;
 using DbSchemas.Domain.Records;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,6 +19,9 @@ public class SqliteDatabase : IDatabase
     public DatabaseConnectionRecord DatabaseConnectionRecord { get; }
 
     public string ConnectionString => $"Data Source={DatabaseConnectionRecord.File}";
+
+    private readonly IColumnMapper _mapper = new SqliteColumnMapper();
+
 
     public SqliteDatabase(DatabaseConnectionRecord databaseConnectionRecord)
     {
@@ -34,11 +39,7 @@ public class SqliteDatabase : IDatabase
 
         foreach (var schema in schemas)
         {
-            var columnsDataTable = await DescribeTableAsync(connection, schema.TableName);
-
-            // now map each row in the columns datatable to a ColumnDefinition
-
-            int x = 19;
+            schema.Columns = (await DescribeTableAsync(connection, schema.TableName)).ToList();
         }
 
         return schemas;
@@ -66,9 +67,14 @@ public class SqliteDatabase : IDatabase
         return tableNames;
     }
 
+    private async Task<IEnumerable<ColumnDefinition>> DescribeTableAsync(SqliteConnection connection, string tableName)
+    {
+        var table = await FetchColumnMetaData(connection, tableName);
+        return _mapper.ToColumnDefinitions(table);
+    }
 
 
-    private async Task<DataTable> DescribeTableAsync(SqliteConnection connection, string tableName)
+    private async Task<DataTable> FetchColumnMetaData(SqliteConnection connection, string tableName)
     {
         using SqliteCommand command = new(SqliteDatabaseCommands.DescribeTable, connection);
 
