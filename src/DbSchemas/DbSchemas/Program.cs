@@ -7,15 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 // setup DI
 ServiceCollection serviceCollection = new();
-
 serviceCollection.AddScoped<IConfigs, ConfigurationProduction>();
-
 serviceCollection.AddScoped<ProgramDataService>();
 serviceCollection.AddScoped<DatabaseConnectionRecordService>();
 serviceCollection.AddScoped<DumpService>();
-
 serviceCollection.AddScoped<DatabaseConnectionRecordRepository>();
-
 var serviceProvider = serviceCollection.BuildServiceProvider();
 
 // setup the program data
@@ -28,8 +24,7 @@ var dumpService = serviceProvider.GetRequiredService<DumpService>();
 var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
 var databaseConnection = databaseRecords[0];
 
-var dumper = dumpService.GetDumper(databaseConnection);
-var schema = await dumper.DumpDatabaseAsync();
+var schema = await dumpService.DumpDatabase(databaseConnection);
 
 int x = 0;
 

@@ -13,6 +13,15 @@ namespace DbSchemas.Services;
 public class DumpService
 {
 
+    public async Task<IEnumerable<TableSchema>> DumpDatabase(IDatabase database)
+    {
+        IDumper dumper = GetDumper(database);
+
+        var result = await dumper.DumpDatabaseAsync();
+
+        return result;
+    }
+
     public IDumper GetDumper(IDatabase database)
     {
         IDumper dumper = null;
@@ -22,5 +31,4 @@ public class DumpService
 
         return dumper;
     }
-
 }
