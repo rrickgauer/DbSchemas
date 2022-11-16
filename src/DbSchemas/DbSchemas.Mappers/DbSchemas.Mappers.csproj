@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbSchemas.Domain\DbSchemas.Domain.csproj" />
+    <Compile Remove="Schemas\**" />
+    <EmbeddedResource Remove="Schemas\**" />
+    <None Remove="Schemas\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Schemas\" />
+    <ProjectReference Include="..\DbSchemas.Domain\DbSchemas.Domain.csproj" />
   </ItemGroup>
 
 </Project>
