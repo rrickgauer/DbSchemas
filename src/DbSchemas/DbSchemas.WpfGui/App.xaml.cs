@@ -1,4 +1,7 @@
-﻿using DbSchemas.WpfGui.Models;
+﻿using DbSchemas.Configurations;
+using DbSchemas.Repository;
+using DbSchemas.Services;
+using DbSchemas.WpfGui.Models;
 using DbSchemas.WpfGui.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +30,7 @@ namespace DbSchemas.WpfGui
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
+                #region WpfUi
                 // App Host
                 services.AddHostedService<ApplicationHostService>();
 
@@ -45,14 +49,29 @@ namespace DbSchemas.WpfGui
                 // Main window container with navigation
                 services.AddScoped<INavigationWindow, Views.Container>();
                 services.AddScoped<ViewModels.ContainerViewModel>();
+                #endregion
 
-                // Views and ViewModels
+                #region Views and ViewModels
                 services.AddScoped<Views.Pages.DashboardPage>();
                 services.AddScoped<ViewModels.DashboardViewModel>();
+
                 services.AddScoped<Views.Pages.DataPage>();
                 services.AddScoped<ViewModels.DataViewModel>();
+
                 services.AddScoped<Views.Pages.SettingsPage>();
                 services.AddScoped<ViewModels.SettingsViewModel>();
+                #endregion
+
+                #region Services
+
+                services.AddScoped<IConfigs, ConfigurationProduction>();
+                services.AddScoped<ProgramDataService>();
+                services.AddScoped<DatabaseConnectionRecordService>();
+                services.AddScoped<DumpService>();
+                services.AddScoped<DatabaseConnectionRecordRepository>();
+
+                #endregion
+
 
                 // Configuration
                 services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
@@ -63,8 +82,7 @@ namespace DbSchemas.WpfGui
         /// </summary>
         /// <typeparam name="T">Type of the service to get.</typeparam>
         /// <returns>Instance of the service or <see langword="null"/>.</returns>
-        public static T GetService<T>()
-            where T : class
+        public static T GetService<T>() where T : class
         {
             return _host.Services.GetService(typeof(T)) as T;
         }

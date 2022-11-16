@@ -34,4 +34,9 @@
     <Folder Include="Views\UserControls\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
+    <ProjectReference Include="..\DbSchemas.Services\DbSchemas.Services.csproj" />
+  </ItemGroup>
+
 </Project>
