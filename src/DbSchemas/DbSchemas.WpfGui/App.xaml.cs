@@ -63,7 +63,7 @@ namespace DbSchemas.WpfGui
 
                 #region Services
 
-                services.AddScoped<IConfigs, ConfigurationProduction>();
+                services.AddScoped<IConfigs, ConfigurationDev>();
                 services.AddScoped<ProgramDataService>();
                 services.AddScoped<DatabaseConnectionRecordService>();
                 services.AddScoped<DumpService>();

@@ -17,7 +17,9 @@ public interface IConfigs
     public string DatabaseFileName { get; }
     public FileInfo DatabaseFile { get; }
 
-    //public string GuiFileName { get; }
-    //public DirectoryInfo GuiFileDirectory { get; }
-    //public FileInfo GuiFile { get; }
+    public string GuiFileName { get; }
+    public DirectoryInfo GuiFileDirectory { get; }
+    public FileInfo GuiFile { get; }
+
+    public bool IsProduction { get; }
 }

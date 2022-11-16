@@ -1,18 +1,19 @@
 ﻿using DbSchemas.Configurations;
-using DbSchemas.Domain.Enums;
-using DbSchemas.Domain.Records;
 using DbSchemas.Repository;
 using DbSchemas.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
-// setup DI
 ServiceCollection serviceCollection = new();
-serviceCollection.AddScoped<IConfigs, ConfigurationProduction>();
+
+
+serviceCollection.AddScoped<IConfigs, ConfigurationDev>();
+
 serviceCollection.AddScoped<ProgramDataService>();
 serviceCollection.AddScoped<DatabaseConnectionRecordService>();
 serviceCollection.AddScoped<DumpService>();
 serviceCollection.AddScoped<DatabaseConnectionRecordRepository>();
-var serviceProvider = serviceCollection.BuildServiceProvider();
+ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
 // setup the program data
 var programDataService = serviceProvider.GetRequiredService<ProgramDataService>();
@@ -21,10 +22,16 @@ programDataService.SetupProgramData();
 var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
 var dumpService = serviceProvider.GetRequiredService<DumpService>();
 
-var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
-var databaseConnection = databaseRecords[0];
+IConfigs configs = serviceProvider.GetRequiredService<IConfigs>();
 
-var schema = await dumpService.DumpDatabase(databaseConnection);
+if (args.Length == 0)
+{
+    Process.Start(configs.GuiFile.FullName);
+    return;
+}
 
-int x = 0;
+Console.WriteLine("This is the cli");
+
+int x = 10;
+
 
