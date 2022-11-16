@@ -1,12 +1,13 @@
 ﻿using DbSchemas.Configurations;
-using DbSchemas.Domain.Models;
+using DbSchemas.Domain.Records;
+using DbSchemas.Repository.Misc;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;
 using System.Data;
 
 namespace DbSchemas.Repository;
 
-public class DatabaseRepository
+public class DatabaseConnectionRecordRepository
 {
     private IConfigs _configs;
     private RepoConnection _connection;
@@ -15,7 +16,7 @@ public class DatabaseRepository
     /// Constructor
     /// </summary>
     /// <param name="configs"></param>
-    public DatabaseRepository(IConfigs configs)
+    public DatabaseConnectionRecordRepository(IConfigs configs)
     {
         _configs = configs;
         _connection = new(_configs);
@@ -27,7 +28,7 @@ public class DatabaseRepository
     /// <returns>All database records.</returns>
     public async Task<DataTable> SelectAllAsync()
     {
-        SqliteCommand command = new(DatabaseRepositorySql.SelectAll);
+        SqliteCommand command = new(DatabaseRecordRepositorySql.SelectAll);
 
         DataTable table = await _connection.FetchAllAsync(command);
 
@@ -39,9 +40,9 @@ public class DatabaseRepository
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<int> InsertAsync(Database database)
+    public async Task<int> InsertAsync(DatabaseConnectionRecord database)
     {
-        SqliteCommand command = new(DatabaseRepositorySql.Insert);
+        SqliteCommand command = new(DatabaseRecordRepositorySql.Insert);
 
         SetModifyCommandParms(command, database);
 
@@ -55,9 +56,9 @@ public class DatabaseRepository
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<int> UpdateAsync(Database database)
+    public async Task<int> UpdateAsync(DatabaseConnectionRecord database)
     {
-        SqliteCommand command = new(DatabaseRepositorySql.Insert);
+        SqliteCommand command = new(DatabaseRecordRepositorySql.Insert);
 
         SetModifyCommandParms(command, database);
 
@@ -73,7 +74,7 @@ public class DatabaseRepository
     /// </summary>
     /// <param name="command"></param>
     /// <param name="database"></param>
-    private static void SetModifyCommandParms(SqliteCommand command, Database database)
+    private static void SetModifyCommandParms(SqliteCommand command, DatabaseConnectionRecord database)
     {
         command.Parameters.AddWithValue("@name", database.Name);
         command.Parameters.AddWithValue("@database_type_id", (long)database.DatabaseType);
@@ -91,7 +92,7 @@ public class DatabaseRepository
     /// <returns></returns>
     public async Task<int> DeleteAsync(long id)
     {
-        SqliteCommand command = new(DatabaseRepositorySql.Delete);
+        SqliteCommand command = new(DatabaseRecordRepositorySql.Delete);
 
         command.Parameters.AddWithValue("@id", id);
 

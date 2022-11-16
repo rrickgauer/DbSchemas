@@ -1,4 +1,6 @@
-﻿using DbSchemas.Domain.Models;
+﻿using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
+using DbSchemas.Domain.Records;
 using DbSchemas.Mappers;
 using DbSchemas.Repository;
 using System;
@@ -9,29 +11,57 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Services;
 
-public class DatabaseService
+public class DatabaseConnectionRecordService
 {
-    private DatabaseRepository _repo;
-    private IModelMapper<Database> _mapper;
+    private DatabaseConnectionRecordRepository _repo;
+    private IModelMapper<DatabaseConnectionRecord> _mapper;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="repo"></param>
-    public DatabaseService(DatabaseRepository repo)
+    public DatabaseConnectionRecordService(DatabaseConnectionRecordRepository repo)
     {
         _repo = repo;
         _mapper = new DatabaseMapper();
     }
+
+
+    /// <summary>
+    /// Get all the user's databases
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<IDatabase>> GetDatabasesAsync()
+    {
+        var databaseRecords = await GetDatabaseConnectionRecordsAsync();
+
+        var databases = databaseRecords.Select(record => SetupDatabaseObject(record));
+
+        return databases;
+    }
+
+
+    private static IDatabase SetupDatabaseObject(DatabaseConnectionRecord record)
+    {
+        IDatabase database = record.DatabaseType switch
+        {
+            DatabaseType.SQLite => new SqliteDatabase(record),
+            _ => new MysqlDatabase(record),
+        };
+
+        return database;
+    }
+
+
 
     /// <summary>
     /// Get the database with the matching id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<Database?> GetDatabaseAsync(long id)
+    public async Task<DatabaseConnectionRecord?> GetDatabaseConnectionRecordAsync(long id)
     {
-        var databases = await GetDatabasesAsync();
+        var databases = await GetDatabaseConnectionRecordsAsync();
 
         var result = databases.Where(db => db.Id == id).FirstOrDefault();
 
@@ -43,7 +73,7 @@ public class DatabaseService
     /// Get all the databases
     /// </summary>
     /// <returns></returns>
-    public async Task<IEnumerable<Database>> GetDatabasesAsync()
+    public async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabaseConnectionRecordsAsync()
     {
         // fetch the database table
         var table = await _repo.SelectAllAsync();
@@ -59,11 +89,11 @@ public class DatabaseService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<bool> InsertDatabaseAsync(Database database)
+    public async Task<bool> InsertDatabaseAsync(DatabaseConnectionRecord database)
     {
         var numRecords = await _repo.InsertAsync(database);
 
-        var databases = await GetDatabasesAsync();
+        var databases = await GetDatabaseConnectionRecordsAsync();
         var newDatabase = databases.OrderBy(database => database.Id).Last();
 
         database.Id = newDatabase.Id;
@@ -77,7 +107,7 @@ public class DatabaseService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<bool> SaveDatabaseAsync(Database database)
+    public async Task<bool> SaveDatabaseAsync(DatabaseConnectionRecord database)
     {
         var numRecords = await _repo.UpdateAsync(database);
 

@@ -1,5 +1,5 @@
 ﻿using DbSchemas.Domain.Enums;
-using DbSchemas.Domain.Models;
+using DbSchemas.Domain.Records;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Mappers;
 
-public class DatabaseMapper : IModelMapper<Database>
+public class DatabaseMapper : IModelMapper<DatabaseConnectionRecord>
 {
-    public Database ToModel(DataRow dataRow)
+    public DatabaseConnectionRecord ToModel(DataRow dataRow)
     {
-        Database database = new()
+        DatabaseConnectionRecord database = new()
         {
             Id = dataRow.Field<long?>("id"),
             Name = dataRow.Field<string>("name"),

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\DbSchemas.Domain\DbSchemas.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Schemas\" />
+  </ItemGroup>
+
 </Project>

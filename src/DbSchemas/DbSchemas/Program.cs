@@ -1,6 +1,5 @@
 ﻿using DbSchemas.Configurations;
 using DbSchemas.Domain.Enums;
-using DbSchemas.Domain.Models;
 using DbSchemas.Repository;
 using DbSchemas.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +10,10 @@ ServiceCollection serviceCollection = new();
 serviceCollection.AddScoped<IConfigs, ConfigurationProduction>();
 
 serviceCollection.AddScoped<ProgramDataService>();
-serviceCollection.AddScoped<DatabaseService>();
+serviceCollection.AddScoped<DatabaseConnectionRecordService>();
+serviceCollection.AddScoped<DumpService>();
 
-serviceCollection.AddScoped<DatabaseRepository>();
+serviceCollection.AddScoped<DatabaseConnectionRecordRepository>();
 
 var serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -22,32 +22,11 @@ var programDataService = serviceProvider.GetRequiredService<ProgramDataService>(
 programDataService.SetupProgramData();
 
 // get the databases
-var databaseService = serviceProvider.GetRequiredService<DatabaseService>();
-var databases = await databaseService.GetDatabasesAsync();
+var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
+var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
 
-
-
-// insert the database
-//Database newDatabase = new()
-//{
-//    DatabaseName = "database_name",
-//    DatabaseType = DatabaseType.MySql,
-//    Name = "This is the newest one",
-//};
-
-//var insertResult = await databaseService.InsertDatabaseAsync(newDatabase);
-
-
-
-//// udpate database
-//var updateDb = databases.Last();
-//updateDb.Name = "shit fuck cunt ass";
-//await databaseService.SaveDatabaseAsync(updateDb);
-
-
-
-await databaseService.DeleteDatabaseAsync(26);
-
+var dumpService = serviceProvider.GetRequiredService<DumpService>();
+var schema = await dumpService.DumpDatabaseAsync(databaseRecords[25]);
 
 int x = 0;
 

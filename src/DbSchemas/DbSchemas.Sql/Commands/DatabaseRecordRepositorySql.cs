@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Sql.Commands;
 
-public sealed class DatabaseRepositorySql
+public sealed class DatabaseRecordRepositorySql
 {
     public const string SelectAll = @"SELECT * FROM Databases;";
 
