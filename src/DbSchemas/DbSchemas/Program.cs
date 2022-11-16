@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using DbSchemas;
 using DbSchemas.Configurations;
 using DbSchemas.Domain.CliArgs;
 using DbSchemas.Repository;
@@ -19,52 +20,10 @@ ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
 #endregion
 
-// setup the program data
-var programDataService = serviceProvider.GetRequiredService<ProgramDataService>();
-programDataService.SetupProgramData();
+// run the application
+ApplicationRouter router = new(serviceProvider, args);
+router.RouteApplication();
 
-
-var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
-var dumpService = serviceProvider.GetRequiredService<DumpService>();
-IConfigs configs = serviceProvider.GetRequiredService<IConfigs>();
-
-Parser.Default.ParseArguments<AddCliArgs, ListCliArgs, GuiCliArgs, ViewCliArgs, EditCliArgs, DeleteCliArgs>(args)
-    .WithParsed<AddCliArgs>(addCliArgs =>
-    {
-        Console.WriteLine("add new connection");
-    })
-
-    .WithParsed<ListCliArgs>(listCliArgs =>
-    {
-        Console.WriteLine("list connections");
-    })
-
-
-    .WithParsed<ViewCliArgs>(viewArgs =>
-    {
-        Console.WriteLine("view connection");
-    })
-    .WithParsed<EditCliArgs>(editArgs =>
-    {
-        Console.WriteLine("edit connection");
-    })
-    .WithParsed<DeleteCliArgs>(deleteArgs =>
-    {
-        Console.WriteLine("delete connection");
-    })
-
-    .WithParsed<GuiCliArgs>(guiCliArgs =>
-    {
-        Process.Start(configs.GuiFile.FullName);
-    })
-
-
-
-
-    .WithNotParsed(errors => 
-    {
-        // error
-    });
 
 
 
