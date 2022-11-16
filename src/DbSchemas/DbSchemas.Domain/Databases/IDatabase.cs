@@ -16,7 +16,4 @@ public interface IDatabase
     public DatabaseConnectionRecord DatabaseConnectionRecord { get; }
     public string ConnectionString { get; }
     public IColumnMapper ColumnMapper { get; }
-
-    public Task<IEnumerable<string>> GetTableNamesAsync();
-    public Task<DataTable> GetTableColumnsAsync(string tableName);
 }

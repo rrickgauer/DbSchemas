@@ -1,5 +1,7 @@
 ﻿using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
 using DbSchemas.Domain.Models;
+using DbSchemas.Dumpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +12,15 @@ namespace DbSchemas.Services;
 
 public class DumpService
 {
-    /// <summary>
-    /// Dump the specified database
-    /// </summary>
-    /// <param name="database"></param>
-    /// <returns></returns>
-    public async Task<IEnumerable<TableSchema>> DumpDatabaseAsync(IDatabase database)
+
+    public IDumper GetDumper(IDatabase database)
     {
-        var tableNames = await database.GetTableNamesAsync();
+        IDumper dumper = null;
 
-        var schemas = tableNames.Select(tableName => new TableSchema(tableName)).ToList();
+        if (database.DatabaseConnectionRecord.DatabaseType == DatabaseType.SQLite)
+            dumper = new SqliteDumper(database);
 
-        foreach (var schema in schemas)
-        {
-            var columnsDataTable = await database.GetTableColumnsAsync(schema.TableName);
-            schema.Columns = database.ColumnMapper.ToColumnDefinitions(columnsDataTable).ToList();
-        }
-
-        return schemas;
+        return dumper;
     }
 
 }

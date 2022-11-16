@@ -25,12 +25,11 @@ programDataService.SetupProgramData();
 var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
 var dumpService = serviceProvider.GetRequiredService<DumpService>();
 
-
-
 var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
-//var schema = await dumpService.DumpDatabaseAsync(databaseRecords[0]);
-var schema = await dumpService.DumpDatabaseAsync(databaseRecords[1]);
+var databaseConnection = databaseRecords[0];
 
+var dumper = dumpService.GetDumper(databaseConnection);
+var schema = await dumper.DumpDatabaseAsync();
 
 int x = 0;
 

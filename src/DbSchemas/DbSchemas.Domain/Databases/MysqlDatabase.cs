@@ -25,28 +25,4 @@ public class MysqlDatabase : IDatabase
     {
         DatabaseConnectionRecord = databaseConnectionRecord;
     }
-
-
-    public async Task<IEnumerable<string>> GetTableNamesAsync()
-    {
-        using MySqlConnection connection = new(ConnectionString);
-        using MySqlCommand command = new(MysqlDatabaseCommands.SelectTables, connection);
-        using DataTable dataTable = await DatabaseUtilities.ExecuteQueryAsync(command);
-
-        var tableNames = dataTable.AsEnumerable().Select(row => row.Field<string>(0));
-
-        return tableNames;
-    }
-
-    public async Task<DataTable> GetTableColumnsAsync(string tableName)
-    {
-        using MySqlConnection connection = new(ConnectionString);
-        using MySqlCommand command = new(string.Format(MysqlDatabaseCommands.DescribeTable, tableName), connection);
-
-        var table = await DatabaseUtilities.ExecuteQueryAsync(command);
-
-        await connection.CloseAsync();
-
-        return table;
-    }
 }

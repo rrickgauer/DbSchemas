@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Assets", "DbSchem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Sql", "DbSchemas.Sql\DbSchemas.Sql.csproj", "{8DD00221-0C8D-4292-A9E3-115EF86FD0D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Domain", "DbSchemas.Domain\DbSchemas.Domain.csproj", "{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Domain", "DbSchemas.Domain\DbSchemas.Domain.csproj", "{EEDA49AF-03CC-4401-8C8D-32501CA99B9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Repository", "DbSchemas.Repository\DbSchemas.Repository.csproj", "{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Repository", "DbSchemas.Repository\DbSchemas.Repository.csproj", "{AE3D8352-1CE5-4CB1-8A6A-6FFAD541B288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Mappers", "DbSchemas.Mappers\DbSchemas.Mappers.csproj", "{3DB57795-7D85-43A8-8A6D-797A681AA422}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbSchemas.Mappers", "DbSchemas.Mappers\DbSchemas.Mappers.csproj", "{3DB57795-7D85-43A8-8A6D-797A681AA422}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemas.Dumpers", "DbSchemas.Dumpers\DbSchemas.Dumpers.csproj", "{5E346E35-D264-42B8-8FB8-6FC2010B717C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DB57795-7D85-43A8-8A6D-797A681AA422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E346E35-D264-42B8-8FB8-6FC2010B717C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
