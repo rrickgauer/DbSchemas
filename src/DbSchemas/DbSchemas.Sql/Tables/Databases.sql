@@ -2,7 +2,7 @@ CREATE TABLE Databases (
     id               INTEGER  PRIMARY KEY
                               NOT NULL
                               UNIQUE,
-    name             TEXT     NOT NULL,
+    name             TEXT     NOT NULL UNIQUE,
     database_type_id INTEGER  NOT NULL,
     database_name    TEXT,
     username         TEXT,
