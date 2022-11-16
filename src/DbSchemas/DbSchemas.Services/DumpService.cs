@@ -34,7 +34,8 @@ public class DumpService
         IDumper? dumper = database.DatabaseConnectionRecord.DatabaseType switch
         {
             DatabaseType.SQLite => new SqliteDumper(database),
-            _ => null,
+            DatabaseType.MySql  => new MysqlDumper(database),
+            _                   => null,
         };
 
         return dumper;

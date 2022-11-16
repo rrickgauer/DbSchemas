@@ -13,6 +13,15 @@ public class MysqlColumnMapper : IColumnMapper
 
     public ColumnDefinition ToColumnDefinition(DataRow row)
     {
-        throw new NotImplementedException();
+        ColumnDefinition columnDefinition = new()
+        {
+            Position = row.Field<uint>("ordinal_position"),
+            Name = row.Field<string>("column_name"),
+            Type = row.Field<string>("column_type"),
+            IsNullable = row.Field<string>("is_nullable") == "YES",
+            DefaultValue = row["column_default"],
+        };
+
+        return columnDefinition;
     }
 }

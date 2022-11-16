@@ -19,7 +19,7 @@ public class MysqlDatabase : IDatabase
 
     public string ConnectionString => $"server={DatabaseConnectionRecord.Host};user={DatabaseConnectionRecord.Username};database={DatabaseConnectionRecord.DatabaseName};password={DatabaseConnectionRecord.Password}";
 
-    public IColumnMapper ColumnMapper => throw new NotImplementedException();
+    public IColumnMapper ColumnMapper => new MysqlColumnMapper();
 
     public MysqlDatabase(DatabaseConnectionRecord databaseConnectionRecord)
     {
