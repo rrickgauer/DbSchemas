@@ -28,7 +28,8 @@ var dumpService = serviceProvider.GetRequiredService<DumpService>();
 
 
 var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
-var schema = await dumpService.DumpDatabaseAsync(databaseRecords[0]);
+//var schema = await dumpService.DumpDatabaseAsync(databaseRecords[0]);
+var schema = await dumpService.DumpDatabaseAsync(databaseRecords[1]);
 
 
 int x = 0;

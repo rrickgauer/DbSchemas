@@ -1,6 +1,8 @@
 ﻿using DbSchemas.Domain.ColumnMappers;
 using DbSchemas.Domain.Models;
 using DbSchemas.Domain.Records;
+using DbSchemas.Sql.Commands;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,18 +27,26 @@ public class MysqlDatabase : IDatabase
     }
 
 
-    public Task<IEnumerable<string>> GetTableNamesAsync()
+    public async Task<IEnumerable<string>> GetTableNamesAsync()
     {
-        throw new NotImplementedException();
+        using MySqlConnection connection = new(ConnectionString);
+        using MySqlCommand command = new(MysqlDatabaseCommands.SelectTables, connection);
+        using DataTable dataTable = await DatabaseUtilities.ExecuteQueryAsync(command);
+
+        var tableNames = dataTable.AsEnumerable().Select(row => row.Field<string>(0));
+
+        return tableNames;
     }
 
-    public Task<DataTable> GetTableColumnsAsync(string tableName)
+    public async Task<DataTable> GetTableColumnsAsync(string tableName)
     {
-        throw new NotImplementedException();
-    }
+        using MySqlConnection connection = new(ConnectionString);
+        using MySqlCommand command = new(string.Format(MysqlDatabaseCommands.DescribeTable, tableName), connection);
 
-    public Task<DataTable> ExecuteQueryAsync(DbCommand command)
-    {
-        throw new NotImplementedException();
+        var table = await DatabaseUtilities.ExecuteQueryAsync(command);
+
+        await connection.CloseAsync();
+
+        return table;
     }
 }

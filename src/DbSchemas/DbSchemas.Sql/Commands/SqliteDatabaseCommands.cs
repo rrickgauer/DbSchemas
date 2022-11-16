@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Sql.Commands;
 
-public class SqliteDatabaseCommands
+public sealed class SqliteDatabaseCommands
 {
     public const string SelectTables = @"select * from sqlite_schema where type='table';";
 
