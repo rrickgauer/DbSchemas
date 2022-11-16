@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
     <ProjectReference Include="..\DbSchemas.Domain\DbSchemas.Domain.csproj" />
+    <ProjectReference Include="..\DbSchemas.Dumpers\DbSchemas.Dumpers.csproj" />
     <ProjectReference Include="..\DbSchemas.Mappers\DbSchemas.Mappers.csproj" />
     <ProjectReference Include="..\DbSchemas.Repository\DbSchemas.Repository.csproj" />
   </ItemGroup>

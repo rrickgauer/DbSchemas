@@ -1,10 +1,7 @@
 ﻿using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
 using DbSchemas.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DbSchemas.Dumpers;
 
 namespace DbSchemas.Services;
 
@@ -15,19 +12,32 @@ public class DumpService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<TableSchema>> DumpDatabaseAsync(IDatabase database)
+    public async Task<IEnumerable<TableSchema>> DumpDatabase(IDatabase database)
     {
-        var tableNames = await database.GetTableNamesAsync();
+        IDumper? dumper = GetDumper(database);
 
-        var schemas = tableNames.Select(tableName => new TableSchema(tableName)).ToList();
+        if (dumper is null)
+            throw new Exception("Could not find an appropriate dumper for the database.");
 
-        foreach (var schema in schemas)
-        {
-            var columnsDataTable = await database.GetTableColumnsAsync(schema.TableName);
-            schema.Columns = database.ColumnMapper.ToColumnDefinitions(columnsDataTable).ToList();
-        }
+        var result = await dumper.DumpDatabaseAsync();
 
-        return schemas;
+        return result;
     }
 
+    /// <summary>
+    /// Get the appropriate dumper class for the given database
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public IDumper? GetDumper(IDatabase database)
+    {
+        IDumper? dumper = database.DatabaseConnectionRecord.DatabaseType switch
+        {
+            DatabaseType.SQLite => new SqliteDumper(database),
+            DatabaseType.MySql  => new MysqlDumper(database),
+            _                   => null,
+        };
+
+        return dumper;
+    }
 }

@@ -53,27 +53,11 @@ public class DatabaseConnectionRecordService
     }
 
 
-
-    /// <summary>
-    /// Get the database with the matching id
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public async Task<DatabaseConnectionRecord?> GetDatabaseConnectionRecordAsync(long id)
-    {
-        var databases = await GetDatabaseConnectionRecordsAsync();
-
-        var result = databases.Where(db => db.Id == id).FirstOrDefault();
-
-        return result;
-    }
-
-
     /// <summary>
     /// Get all the databases
     /// </summary>
     /// <returns></returns>
-    public async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabaseConnectionRecordsAsync()
+    private async Task<IEnumerable<DatabaseConnectionRecord>> GetDatabaseConnectionRecordsAsync()
     {
         // fetch the database table
         var table = await _repo.SelectAllAsync();
