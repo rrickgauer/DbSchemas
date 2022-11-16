@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DbSchemas.Domain.Databases;
 
-public static class DatabaseUtilities
+public static class DumperUtilities
 {
     public static async Task<DataTable> ExecuteQueryAsync(DbCommand command)
     {

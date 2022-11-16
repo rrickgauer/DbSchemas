@@ -45,7 +45,7 @@ public class SqliteDumper : IDumper
     {
         using SqliteConnection connection = new(_connectionString);
         using SqliteCommand command = new(SqliteDatabaseCommands.SelectTables, connection);
-        using DataTable dataTable = await DatabaseUtilities.ExecuteQueryAsync(command);
+        using DataTable dataTable = await DumperUtilities.ExecuteQueryAsync(command);
 
         var tableNames = from row in dataTable.AsEnumerable() select row.Field<string>("tbl_name");
 
@@ -60,7 +60,7 @@ public class SqliteDumper : IDumper
         using SqliteCommand command = new(SqliteDatabaseCommands.DescribeTable, connection);
         command.Parameters.AddWithValue("@table_name", tableName);
 
-        var table = await DatabaseUtilities.ExecuteQueryAsync(command);
+        var table = await DumperUtilities.ExecuteQueryAsync(command);
 
         await connection.CloseAsync();
 
