@@ -10,8 +10,7 @@
     Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
     Width="1100"
     Height="650"
-    d:DataContext="{d:DesignInstance local:Container,
-                                     IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance local:Container, IsDesignTimeCreatable=True}"
     ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica"
     WindowCornerPreference="Round"
@@ -34,25 +33,13 @@
 
             <Grid Grid.Column="0" Margin="18,0,18,18">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="67" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" Margin="0,12">
-                    <TextBlock FontSize="16" Text="WPF UI - DbSchemas.WpfGui" />
-                    <TextBlock
-                        FontSize="10"
-                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                        Text="Fluent design" />
-                </StackPanel>
-
-                <ui:AutoSuggestBox Grid.Row="1" Margin="0,0,0,12" />
 
                 <!--  This is the main navigation of the application.  -->
                 <ui:NavigationFluent
                     x:Name="RootNavigation"
-                    Grid.Row="2"
+                    Grid.Row="0"
                     Footer="{Binding ViewModel.NavigationFooter, Mode=TwoWay}"
                     Frame="{Binding ElementName=RootFrame, Mode=OneWay}"
                     Items="{Binding ViewModel.NavigationItems, Mode=TwoWay}" />
@@ -69,7 +56,9 @@
                         x:Name="RootFrame"
                         Grid.Row="1"
                         Margin="0" />
+                    
                     <ui:Breadcrumb
+                        Visibility="Collapsed"
                         Grid.Row="0"
                         Margin="0,0,0,12"
                         HorizontalAlignment="Left"
