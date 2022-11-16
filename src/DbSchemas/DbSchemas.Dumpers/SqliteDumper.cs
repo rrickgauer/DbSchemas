@@ -1,5 +1,4 @@
-﻿
-using DbSchemas.Domain.Databases;
+﻿using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Models;
 using DbSchemas.Sql.Commands;
 using Microsoft.Data.Sqlite;
@@ -15,56 +14,55 @@ namespace DbSchemas.Dumpers;
 public class SqliteDumper : IDumper
 {
     public IDatabase DataBase { get; }
-
     private string _connectionString => DataBase.ConnectionString;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="database"></param>
     public SqliteDumper(IDatabase database)
     {
         DataBase = database;
     }
 
+    /// <summary>
+    /// Get all the table schemas 
+    /// </summary>
+    /// <returns></returns>
     public async Task<IEnumerable<TableSchema>> DumpDatabaseAsync()
     {
-        var tableNames = await GetTableNamesAsync();
-        var schemas = tableNames.Select(t => new TableSchema(t)).ToList();
+        using DataTable dataTable = await GetColumnsDataTable();
 
-        foreach (var schema in schemas)
+        Dictionary<string, TableSchema> tableSchemas = new();
+
+        foreach (var row in dataTable.AsEnumerable())
         {
-            var columns = await GetTableColumnsAsync(schema.TableName);
-            schema.Columns = DataBase.ColumnMapper.ToColumnDefinitions(columns).ToList();
+            // get the table that the current row belongs to
+            var tableName = row.Field<string>("table_name");
+            
+            // add a new table schema if it doesn't already exist
+            tableSchemas.TryAdd(tableName, new(tableName));
+
+            // map out the datarow to a ColumnDefintion and add it to the collection
+            ColumnDefinition mappedColumn = DataBase.ColumnMapper.ToColumnDefinition(row);
+            tableSchemas[tableName].Columns.Add(mappedColumn);
         }
 
-        return schemas;
+        return tableSchemas.Values;
     }
 
     /// <summary>
-    /// Get a list of all the table names in the database
+    /// Get a datatable of all the columns in the database (each table)
     /// </summary>
     /// <returns></returns>
-    private async Task<IEnumerable<string>> GetTableNamesAsync()
+    private async Task<DataTable> GetColumnsDataTable()
     {
         using SqliteConnection connection = new(_connectionString);
-        using SqliteCommand command = new(SqliteDatabaseCommands.SelectTables, connection);
-        using DataTable dataTable = await DumperUtilities.ExecuteQueryAsync(command);
+        using SqliteCommand command = new(SqliteDatabaseCommands.SelectAllColumns, connection);
+        
+        DataTable dataTable = await DumperUtilities.ExecuteQueryAsync(command);
 
-        var tableNames = from row in dataTable.AsEnumerable() select row.Field<string>("tbl_name");
-
-        await connection.CloseAsync();
-
-        return tableNames;
-    }
-
-    private async Task<DataTable> GetTableColumnsAsync(string tableName)
-    {
-        using SqliteConnection connection = new(_connectionString);
-        using SqliteCommand command = new(SqliteDatabaseCommands.DescribeTable, connection);
-        command.Parameters.AddWithValue("@table_name", tableName);
-
-        var table = await DumperUtilities.ExecuteQueryAsync(command);
-
-        await connection.CloseAsync();
-
-        return table;
+        return dataTable;
     }
 
 }
