@@ -4,6 +4,7 @@ using DbSchemas.Domain.Records;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,6 @@ public class MysqlDatabase : IDatabase
         DatabaseConnectionRecord = databaseConnectionRecord;
     }
 
-    public async Task<IEnumerable<TableSchema>> GetSchemasAsync()
-    {
-        return new List<TableSchema>();
-    }
 
     public Task<IEnumerable<string>> GetTableNamesAsync()
     {
@@ -34,6 +31,11 @@ public class MysqlDatabase : IDatabase
     }
 
     public Task<DataTable> GetTableColumnsAsync(string tableName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<DataTable> ExecuteQueryAsync(DbCommand command)
     {
         throw new NotImplementedException();
     }

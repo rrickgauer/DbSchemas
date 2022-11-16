@@ -31,9 +31,10 @@ public class SqliteDatabase : IDatabase
     /// <returns></returns>
     public async Task<IEnumerable<string>> GetTableNamesAsync()
     {
-        using SqliteConnection connection = await GetConnectionAsync();
+        SqliteConnection connection = new(ConnectionString);
+                    
         using SqliteCommand command = new(SqliteDatabaseCommands.SelectTables, connection);
-        using DataTable dataTable = await ExecuteQueryAsync(command);
+        using DataTable dataTable = await DatabaseUtilities.ExecuteQueryAsync(command);
 
         var tableNames = from row in dataTable.AsEnumerable() select row.Field<string>("tbl_name");
 
@@ -44,35 +45,17 @@ public class SqliteDatabase : IDatabase
 
     public async Task<DataTable> GetTableColumnsAsync(string tableName)
     {
-        SqliteConnection connection = await GetConnectionAsync();
-
+        SqliteConnection connection = new(ConnectionString);
         using SqliteCommand command = new(SqliteDatabaseCommands.DescribeTable, connection);
         command.Parameters.AddWithValue("@table_name", tableName);
 
-        var table = await ExecuteQueryAsync(command);
+        var table = await DatabaseUtilities.ExecuteQueryAsync(command);
 
         await connection.CloseAsync();
 
         return table;
     }
 
-    private async Task<DataTable> ExecuteQueryAsync(SqliteCommand command)
-    {
-        DataTable dataTable = new();
-
-        using DbDataReader reader = await command.ExecuteReaderAsync();
-        dataTable.Load(reader);
-
-        return dataTable;
-    }
-
-    private async Task<SqliteConnection> GetConnectionAsync()
-    {
-        SqliteConnection connection = new(ConnectionString);
-        await connection.OpenAsync();
-
-        return connection;
-    }
 
 
 }

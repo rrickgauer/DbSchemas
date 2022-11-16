@@ -1,5 +1,6 @@
 ﻿using DbSchemas.Configurations;
 using DbSchemas.Domain.Enums;
+using DbSchemas.Domain.Records;
 using DbSchemas.Repository;
 using DbSchemas.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,12 +22,14 @@ var serviceProvider = serviceCollection.BuildServiceProvider();
 var programDataService = serviceProvider.GetRequiredService<ProgramDataService>();
 programDataService.SetupProgramData();
 
-// get the databases
 var databaseService = serviceProvider.GetRequiredService<DatabaseConnectionRecordService>();
-var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
-
 var dumpService = serviceProvider.GetRequiredService<DumpService>();
-var schema = await dumpService.DumpDatabaseAsync(databaseRecords[25]);
+
+
+
+var databaseRecords = (await databaseService.GetDatabasesAsync()).ToList();
+var schema = await dumpService.DumpDatabaseAsync(databaseRecords[0]);
+
 
 int x = 0;
 
