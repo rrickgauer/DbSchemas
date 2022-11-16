@@ -41,15 +41,8 @@ namespace DbSchemas.WpfGui.ViewModels
                     Content = "Home",
                     PageTag = "dashboard",
                     Icon = SymbolRegular.Home24,
-                    PageType = typeof(Views.Pages.DashboardPage)
+                    PageType = typeof(Views.Pages.HomePage)
                 },
-                new NavigationItem()
-                {
-                    Content = "Data",
-                    PageTag = "data",
-                    Icon = SymbolRegular.DataHistogram24,
-                    PageType = typeof(Views.Pages.DataPage)
-                }
             };
 
             NavigationFooter = new ObservableCollection<INavigationControl>

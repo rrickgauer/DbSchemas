@@ -60,6 +60,10 @@ namespace DbSchemas.WpfGui
 
                 services.AddScoped<Views.Pages.SettingsPage>();
                 services.AddScoped<ViewModels.SettingsViewModel>();
+
+                services.AddScoped<Views.Pages.HomePage>();
+                services.AddScoped<ViewModels.HomePageViewModel>();
+
                 #endregion
 
                 #region Services
