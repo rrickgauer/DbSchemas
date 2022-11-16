@@ -10,13 +10,22 @@ namespace DbSchemas.Services;
 
 public class DumpService
 {
-
-    public async Task<IEnumerable<ColumnDefinition>> DumpDatabaseAsync(IDatabase database)
+    /// <summary>
+    /// Dump the specified database
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<TableSchema>> DumpDatabaseAsync(IDatabase database)
     {
-        List<ColumnDefinition> schemas = new();
+        var tableNames = await database.GetTableNamesAsync();
 
+        var schemas = tableNames.Select(tableName => new TableSchema(tableName)).ToList();
 
-
+        foreach (var schema in schemas)
+        {
+            var columnsDataTable = await database.GetTableColumnsAsync(schema.TableName);
+            schema.Columns = database.ColumnMapper.ToColumnDefinitions(columnsDataTable).ToList();
+        }
 
         return schemas;
     }

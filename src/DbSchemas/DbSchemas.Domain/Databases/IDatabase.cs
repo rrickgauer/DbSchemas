@@ -1,7 +1,9 @@
-﻿using DbSchemas.Domain.Models;
+﻿using DbSchemas.Domain.ColumnMappers;
+using DbSchemas.Domain.Models;
 using DbSchemas.Domain.Records;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,8 @@ public interface IDatabase
 {
     public DatabaseConnectionRecord DatabaseConnectionRecord { get; }
     public string ConnectionString { get; }
-    public Task<IEnumerable<TableSchema>> GetSchemasAsync();
-    
+    public IColumnMapper ColumnMapper { get; }
+
+    public Task<IEnumerable<string>> GetTableNamesAsync();
+    public Task<DataTable> GetTableColumnsAsync(string tableName);
 }
