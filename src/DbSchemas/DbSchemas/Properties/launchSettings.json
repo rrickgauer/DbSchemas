@@ -10,7 +10,7 @@
     },
     "Cli": {
       "commandName": "Project",
-      "commandLineArgs": "laynch"
+      "commandLineArgs": "list"
     }
   }
 }

@@ -13,6 +13,7 @@ public class ApplicationRouter
     private readonly string[] _args;
     private readonly IConfigs _configs;
     private readonly ProgramDataService _programDataService;
+    private readonly CliService _cliService;
 
     /// <summary>
     /// Constructor
@@ -25,6 +26,7 @@ public class ApplicationRouter
         _args = args;
         _configs = _serviceProvider.GetRequiredService<IConfigs>();
         _programDataService = _serviceProvider.GetRequiredService<ProgramDataService>();
+        _cliService = _serviceProvider.GetRequiredService<CliService>();
 
         _programDataService.SetupProgramData();
     }
@@ -53,9 +55,9 @@ public class ApplicationRouter
     }
 
 
-    private void List(ListCliArgs cliArgs)
+    private async void List(ListCliArgs cliArgs)
     {
-        Console.WriteLine("list connections");
+        await _cliService.ListConnections();
     }
 
 
