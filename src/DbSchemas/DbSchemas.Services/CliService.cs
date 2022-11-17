@@ -13,11 +13,29 @@ namespace DbSchemas.Services;
 public class CliService
 {
     private readonly DatabaseConnectionRecordService _databaseConnectionRecordService;
+    private readonly OutputService _outputService;
 
-    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService)
+    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService, OutputService outputService)
     {
         _databaseConnectionRecordService = databaseConnectionRecordService;
+        _outputService = outputService;
     }
+
+    public async Task AddConnection(AddCliArgs args)
+    {
+        var connection = args.ToDatabaseConnectionRecord();
+
+        var success = await _databaseConnectionRecordService.InsertDatabaseAsync(connection);
+
+        if (success)
+        {
+            Console.WriteLine($"{Environment.NewLine}Added!");
+        }
+
+        await ListConnections();
+    }
+
+
 
     /// <summary>
     /// Display all the user's connections 
@@ -28,40 +46,7 @@ public class CliService
         var databases = await _databaseConnectionRecordService.GetDatabasesAsync();
         var connections = databases.Select(db => db.DatabaseConnectionRecord);
 
-        var output = GetCollectionOutputTable(connections, ConsoleOutputFormat.Compact);
-        Console.WriteLine(output);
+        var output = _outputService.ToConsoleTableString(connections, ConsoleOutputFormat.Compact);
+        Console.WriteLine(_outputService.SpaceWrap(output, 2, 2));
     }
-
-
-    public async Task AddConnection(AddCliArgs args)
-    {
-        var connection = args.ToDatabaseConnectionRecord();
-
-        var success = await _databaseConnectionRecordService.InsertDatabaseAsync(connection);
-    }
-
-
-    #region Console tables
-
-    private string GetCollectionOutputTable<T>(IEnumerable<T> items, ConsoleOutputFormat format)
-    {
-        var consoleTable = ConsoleTable.From(items);
-        consoleTable.Options.NumberAlignment = Alignment.Left;
-
-        return FormatConsoleTable(consoleTable, format);
-    }
-
-    private string FormatConsoleTable(ConsoleTable table, ConsoleOutputFormat format)
-    {
-        string result = format switch
-        {
-            ConsoleOutputFormat.Compact  => table.ToMinimalString(),
-            ConsoleOutputFormat.Markdown => table.ToMarkDownString(),
-            _                            => table.ToStringAlternative(),
-        };
-
-        return result;
-    }
-
-    #endregion
 }
