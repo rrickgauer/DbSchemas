@@ -85,6 +85,12 @@ public class CliService
         // write it to the console
         string output = _outputService.FormatDatabaseDump(dumpResult);
         Console.WriteLine(output);
+
+        // write the output to the outputfile if specified
+        if (!string.IsNullOrEmpty(args.Output))
+        {
+            await _outputService.WriteDataToFile(output, new(args.Output));
+        }
     }
     
 }

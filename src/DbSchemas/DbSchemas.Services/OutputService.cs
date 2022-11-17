@@ -12,6 +12,19 @@ namespace DbSchemas.Services;
 
 public class OutputService
 {
+
+    public async Task WriteDataToFile(object data, FileInfo destination)
+    {
+        using FileStream fileStream = destination.OpenWrite();
+        using StreamWriter sw = new(fileStream);
+
+        await sw.WriteAsync(data.ToString());
+
+        sw.Close();
+        fileStream.Close();
+    }
+
+
     /// <summary>
     /// Format the given database dump to a string
     /// </summary>
