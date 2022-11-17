@@ -14,6 +14,7 @@ serviceCollection.AddScoped<IConfigs, ConfigurationDev>();
 serviceCollection.AddScoped<ProgramDataService>();
 serviceCollection.AddScoped<DatabaseConnectionRecordService>();
 serviceCollection.AddScoped<DumpService>();
+serviceCollection.AddScoped<CliService>();
 serviceCollection.AddScoped<DatabaseConnectionRecordRepository>();
 
 ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
