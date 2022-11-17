@@ -11,6 +11,10 @@
     "Cli": {
       "commandName": "Project",
       "commandLineArgs": "list"
+    },
+    "cli - insert": {
+      "commandName": "Project",
+      "commandLineArgs": "add --name fuck --type SQLite --database \"jimmy licks\" --file \"sup bitch ass\" --password \"aids 120302 huid\""
     }
   }
 }
