@@ -1,4 +1,5 @@
 ﻿using ConsoleTables;
+using DbSchemas.Domain.CliArgs;
 using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Enums;
 using System;
@@ -32,6 +33,16 @@ public class CliService
     }
 
 
+    public async Task AddConnection(AddCliArgs args)
+    {
+        var connection = args.ToDatabaseConnectionRecord();
+
+        var success = await _databaseConnectionRecordService.InsertDatabaseAsync(connection);
+    }
+
+
+    #region Console tables
+
     private string GetCollectionOutputTable<T>(IEnumerable<T> items, ConsoleOutputFormat format)
     {
         var consoleTable = ConsoleTable.From(items);
@@ -51,4 +62,6 @@ public class CliService
 
         return result;
     }
+
+    #endregion
 }

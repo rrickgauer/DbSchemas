@@ -49,9 +49,9 @@ public class ApplicationRouter
             .WithNotParsed(HandleParseError);
     }
 
-    private void Add(AddCliArgs cliArgs)
+    private async void Add(AddCliArgs cliArgs)
     {
-        Console.WriteLine("add new connection");
+        await _cliService.AddConnection(cliArgs);
     }
 
 
