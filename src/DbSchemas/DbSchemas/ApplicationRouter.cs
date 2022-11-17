@@ -3,23 +3,23 @@ using DbSchemas.Configurations;
 using DbSchemas.Domain.CliArgs;
 using DbSchemas.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbSchemas;
 
 public class ApplicationRouter
 {
-    private readonly ServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
     private readonly string[] _args;
     private readonly IConfigs _configs;
     private readonly ProgramDataService _programDataService;
 
-    public ApplicationRouter(ServiceProvider serviceProvider, string[] args)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    /// <param name="args"></param>
+    public ApplicationRouter(IServiceProvider serviceProvider, string[] args)
     {
         _serviceProvider = serviceProvider;
         _args = args;
@@ -29,18 +29,22 @@ public class ApplicationRouter
         _programDataService.SetupProgramData();
     }
 
+    /// <summary>
+    /// Route the application using the object's cli arguments
+    /// </summary>
     public void RouteApplication()
     {
-
+        // parse the args
         var parseResult = Parser.Default.ParseArguments<AddCliArgs, ListCliArgs, GuiCliArgs, ViewCliArgs, EditCliArgs, DeleteCliArgs>(_args);
 
-        parseResult.WithParsed<AddCliArgs>(args => Add(args))
-            .WithParsed<ListCliArgs>(args => List(args))
-            .WithParsed<ViewCliArgs>(args => View(args))
-            .WithParsed<EditCliArgs>(args => Edit(args))
-            .WithParsed<DeleteCliArgs>(args => Delete(args))
-            .WithParsed<GuiCliArgs>(args => Gui(args))
-            .WithNotParsed(errors => HandleParseError(errors));
+        // execute the appropriate routine
+        parseResult.WithParsed<AddCliArgs>(Add)
+            .WithParsed<ListCliArgs>(List)
+            .WithParsed<ViewCliArgs>(View)
+            .WithParsed<EditCliArgs>(Edit)
+            .WithParsed<DeleteCliArgs>(Delete)
+            .WithParsed<GuiCliArgs>(Gui)
+            .WithNotParsed(HandleParseError);
     }
 
     private void Add(AddCliArgs cliArgs)
@@ -65,7 +69,6 @@ public class ApplicationRouter
     {
         Console.WriteLine("edit connection");
     }
-
 
     private void Delete(DeleteCliArgs cliArgs)
     {
