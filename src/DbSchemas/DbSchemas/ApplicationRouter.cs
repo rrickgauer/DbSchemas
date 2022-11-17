@@ -51,19 +51,19 @@ public class ApplicationRouter
 
     private async void Add(AddCliArgs cliArgs)
     {
-        await _cliService.AddConnection(cliArgs);
+        await _cliService.AddConnectionAsync(cliArgs);
     }
 
 
     private async void List(ListCliArgs cliArgs)
     {
-        await _cliService.ListConnections();
+        await _cliService.ListConnectionsAsync();
     }
 
 
-    private void View(ViewCliArgs cliArgs)
+    private async void View(ViewCliArgs cliArgs)
     {
-        Console.WriteLine("view connection");
+        await _cliService.ViewConnectionAsync(cliArgs);
     }
 
 

@@ -27,6 +27,16 @@ public class DatabaseConnectionRecordService
     }
 
 
+    public async Task<IDatabase?> GetDatabaseAsync(string connectionName)
+    {
+        var databases = await GetDatabasesAsync();
+
+        var result = databases.Where(db => db.DatabaseConnectionRecord.Name == connectionName).FirstOrDefault();
+
+        return result;
+    }
+
+
     /// <summary>
     /// Get all the user's databases
     /// </summary>
