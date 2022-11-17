@@ -13,55 +13,84 @@ namespace DbSchemas.Services;
 public class CliService
 {
     private readonly DatabaseConnectionRecordService _databaseConnectionRecordService;
+    private readonly OutputService _outputService;
+    private readonly DumpService _dumpService;
 
-    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="databaseConnectionRecordService"></param>
+    /// <param name="outputService"></param>
+    /// <param name="dumpService"></param>
+    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService, OutputService outputService, DumpService dumpService)
     {
         _databaseConnectionRecordService = databaseConnectionRecordService;
+        _outputService = outputService;
+        _dumpService = dumpService;
     }
+
+    /// <summary>
+    /// Create a new connection from the values in the cli args given.
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public async Task AddConnectionAsync(AddCliArgs args)
+    {
+        var connection = args.ToDatabaseConnectionRecord();
+
+        var success = await _databaseConnectionRecordService.InsertDatabaseAsync(connection);
+
+        if (success)
+        {
+            Console.WriteLine($"{Environment.NewLine}Added!");
+        }
+
+        await ListConnectionsAsync();
+    }
+
+
 
     /// <summary>
     /// Display all the user's connections 
     /// </summary>
     /// <returns></returns>
-    public async Task ListConnections()
+    public async Task ListConnectionsAsync()
     {
         var databases = await _databaseConnectionRecordService.GetDatabasesAsync();
         var connections = databases.Select(db => db.DatabaseConnectionRecord);
 
-        var output = GetCollectionOutputTable(connections, ConsoleOutputFormat.Compact);
-        Console.WriteLine(output);
+        var output = _outputService.ToConsoleTableString(connections, ConsoleOutputFormat.Compact);
+        Console.WriteLine(_outputService.SpaceWrap(output, 2, 2));
     }
 
-
-    public async Task AddConnection(AddCliArgs args)
+    /// <summary>
+    /// View the dump of a database
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public async Task ViewConnectionAsync(ViewCliArgs args)
     {
-        var connection = args.ToDatabaseConnectionRecord();
+        IDatabase? database = await _databaseConnectionRecordService.GetDatabaseAsync(args.Name);
 
-        var success = await _databaseConnectionRecordService.InsertDatabaseAsync(connection);
-    }
-
-
-    #region Console tables
-
-    private string GetCollectionOutputTable<T>(IEnumerable<T> items, ConsoleOutputFormat format)
-    {
-        var consoleTable = ConsoleTable.From(items);
-        consoleTable.Options.NumberAlignment = Alignment.Left;
-
-        return FormatConsoleTable(consoleTable, format);
-    }
-
-    private string FormatConsoleTable(ConsoleTable table, ConsoleOutputFormat format)
-    {
-        string result = format switch
+        // ensure the connection name exists
+        if (database is null)
         {
-            ConsoleOutputFormat.Compact  => table.ToMinimalString(),
-            ConsoleOutputFormat.Markdown => table.ToMarkDownString(),
-            _                            => table.ToStringAlternative(),
-        };
+            Console.WriteLine($"There is no connection with the name: {args.Name}");
+            return;
+        }
 
-        return result;
+        // dump the database
+        var dumpResult = await _dumpService.DumpDatabase(database);
+
+        // write it to the console
+        string output = _outputService.FormatDatabaseDump(dumpResult);
+        Console.WriteLine(output);
+
+        // write the output to the outputfile if specified
+        if (!string.IsNullOrEmpty(args.Output))
+        {
+            await _outputService.WriteDataToFile(output, new(args.Output));
+        }
     }
-
-    #endregion
+    
 }
