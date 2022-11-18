@@ -29,8 +29,12 @@
 
 
             <!--Page header-->
-            <Border Grid.Column="0" Grid.Row="0">
-                <TextBlock Text="Connections Page" />
+            <Border Grid.Column="0" Grid.Row="0" Margin="10">
+                <TextBlock Text="Your connections" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           FontStyle="Normal" 
+                           TextDecorations="{x:Null}" />
             </Border>
 
             <!--Search text input-->
@@ -57,10 +61,14 @@
                           ItemsSource="{Binding ViewModel.Connections}"
                           SelectedItem="{Binding ViewModel.SelectedConnection, Mode=TwoWay}"
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
-                          d:ItemsSource="{d:SampleData ItemCount=25}">
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ui:Card Content="{Binding DatabaseConnectionRecord.Name}" />
+                            <ui:CardExpander Header="{Binding DatabaseConnectionRecord.Name}" IsExpanded="False" Margin="0,5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DatabaseConnectionRecord.Password}" />
+                                </StackPanel>
+                            </ui:CardExpander>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
