@@ -7,12 +7,25 @@
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
            mc:Ignorable="d" 
            d:DataContext="{d:DesignInstance local:ConnectionsPage, IsDesignTimeCreatable=False}"
-           d:DesignHeight="450" 
+           
            d:DesignWidth="800"
            d:Foreground="White"
            Scrollable="True"
            Title="ConnectionsPage">
 
+    <ui:UiPage.Resources>
+        <Style x:Key="connectionCardDetailItem" TargetType="Border">
+            <Setter Property="Margin" Value="10" />
+        </Style>
+
+        <Style x:Key="connectionCardDetailItemHeader" TargetType="Label">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        
+        <Style x:Key="connectionCardDetailItemText" TargetType="TextBlock" />
+
+    </ui:UiPage.Resources>
+    
     <Border Style="{StaticResource PageBorderStyle}">
 
         <Grid>
@@ -58,19 +71,10 @@
 
                 <!--Connections list-->
                 <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                          ItemsSource="{Binding ViewModel.Connections}"
-                          SelectedItem="{Binding ViewModel.SelectedConnection, Mode=TwoWay}"
+                          ItemsSource="{Binding ViewModel.ConnectionCards}"
+                          
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
                           d:ItemsSource="{d:SampleData ItemCount=5}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ui:CardExpander Header="{Binding DatabaseConnectionRecord.Name}" IsExpanded="False" Margin="0,5">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding DatabaseConnectionRecord.Password}" />
-                                </StackPanel>
-                            </ui:CardExpander>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
                 </ListView>
                 
             </Border>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DbSchemas.Domain.Databases;
 using DbSchemas.Services;
+using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     private string _connectionNameSearch = string.Empty;
 
     [ObservableProperty]
-    private IEnumerable<IDatabase> _connections = new List<IDatabase>();
-
-    [ObservableProperty]
-    private IDatabase? _selectedConnection = null;
+    private IEnumerable<ConnectionCardUserControl> _connectionCards = Enumerable.Empty<ConnectionCardUserControl>();
 
 
     #region INavigationAware
@@ -45,9 +43,22 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
 
     public async Task LoadConnectionsAsync()
     {
-        Connections = await _connectionRecordService.GetDatabasesAsync();
+        var connections = await _connectionRecordService.GetDatabasesAsync();
+        ConnectionCards = GetConnectinUserControls(connections);
+    }
 
-        int x = 10;
+    private IEnumerable<ConnectionCardUserControl> GetConnectinUserControls(IEnumerable<IDatabase> connections)
+    {
+        List<ConnectionCardUserControl> cards = new();
+
+        foreach (var con in connections)
+        {
+            ConnectionCardViewModel viewModel = new(con);
+            ConnectionCardUserControl control = new(viewModel);
+            cards.Add(control);
+        }
+
+        return cards;
     }
 
 }
