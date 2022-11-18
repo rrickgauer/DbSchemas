@@ -59,6 +59,9 @@ namespace DbSchemas.WpfGui
                 services.AddScoped<Views.Pages.HomePage>();
                 services.AddScoped<ViewModels.HomePageViewModel>();
 
+                services.AddScoped<Views.Pages.ConnectionsPage>();
+                services.AddScoped<ViewModels.ConnectionsPageViewModel>();
+
                 #endregion
 
                 #region Services
@@ -67,6 +70,7 @@ namespace DbSchemas.WpfGui
                 services.AddScoped<ProgramDataService>();
                 services.AddScoped<DatabaseConnectionRecordService>();
                 services.AddScoped<DumpService>();
+                services.AddScoped<CliService>();
                 services.AddScoped<DatabaseConnectionRecordRepository>();
 
                 #endregion

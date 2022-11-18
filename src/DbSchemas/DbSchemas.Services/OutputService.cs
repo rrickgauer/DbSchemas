@@ -34,13 +34,13 @@ public static class OutputService
     /// <summary>
     /// Format the given database dump to a string
     /// </summary>
-    /// <param name="dumpResult"></param>
+    /// <param name="dump"></param>
     /// <returns></returns>
-    public static string FormatDatabaseDump(IEnumerable<TableSchema> dumpResult)
+    public static string FormatDatabaseDump(DatabaseDump dump)
     {
         string output = string.Empty;
 
-        foreach (var tableSchema in dumpResult)
+        foreach (var tableSchema in dump.TableSchemas)
         {
             string tableOutput = ToConsoleTableString(tableSchema.Columns, ConsoleOutputFormat.Compact);
 

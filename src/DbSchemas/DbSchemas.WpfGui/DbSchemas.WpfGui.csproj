@@ -31,10 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\UserControls\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DbSchemas.Assets\DbSchemas.Assets.csproj" />
     <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
     <ProjectReference Include="..\DbSchemas.Services\DbSchemas.Services.csproj" />

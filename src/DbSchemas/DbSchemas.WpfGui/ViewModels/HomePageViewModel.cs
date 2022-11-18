@@ -6,19 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Wpf.Ui.Common.Interfaces;
 
-namespace DbSchemas.WpfGui.ViewModels
+namespace DbSchemas.WpfGui.ViewModels;
+
+public class HomePageViewModel : ObservableObject, INavigationAware
 {
-    public class HomePageViewModel : ObservableObject, INavigationAware
+
+    public void OnNavigatedFrom()
     {
+        //throw new NotImplementedException();
+    }
 
-        public void OnNavigatedFrom()
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnNavigatedTo()
-        {
-            //throw new NotImplementedException();
-        }
+    public void OnNavigatedTo()
+    {
+        //throw new NotImplementedException();
     }
 }

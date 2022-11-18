@@ -44,6 +44,14 @@ namespace DbSchemas.WpfGui.ViewModels
                     Icon = SymbolRegular.Home24,
                     PageType = typeof(Views.Pages.HomePage)
                 },
+
+                new NavigationItem()
+                {
+                    Content = "Connections",
+                    PageTag = "connections",
+                    Icon = SymbolRegular.DatabasePlugConnected20,
+                    PageType = typeof(Views.Pages.ConnectionsPage)
+                },
             };
 
             NavigationFooter = new ObservableCollection<INavigationControl>

@@ -13,21 +13,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Wpf.Ui.Common.Interfaces;
 
-namespace DbSchemas.WpfGui.Views.Pages;
+namespace DbSchemas.WpfGui.Views.UserControls;
 
 /// <summary>
-/// Interaction logic for HomePage.xaml
+/// Interaction logic for ConnectionCardUserControl.xaml
 /// </summary>
-public partial class HomePage : INavigableView<HomePageViewModel>
+public partial class ConnectionCardUserControl : UserControl
 {
-    public HomePage(HomePageViewModel viewModel)
+    public ConnectionCardViewModel ViewModel { get; set; }
+
+    public ConnectionCardUserControl(ConnectionCardViewModel viewModel)
     {
         ViewModel = viewModel;
 
         InitializeComponent();
     }
-
-    public HomePageViewModel ViewModel { get; set; }
 }
