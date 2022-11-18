@@ -12,7 +12,7 @@ public class DumpService
     /// </summary>
     /// <param name="database"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<TableSchema>> DumpDatabase(IDatabase database)
+    public async Task<DatabaseDump> DumpDatabase(IDatabase database)
     {
         IDumper? dumper = GetDumper(database);
 

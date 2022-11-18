@@ -10,5 +10,5 @@ namespace DbSchemas.Dumpers;
 
 public interface IDumper
 {
-    public Task<IEnumerable<TableSchema>> DumpDatabaseAsync();
+    public Task<DatabaseDump> DumpDatabaseAsync();
 }

@@ -29,7 +29,7 @@ public class SqliteDumper : IDumper
     /// Get all the table schemas 
     /// </summary>
     /// <returns></returns>
-    public async Task<IEnumerable<TableSchema>> DumpDatabaseAsync()
+    public async Task<DatabaseDump> DumpDatabaseAsync()
     {
         using DataTable dataTable = await GetColumnsDataTable();
 
@@ -40,7 +40,12 @@ public class SqliteDumper : IDumper
             DumperUtilities.AddDataRowToDict(row, tableSchemas, DataBase.ColumnMapper, "table_name");
         }
 
-        return tableSchemas.Values;
+        DatabaseDump result = new() 
+        { 
+            TableSchemas = tableSchemas.Values, 
+        };
+
+        return result;
     }
 
     /// <summary>
