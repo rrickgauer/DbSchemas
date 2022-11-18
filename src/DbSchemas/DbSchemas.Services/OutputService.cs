@@ -6,14 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DbSchemas.Services;
 
-public class OutputService
+public static class OutputService
 {
-
-    public async Task WriteDataToFile(object data, FileInfo destination)
+    /// <summary>
+    /// Write the given data to the file
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="destination"></param>
+    /// <returns></returns>
+    public static async Task WriteDataToFile(object data, FileInfo destination)
     {
         using FileStream fileStream = destination.OpenWrite();
         using StreamWriter sw = new(fileStream);
@@ -30,7 +36,7 @@ public class OutputService
     /// </summary>
     /// <param name="dumpResult"></param>
     /// <returns></returns>
-    public string FormatDatabaseDump(IEnumerable<TableSchema> dumpResult)
+    public static string FormatDatabaseDump(IEnumerable<TableSchema> dumpResult)
     {
         string output = string.Empty;
 
@@ -52,7 +58,7 @@ public class OutputService
     /// <param name="items"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public string ToConsoleTableString<T>(IEnumerable<T> items, ConsoleOutputFormat format)
+    public static string ToConsoleTableString<T>(IEnumerable<T> items, ConsoleOutputFormat format)
     {
         var consoleTable = ConsoleTable.From(items);
         consoleTable.Options.NumberAlignment = Alignment.Left;
@@ -66,7 +72,7 @@ public class OutputService
     /// <param name="table"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    private string FormatConsoleTable(ConsoleTable table, ConsoleOutputFormat format)
+    private static string FormatConsoleTable(ConsoleTable table, ConsoleOutputFormat format)
     {
         string result = format switch
         {
@@ -85,7 +91,7 @@ public class OutputService
     /// <param name="spaceTop"></param>
     /// <param name="spaceBottom"></param>
     /// <returns></returns>
-    public string SpaceWrap(object data, uint spaceTop, uint spaceBottom = 1)
+    public static string SpaceWrap(object data, uint spaceTop, uint spaceBottom = 1)
     {
         string result = string.Empty;
 
@@ -103,4 +109,15 @@ public class OutputService
 
         return result;
     }
+
+
+    public static string ToJson(object data)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string jsonString = JsonSerializer.Serialize(data, options);
+
+        return jsonString;
+    }
+
+
 }

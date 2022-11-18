@@ -19,6 +19,10 @@
     "cli - view": {
       "commandName": "Project",
       "commandLineArgs": "view DotNetTasks"
+    },
+    "cli delete": {
+      "commandName": "Project",
+      "commandLineArgs": "delete fuck"
     }
   }
 }

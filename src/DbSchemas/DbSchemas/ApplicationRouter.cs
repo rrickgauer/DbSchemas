@@ -72,9 +72,9 @@ public class ApplicationRouter
         Console.WriteLine("edit connection");
     }
 
-    private void Delete(DeleteCliArgs cliArgs)
+    private async void Delete(DeleteCliArgs cliArgs)
     {
-        Console.WriteLine("delete connection");
+        await _cliService.DeleteConnectionAsync(cliArgs);
     }
 
     private void Gui(GuiCliArgs cliArgs)
@@ -84,7 +84,7 @@ public class ApplicationRouter
 
     private void HandleParseError(IEnumerable<Error> parseErrors)
     {
-        Console.WriteLine("errors");
+        //Console.WriteLine("errors");
     }
 
 }

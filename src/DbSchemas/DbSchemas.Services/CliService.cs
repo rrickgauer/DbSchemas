@@ -13,7 +13,6 @@ namespace DbSchemas.Services;
 public class CliService
 {
     private readonly DatabaseConnectionRecordService _databaseConnectionRecordService;
-    private readonly OutputService _outputService;
     private readonly DumpService _dumpService;
 
     /// <summary>
@@ -22,10 +21,9 @@ public class CliService
     /// <param name="databaseConnectionRecordService"></param>
     /// <param name="outputService"></param>
     /// <param name="dumpService"></param>
-    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService, OutputService outputService, DumpService dumpService)
+    public CliService(DatabaseConnectionRecordService databaseConnectionRecordService, DumpService dumpService)
     {
         _databaseConnectionRecordService = databaseConnectionRecordService;
-        _outputService = outputService;
         _dumpService = dumpService;
     }
 
@@ -59,8 +57,8 @@ public class CliService
         var databases = await _databaseConnectionRecordService.GetDatabasesAsync();
         var connections = databases.Select(db => db.DatabaseConnectionRecord);
 
-        var output = _outputService.ToConsoleTableString(connections, ConsoleOutputFormat.Compact);
-        Console.WriteLine(_outputService.SpaceWrap(output, 2, 2));
+        var output = OutputService.ToConsoleTableString(connections, ConsoleOutputFormat.Compact);
+        Console.WriteLine(OutputService.SpaceWrap(output, 2, 2));
     }
 
     /// <summary>
@@ -83,14 +81,62 @@ public class CliService
         var dumpResult = await _dumpService.DumpDatabase(database);
 
         // write it to the console
-        string output = _outputService.FormatDatabaseDump(dumpResult);
+        string output = OutputService.FormatDatabaseDump(dumpResult);
         Console.WriteLine(output);
 
         // write the output to the outputfile if specified
         if (!string.IsNullOrEmpty(args.Output))
         {
-            await _outputService.WriteDataToFile(output, new(args.Output));
+            await OutputService.WriteDataToFile(output, new(args.Output));
         }
     }
     
+
+    /// <summary>
+    /// Delete a connection
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public async Task DeleteConnectionAsync(DeleteCliArgs args)
+    {
+        // confirm the deletion before doing anything
+        if (!ConfirmDeletion(args))
+        {
+            return;
+        }
+
+        // fetch the database
+        IDatabase database = await _databaseConnectionRecordService.GetDatabaseAsync(args.Name);
+
+        // make sure the connection name exists
+        if (database is null)
+        {
+            Console.WriteLine($"{args.Name} does not exist!");
+            return;
+        }
+
+        // delete the connection
+        var wasDeleted = await _databaseConnectionRecordService.DeleteDatabaseAsync(database.DatabaseConnectionRecord.Id.Value);
+
+        Console.WriteLine(OutputService.SpaceWrap("Deleted successfully!", 2, 2));
+    }
+
+    /// <summary>
+    /// Have the user confirm they want to delete the connection.
+    /// If the args.Force flag is true, just return true.
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    private static bool ConfirmDeletion(DeleteCliArgs args)
+    {
+        if (args.Force)
+        {
+            return true;
+        }
+
+        Console.Write("Enter 'y' to confirm delete: ");
+        var response = Console.ReadLine();
+
+        return string.Equals(response, "y", StringComparison.OrdinalIgnoreCase);
+    }
 }
