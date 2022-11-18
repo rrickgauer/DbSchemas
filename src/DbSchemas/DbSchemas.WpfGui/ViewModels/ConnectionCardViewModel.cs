@@ -1,18 +1,27 @@
-﻿using DbSchemas.Domain.Databases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DbSchemas.Domain.Databases;
 using System.Threading.Tasks;
 
 namespace DbSchemas.WpfGui.ViewModels;
 
-public class ConnectionCardViewModel
+public partial class ConnectionCardViewModel : ObservableObject
 {
-    public IDatabase Database { get; set; }
+
 
     public ConnectionCardViewModel(IDatabase database)
     {
-        Database = database;
+        _database = database;
+    }
+
+
+    [ObservableProperty]
+    private IDatabase _database;
+
+
+    [RelayCommand]
+    public async Task EditConnectionAsync()
+    {
+        int x = 10;
     }
 }
