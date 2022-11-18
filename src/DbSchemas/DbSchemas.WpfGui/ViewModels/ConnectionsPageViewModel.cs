@@ -8,9 +8,10 @@ using Wpf.Ui.Common.Interfaces;
 
 namespace DbSchemas.WpfGui.ViewModels;
 
-public class HomePageViewModel : ObservableObject, INavigationAware
+public class ConnectionsPageViewModel : ObservableObject, INavigationAware
 {
 
+    #region INavigationAware
     public void OnNavigatedFrom()
     {
         //throw new NotImplementedException();
@@ -20,4 +21,8 @@ public class HomePageViewModel : ObservableObject, INavigationAware
     {
         //throw new NotImplementedException();
     }
+    #endregion
+
+
+
 }

@@ -15,20 +15,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wpf.Ui.Common.Interfaces;
 
-namespace DbSchemas.WpfGui.Views.Pages
+namespace DbSchemas.WpfGui.Views.Pages;
+
+/// <summary>
+/// Interaction logic for HomePage.xaml
+/// </summary>
+public partial class HomePage : INavigableView<HomePageViewModel>
 {
-    /// <summary>
-    /// Interaction logic for HomePage.xaml
-    /// </summary>
-    public partial class HomePage : INavigableView<HomePageViewModel>
+    public HomePage(HomePageViewModel viewModel)
     {
-        public HomePage(HomePageViewModel viewModel)
-        {
-            ViewModel = viewModel;
+        ViewModel = viewModel;
 
-            InitializeComponent();
-        }
-
-        public HomePageViewModel ViewModel { get; set; }
+        InitializeComponent();
     }
+
+    public HomePageViewModel ViewModel { get; set; }
 }
