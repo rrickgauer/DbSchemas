@@ -11,7 +11,7 @@ namespace DbSchemas.WpfGui.ViewModels;
 public partial class ConnectionCardViewModel : ObservableObject
 {
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
-    private readonly EditConnectionPage _viewNotePage = App.GetService<EditConnectionPage>();
+    private readonly EditConnectionPage _editConnectionPage = App.GetService<EditConnectionPage>();
 
     /// <summary>
     /// Constructor
@@ -30,6 +30,7 @@ public partial class ConnectionCardViewModel : ObservableObject
     [RelayCommand]
     public async Task EditConnectionAsync()
     {
-        int x = 10;
+        _editConnectionPage.ViewModel.Database = Database;
+        _navigation.Navigate(_editConnectionPage.GetType());
     }
 }

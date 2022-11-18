@@ -1,6 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
 using DbSchemas.Services;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Wpf.Ui.Common.Interfaces;
 
 namespace DbSchemas.WpfGui.ViewModels;
@@ -21,12 +26,7 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     [ObservableProperty]
     private IDatabase? _database = null;
 
-    public void OpenPage(IDatabase database)
-    {
-        Database = database;
-
-        // open the page
-    }
+    public IEnumerable<DatabaseType> MyEnumTypeValues => Enum.GetValues(typeof(DatabaseType)).Cast<DatabaseType>();
 
     #region INavigationAware
     public void OnNavigatedFrom()
