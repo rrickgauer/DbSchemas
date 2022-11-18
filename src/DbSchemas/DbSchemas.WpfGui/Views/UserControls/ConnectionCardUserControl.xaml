@@ -14,19 +14,21 @@
             <Setter Property="Margin" Value="10" />
         </Style>
 
-        <Style x:Key="connectionCardDetailItemHeader" TargetType="Label">
+        <Style x:Key="connectionCardDetailItemHeader" TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="Padding" Value="0" />
         </Style>
 
         <Style x:Key="connectionCardDetailItemText" TargetType="TextBlock" />
     </UserControl.Resources>
     <Grid>
-        <ui:CardExpander IsExpanded="True" 
+        <ui:CardExpander IsExpanded="False"
+                         Header="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}"
                          Margin="0,5">
 
             <Border>
                 <StackPanel>
                     
+                    <!--Name-->
                     <Border Style="{StaticResource connectionCardDetailItem}">
                         <StackPanel>
                             <Label d:Foreground="White" 
@@ -37,9 +39,90 @@
                                        Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}" />
                         </StackPanel>
                     </Border>
-                    
-                    
-                    
+
+                    <!--Type-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="Type" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseType}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--DbName-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="Database" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseName}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--Username-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="User" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Username}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--Host-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="Host" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Host}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--Password-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="Password" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Password}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--File-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="File" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.File}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--Created on-->
+                    <Border Style="{StaticResource connectionCardDetailItem}">
+                        <StackPanel>
+                            <Label d:Foreground="White" 
+                                   Style="{StaticResource connectionCardDetailItemHeader}" 
+                                   Content="Created on" />
+
+                            <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
+                                       Text="{Binding ViewModel.Database.DatabaseConnectionRecord.CreatedOn}" />
+                        </StackPanel>
+                    </Border>
+
                 </StackPanel>
             </Border>
             
