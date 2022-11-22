@@ -73,7 +73,7 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
         ClosePage();
     }
 
-
+    [RelayCommand]
     public void ClosePage()
     {
         _navigation.Navigate(typeof(ConnectionsPage));

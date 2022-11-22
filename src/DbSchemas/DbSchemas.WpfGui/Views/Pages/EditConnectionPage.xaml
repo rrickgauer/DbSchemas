@@ -28,6 +28,17 @@
 
         <StackPanel>
 
+            <StackPanel>
+                <!--Close page button-->
+                <ui:Button Icon="Dismiss24" 
+                       Command="{Binding ViewModel.ClosePageCommand}"
+                       HorizontalAlignment="Right" 
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       ToolTip="Close page" />
+            </StackPanel>
+            
+
             <!--Name-->
             <StackPanel Style="{StaticResource formSectionStyle}">
                 <Label Style="{StaticResource formSectionStyleLabel}" Content="Name"  />
