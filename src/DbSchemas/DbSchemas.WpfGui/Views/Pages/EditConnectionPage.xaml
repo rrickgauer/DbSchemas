@@ -78,8 +78,11 @@
             </StackPanel>
 
 
-            <StackPanel Style="{StaticResource formSectionStyle}" Orientation="Horizontal">
-                <ui:Button Content="Save changes" />
+            <StackPanel Style="{StaticResource formSectionStyle}" 
+                        Orientation="Horizontal">
+                
+                <ui:Button Content="Save changes"
+                           Command="{Binding ViewModel.SaveConnectionChangesCommand}"/>
             </StackPanel>
 
         </StackPanel>
