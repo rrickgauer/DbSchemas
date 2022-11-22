@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Enums;
+using DbSchemas.Domain.Records;
 using DbSchemas.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using System;
@@ -68,7 +69,14 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     {
         if (!CanUpdateConnection) return;
 
-        await _connectionRecordService.SaveDatabaseAsync(Database.DatabaseConnectionRecord);
+        if (Database.DatabaseConnectionRecord.Id is null)
+        {
+            await _connectionRecordService.InsertDatabaseAsync(Database.DatabaseConnectionRecord);
+        }
+        else
+        {
+            await _connectionRecordService.SaveDatabaseAsync(Database.DatabaseConnectionRecord);
+        }
 
         ClosePage();
     }
@@ -77,6 +85,20 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     public void ClosePage()
     {
         _navigation.Navigate(typeof(ConnectionsPage));
+    }
+
+
+    public void CreateNewConnection()
+    {
+        DatabaseConnectionRecord databaseConnectionRecord = new()
+        {
+            DatabaseType = DatabaseType.MySql,
+        };
+
+        MysqlDatabase newDatabase = new(databaseConnectionRecord);
+
+
+        Database = newDatabase;
     }
 
 
