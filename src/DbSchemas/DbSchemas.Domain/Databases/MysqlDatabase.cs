@@ -25,4 +25,8 @@ public class MysqlDatabase : IDatabase
     {
         DatabaseConnectionRecord = databaseConnectionRecord;
     }
+
+    public MysqlDatabase()
+    {
+    }
 }

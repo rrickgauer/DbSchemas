@@ -1,18 +1,36 @@
-﻿using DbSchemas.Domain.Databases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DbSchemas.Domain.Databases;
+using DbSchemas.WpfGui.Views.Pages;
 using System.Threading.Tasks;
+using Wpf.Ui.Controls.Interfaces;
+using Wpf.Ui.Mvvm.Contracts;
 
 namespace DbSchemas.WpfGui.ViewModels;
 
-public class ConnectionCardViewModel
+public partial class ConnectionCardViewModel : ObservableObject
 {
-    public IDatabase Database { get; set; }
+    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly EditConnectionPage _editConnectionPage = App.GetService<EditConnectionPage>();
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="database"></param>
     public ConnectionCardViewModel(IDatabase database)
     {
-        Database = database;
+        _database = database;
+    }
+
+
+    [ObservableProperty]
+    private IDatabase _database;
+
+
+    [RelayCommand]
+    public async Task EditConnectionAsync()
+    {
+        _editConnectionPage.ViewModel.Database = Database;
+        _navigation.Navigate(_editConnectionPage.GetType());
     }
 }

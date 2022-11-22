@@ -58,7 +58,7 @@ public class DatabaseConnectionRecordRepository
     /// <returns></returns>
     public async Task<int> UpdateAsync(DatabaseConnectionRecord database)
     {
-        SqliteCommand command = new(DatabaseRecordRepositorySql.Insert);
+        SqliteCommand command = new(DatabaseRecordRepositorySql.Update);
 
         SetModifyCommandParms(command, database);
 
