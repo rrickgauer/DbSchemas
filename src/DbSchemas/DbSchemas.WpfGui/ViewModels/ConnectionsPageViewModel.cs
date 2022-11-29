@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DbSchemas.Domain.Databases;
+using DbSchemas.Domain.Enums;
 using DbSchemas.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using DbSchemas.WpfGui.Views.UserControls;
@@ -33,6 +34,13 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private IEnumerable<ConnectionCardUserControl> _connectionCards = Enumerable.Empty<ConnectionCardUserControl>();
 
+    private IEnumerable<IDatabase> _allDatabases = Enumerable.Empty<IDatabase>();
+
+    public IEnumerable<DatabaseType> DatabaseTypeFilterOptions => Enum.GetValues(typeof(DatabaseType)).Cast<DatabaseType>();
+
+    [ObservableProperty]
+    private DatabaseType? _selectedDatabaseTypeFilterOption = null;
+
 
     #region INavigationAware
     public void OnNavigatedFrom()
@@ -42,19 +50,53 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
 
     public async void OnNavigatedTo()
     {
-        await LoadConnectionsAsync();
+        await FetchAllDatabases();
+        DisplayDatabases();
     }
     #endregion
 
-
-
-    public async Task LoadConnectionsAsync()
+    partial void OnConnectionNameSearchChanged(string value)
     {
-        var connections = await _connectionRecordService.GetDatabasesAsync();
-        ConnectionCards = GetConnectinUserControls(connections);
+        DisplayDatabases();
     }
 
-    private IEnumerable<ConnectionCardUserControl> GetConnectinUserControls(IEnumerable<IDatabase> connections)
+    partial void OnSelectedDatabaseTypeFilterOptionChanged(DatabaseType? value)
+    {
+        DisplayDatabases();
+    }
+
+
+
+    public void DisplayDatabases()
+    {
+        // start with all of them
+        ConnectionCards.ToList().ForEach(c => c.ViewModel.IsVisible = true);
+
+        // filter out ones that have the matching db type (if set)
+        if (SelectedDatabaseTypeFilterOption != null)
+        {
+            ConnectionCards.Where(c => c.ViewModel.Database.DatabaseConnectionRecord.DatabaseType != SelectedDatabaseTypeFilterOption).ToList().ForEach(c => c.ViewModel.IsVisible = false);
+        }
+
+        // filter out ones that have a name within the search box value
+        if (!string.IsNullOrWhiteSpace(ConnectionNameSearch) && ConnectionNameSearch.Length > 2)
+        {
+            ConnectionCards.Where(c => !c.ViewModel.Database.DatabaseConnectionRecord.Name.ToLower().Contains(ConnectionNameSearch.ToLower())).ToList().ForEach(c => c.ViewModel.IsVisible = false);
+        }
+    }
+
+
+    private async Task FetchAllDatabases()
+    {
+        _allDatabases = await _connectionRecordService.GetDatabasesAsync();
+        RenderConnectionCardControls(_allDatabases);
+    }
+
+    /// <summary>
+    /// Create a new list of ConnectionCardUserControl objects and displays them using the specified databases
+    /// </summary>
+    /// <param name="connections"></param>
+    private void RenderConnectionCardControls(IEnumerable<IDatabase> connections)
     {
         List<ConnectionCardUserControl> cards = new();
 
@@ -65,18 +107,23 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
             cards.Add(control);
         }
 
-        return cards;
+        ConnectionCards = cards;
     }
 
+    /// <summary>
+    /// Navigate to the Edit connection page to create a new connection.
+    /// </summary>
     [RelayCommand]
     public void CreateNewConnection()
     {
-        int x = 10;
-
         _editConnectionPageViewModel.CreateNewConnection();
-
         _navigation.Navigate(typeof(EditConnectionPage));
 
     }
 
+    [RelayCommand]
+    public void ClearDbTypeFilterSelection()
+    {
+        SelectedDatabaseTypeFilterOption = null;
+    }
 }

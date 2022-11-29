@@ -8,7 +8,13 @@ namespace DbSchemas.Sql.Commands;
 
 public sealed class DatabaseRecordRepositorySql
 {
-    public const string SelectAll = @"SELECT * FROM Databases;";
+    public const string SelectAll = @"
+        SELECT 
+            * 
+        FROM 
+            Databases
+        ORDER BY 
+            name COLLATE NOCASE ASC;";
 
 
     public const string Insert = @"
