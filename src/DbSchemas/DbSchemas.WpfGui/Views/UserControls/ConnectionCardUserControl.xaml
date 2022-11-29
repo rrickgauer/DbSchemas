@@ -133,7 +133,15 @@
 
                     <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="10">
                         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                            <ui:Button Content="Edit" Command="{Binding ViewModel.EditConnectionCommand}"/>
+                            
+                            <!--View tables button-->
+                            <ui:Button Content="View tables" 
+                                       Command="{Binding ViewModel.ViewTablesCommand}" 
+                                       Margin="0,0,10,0"/>
+                            
+                            <!--Edit connection button-->
+                            <ui:Button Content="Edit" 
+                                       Command="{Binding ViewModel.EditConnectionCommand}"/>
                         </StackPanel>
                     </Border>
 

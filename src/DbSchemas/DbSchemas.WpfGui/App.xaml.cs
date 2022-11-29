@@ -65,6 +65,9 @@ namespace DbSchemas.WpfGui
                 services.AddScoped<Views.Pages.EditConnectionPage>();
                 services.AddScoped<ViewModels.EditConnectionPageViewModel>();
 
+                services.AddScoped<Views.Pages.ViewTablesPage>();
+                services.AddScoped<ViewModels.ViewTablesPageViewModel>();
+
                 #endregion
 
                 #region Services
