@@ -64,6 +64,15 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         _navigation.Navigate(typeof(Views.Pages.ConnectionsPage));
     }
 
+    [RelayCommand]
+    public void ToggleCardsExpansion(bool expandAll)
+    {
+        foreach (var control in TableSchemas)
+        {
+            control.ViewModel.IsExpanded = expandAll;
+        }
+    }
+
 
     public async Task LoadTablesAsync()
     {

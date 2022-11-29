@@ -22,7 +22,6 @@
         <Style x:Key="SidebarButtonStyle" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="0,0,0,10" />
-            <Setter Property="IsEnabled" Value="False" />
         </Style>
         
     </ui:UiPage.Resources>
@@ -85,11 +84,15 @@
 
                     <!--Collapse all cards button-->
                     <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Content="Collapse cards" />
+                               Content="Collapse cards"
+                               Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
+                               CommandParameter="{StaticResource FalseValue}" />
 
                     <!--Expand all cards button-->
                     <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Content="Expand cards" />
+                               Content="Expand cards" 
+                               Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
+                               CommandParameter="{StaticResource TrueValue}" />
                 </StackPanel>
             </Border>
 
