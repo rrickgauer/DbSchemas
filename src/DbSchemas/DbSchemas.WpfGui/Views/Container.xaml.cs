@@ -16,13 +16,15 @@ namespace DbSchemas.WpfGui.Views
             get;
         }
 
-        public Container(ViewModels.ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService)
+        public Container(ViewModels.ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService, ISnackbarService snackbarService)
         {
             ViewModel = viewModel;
             DataContext = this;
 
             InitializeComponent();
             SetPageService(pageService);
+
+            snackbarService.SetSnackbarControl(RootSnackbar);
 
             navigationService.SetNavigationControl(RootNavigation);
         }

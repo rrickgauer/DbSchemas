@@ -30,9 +30,11 @@ namespace DbSchemas.WpfGui
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
-                #region WpfUi
+                #region - WpfUi -
                 // App Host
                 services.AddHostedService<ApplicationHostService>();
+
+                services.AddSingleton<ISnackbarService, SnackbarService>();
 
                 // Page resolver service
                 services.AddSingleton<IPageService, PageService>();
@@ -64,6 +66,9 @@ namespace DbSchemas.WpfGui
 
                 services.AddScoped<Views.Pages.EditConnectionPage>();
                 services.AddScoped<ViewModels.EditConnectionPageViewModel>();
+
+                services.AddScoped<Views.Pages.ViewTablesPage>();
+                services.AddScoped<ViewModels.ViewTablesPageViewModel>();
 
                 #endregion
 

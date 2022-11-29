@@ -52,10 +52,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Frame
-                        x:Name="RootFrame"
-                        Grid.Row="1"
-                        Margin="0" />
+
                     
                     <ui:Breadcrumb
                         Visibility="Collapsed"
@@ -65,6 +62,19 @@
                         VerticalAlignment="Top"
                         FontSize="24"
                         Navigation="{Binding ElementName=RootNavigation, Mode=OneWay}" />
+
+                    <Frame
+                        x:Name="RootFrame"
+                        Grid.Row="1"
+                        Margin="0" />
+
+                    <ui:Snackbar
+                        x:Name="RootSnackbar"
+                        Grid.Row="1"
+                        MaxWidth="600"
+                        Appearance="Secondary"
+                        CloseButtonEnabled="True"
+                        Timeout="5000" />
                 </Grid>
             </Border>
         </Grid>
