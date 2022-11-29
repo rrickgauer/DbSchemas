@@ -46,35 +46,19 @@
             
             <!--Card body-->
             <Border>
-                <StackPanel>
 
-                    <!--Connection data-->
-                    <StackPanel>
-                        <!--Name-->
-                        <Border Style="{StaticResource connectionCardDetailItem}">
-                            <StackPanel>
-                                <Label d:Foreground="White" 
-                                       Style="{StaticResource connectionCardDetailItemHeader}" 
-                                       Content="Name" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                                <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}" 
-                                           d:Text="Name text here"/>
-                            </StackPanel>
-                        </Border>
 
-                        <!--Type-->
-                        <Border Style="{StaticResource connectionCardDetailItem}">
-                            <StackPanel>
-                                <Label d:Foreground="White" Style="{StaticResource connectionCardDetailItemHeader}" 
-                                       Content="Type" />
-
-                                <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseType}" 
-                                           d:Text="Name text here"/>
-                            </StackPanel>
-                        </Border>
-
+                    <StackPanel Grid.Row="0" Grid.Column="0">
                         <!--DbName-->
                         <Border Style="{StaticResource connectionCardDetailItem}">
                             <StackPanel>
@@ -83,7 +67,8 @@
                                        Content="Database" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseName}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseName}"
+                                           d:Text="Database name"/>
                             </StackPanel>
                         </Border>
 
@@ -95,7 +80,8 @@
                                        Content="User" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Username}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Username}"
+                                           d:Text="User name"/>
                             </StackPanel>
                         </Border>
 
@@ -107,10 +93,13 @@
                                        Content="Host" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Host}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Host}"
+                                           d:Text="192.163.25.54"/>
                             </StackPanel>
                         </Border>
+                    </StackPanel>
 
+                    <StackPanel Grid.Row="0" Grid.Column="1">
                         <!--Password-->
                         <Border Style="{StaticResource connectionCardDetailItem}">
                             <StackPanel>
@@ -119,7 +108,8 @@
                                        Content="Password" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Password}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Password}"
+                                           d:Text="mikerickgauer221@!"/>
                             </StackPanel>
                         </Border>
 
@@ -131,7 +121,8 @@
                                        Content="File" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.File}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.File}"
+                                           d:Text="my-db-file.db"/>
                             </StackPanel>
                         </Border>
 
@@ -143,29 +134,34 @@
                                        Content="Created on" />
 
                                 <TextBlock Style="{StaticResource connectionCardDetailItemText}" 
-                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.CreatedOn}" />
+                                           Text="{Binding ViewModel.Database.DatabaseConnectionRecord.CreatedOn}"
+                                           d:Text="12/12/2022 05:30:12AM"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
 
 
-
-                    <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="10">
+                    <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                        
                         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                            
                             <!--View tables button-->
                             <ui:Button Content="View tables" 
                                        Command="{Binding ViewModel.ViewTablesCommand}" 
                                        Margin="0,0,10,0"/>
-                            
+
                             <!--Edit connection button-->
                             <ui:Button Content="Edit" 
                                        Command="{Binding ViewModel.EditConnectionCommand}"/>
                         </StackPanel>
                     </Border>
 
+          
 
-                </StackPanel>
+
+                </Grid>
+                
+                
+
             </Border>
 
         </ui:CardExpander>
