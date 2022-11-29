@@ -70,9 +70,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         if (Database is null)
             throw new Exception("The current IDatabase is null!");
 
+        IsLoading = true;
+
         var dumpResult = await _dumpService.DumpDatabase(Database);
 
         TableSchemas = BuildTableSchemaControls(dumpResult.TableSchemas);
+
+        IsLoading = false;
 
         int x = 10;
     }

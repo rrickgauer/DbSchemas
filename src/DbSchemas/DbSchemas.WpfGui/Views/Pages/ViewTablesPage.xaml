@@ -12,6 +12,18 @@
            Scrollable="True"
            Title="ViewTablesPage">
     <ui:UiPage.Resources>
+        
+        <!--Grid section style-->
+        <Style x:Key="GridSectionStyle" TargetType="Border">
+            <Setter Property="Margin" Value="10" />
+        </Style>
+
+        <!--Sidebar button style-->
+        <Style x:Key="SidebarButtonStyle" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+
     </ui:UiPage.Resources>
     
     
@@ -29,48 +41,56 @@
             </Grid.RowDefinitions>
 
             <!--Page header-->
-            <TextBlock Text="View tables" 
-                       Grid.Column="0"
-                       Grid.Row="0"/>
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource GridSectionStyle}">
+                <TextBlock Text="View tables" />
+            </Border>
 
             <!--Close page button-->
-            <ui:Button Icon="Dismiss24" 
-                       HorizontalAlignment="Right"
-                       ToolTip="Close page"
-                       Grid.Row="0"
-                       Grid.Column="1"
-                       Command="{Binding ViewModel.ClosePageCommand}" />
+            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource GridSectionStyle}">
 
+                <ui:Button Icon="Dismiss24" 
+                       HorizontalAlignment="Right"
+                       ToolTip="Close page"       
+                       Command="{Binding ViewModel.ClosePageCommand}" />
+            </Border>
 
             <!--Loading spinner-->
-            <ui:ProgressRing IsIndeterminate="True" 
-                             Grid.Row="1"
-                             Grid.Column="0"
-                             Grid.ColumnSpan="2"
-                             Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
-                             d:Visibility="Visible"/>
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GridSectionStyle}">
+
+                <ui:ProgressRing IsIndeterminate="True" 
+                                 Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                 d:Visibility="Visible"/>
+            </Border>
 
 
             <!--Tables-->
-            <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                      Grid.Row="2"
-                      Grid.Column="0"
-                      PreviewMouseWheel="ListView_PreviewMouseWheel"
-                      ItemsSource="{Binding ViewModel.TableSchemas}"
-                      d:ItemsSource="{d:SampleData ItemCount=5}" />
+            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource GridSectionStyle}">
 
-            
+                <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                          PreviewMouseWheel="ListView_PreviewMouseWheel"
+                          ItemsSource="{Binding ViewModel.TableSchemas}"
+                          d:ItemsSource="{d:SampleData ItemCount=5}" />
+            </Border>
+
             <!--Sidebar-->
-            <StackPanel Grid.Row="2" Grid.Column="1">
-                <ui:Button Content="Export tables" HorizontalAlignment="Stretch" />
-            </StackPanel>
-            
+            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource GridSectionStyle}">
+                <StackPanel>
+                    <!--Export data button-->
+                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
+                               Content="Export data" />
+
+                    <!--Collapse all cards button-->
+                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
+                               Content="Collapse cards" />
+
+                    <!--Expand all cards button-->
+                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
+                               Content="Expand cards" />
+                </StackPanel>
+            </Border>
 
         </Grid>
-        
-        
-        
-        
+
     </Border>
     
     
