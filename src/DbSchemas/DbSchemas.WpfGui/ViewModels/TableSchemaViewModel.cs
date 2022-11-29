@@ -14,7 +14,6 @@ namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class TableSchemaViewModel : ObservableObject
 {
-
     private readonly ISnackbarService _snackbarService = App.GetService<ISnackbarService>();
 
     /// <summary>

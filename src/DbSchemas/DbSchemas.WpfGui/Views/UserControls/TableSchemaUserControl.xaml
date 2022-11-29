@@ -9,6 +9,11 @@
              d:DataContext="{d:DesignInstance local:TableSchemaUserControl, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    
     <Border Margin="0,0,0,50">
         <ui:CardExpander IsExpanded="{Binding ViewModel.IsExpanded, Mode=TwoWay}"
                          d:IsExpanded="True">
@@ -35,22 +40,44 @@
             </ui:CardExpander.Header>
 
             <!--Columns datagrid-->
-            <ui:DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
-                         d:ItemsSource="{d:SampleData ItemCount=5}"
-                         IsReadOnly="True"
-                         AutoGenerateColumns="False"
-                         HorizontalScrollBarVisibility="Auto">
+            <DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
+                      d:ItemsSource="{d:SampleData ItemCount=5}"
+                      
+                      IsReadOnly="True"
+                      SelectionMode="Single" 
+                      SelectionUnit="FullRow"
+                      AutoGenerateColumns="False"
+                      HorizontalScrollBarVisibility="Auto">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource PaletteDeepOrangeColor}" />
+                            <!--<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />-->
+                            <!--<SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />-->
+                            <!--<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />-->
+                        </Style.Resources>
+                    </Style>
+                </DataGrid.Resources>
 
-                <ui:DataGrid.Columns>
+                <DataGrid.Columns>
                     <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" MinWidth="200"/>
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
-                    <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}"/>
+
+                    <DataGridTemplateColumn Header="Nullable" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsNullable}"  HorizontalAlignment="Center" IsEnabled="False"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
                     <DataGridTextColumn Header="Default Value" Binding="{Binding DefaultValue}"/>
                     <DataGridTextColumn Header="Extra" Binding="{Binding Extra}"/>
-                </ui:DataGrid.Columns>
+                </DataGrid.Columns>
 
-            </ui:DataGrid>
+            </DataGrid>
             
             
         </ui:CardExpander>
