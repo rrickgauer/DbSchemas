@@ -21,7 +21,7 @@
 
         <Style x:Key="connectionCardDetailItemText" TargetType="TextBlock" />
     </UserControl.Resources>
-    <Grid>
+    <Grid Visibility="{Binding ViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
         <ui:CardExpander d:IsExpanded="True" Margin="0,5">
 
             <!--Card header-->

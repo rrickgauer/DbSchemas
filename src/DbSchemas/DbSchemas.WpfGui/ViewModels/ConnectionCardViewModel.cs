@@ -25,6 +25,10 @@ public partial class ConnectionCardViewModel : ObservableObject
 
 
     [ObservableProperty]
+    private bool _isVisible = true;
+
+
+    [ObservableProperty]
     private IDatabase _database;
 
     /// <summary>
