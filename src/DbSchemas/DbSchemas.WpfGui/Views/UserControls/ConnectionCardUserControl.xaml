@@ -21,11 +21,30 @@
         <Style x:Key="connectionCardDetailItemText" TargetType="TextBlock" />
     </UserControl.Resources>
     <Grid>
-        <ui:CardExpander d:IsExpanded="True"
-                         Header="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}"
-                         d:Header="Connection name"
-                         Margin="0,5">
+        <ui:CardExpander d:IsExpanded="True" Margin="0,5">
 
+            <!--Card header-->
+            <ui:CardExpander.Header>
+                <StackPanel Orientation="Horizontal">
+                    
+                    <!--Connection name-->
+                    <TextBlock Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}" 
+                               d:Text="Connection name" 
+                               VerticalAlignment="Center" 
+                               Margin="0,0,20,0" 
+                               FontSize="16" />
+
+                    <!--Type badge-->
+                    <ui:Badge Appearance="Light" 
+                              VerticalAlignment="Center"
+                              Content="{Binding ViewModel.Database.DatabaseConnectionRecord.DatabaseType}"
+                              d:Content="MySQL" 
+                              FontSize="10" />
+                    
+                </StackPanel>
+            </ui:CardExpander.Header>
+            
+            <!--Card body-->
             <Border>
                 <StackPanel>
 
