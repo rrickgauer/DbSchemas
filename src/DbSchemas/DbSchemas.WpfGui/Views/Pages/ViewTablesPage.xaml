@@ -16,7 +16,27 @@
     
     
     <Border Style="{StaticResource PageBorderStyle}">
-        <TextBlock>View tables page</TextBlock>
+
+        <StackPanel>
+            
+            <!--Close page button-->
+            <ui:Button Icon="Dismiss24" 
+                       HorizontalAlignment="Right"
+                       ToolTip="Close page"
+                       Command="{Binding ViewModel.ClosePageCommand}" />
+            
+            <!--Loading spinner-->
+            <ui:ProgressRing IsIndeterminate="True" 
+                             Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
+                             d:Visibility="Collapsed"/>
+            
+            
+
+        </StackPanel>
+        
+        
+        
+        
     </Border>
     
     
