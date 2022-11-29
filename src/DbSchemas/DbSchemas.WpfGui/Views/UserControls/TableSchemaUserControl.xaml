@@ -9,10 +9,31 @@
              d:DataContext="{d:DesignInstance local:TableSchemaUserControl, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
-
     <Border>
         <ui:CardExpander Header="{Binding ViewModel.TableSchema.TableName}"
-                         d:Header="Table name">
+                         d:Header="Table name"
+                         IsExpanded="{Binding ViewModel.IsExpanded, Mode=TwoWay}"
+                         d:IsExpanded="True">
+
+            
+            <ui:DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
+                         d:ItemsSource="{d:SampleData ItemCount=5}"
+                         IsReadOnly="True"
+                         AutoGenerateColumns="False"
+                         HorizontalScrollBarVisibility="Auto">
+
+                <ui:DataGrid.Columns>
+                    <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                    <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}"/>
+                    <DataGridTextColumn Header="Default Value" Binding="{Binding DefaultValue}"/>
+                    <DataGridTextColumn Header="Extra" Binding="{Binding Extra}"/>
+                </ui:DataGrid.Columns>
+
+            </ui:DataGrid>
+            
+            
         </ui:CardExpander>
     </Border>
 </UserControl>

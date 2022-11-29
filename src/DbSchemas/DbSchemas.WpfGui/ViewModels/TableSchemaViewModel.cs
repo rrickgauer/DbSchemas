@@ -10,12 +10,19 @@ namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class TableSchemaViewModel : ObservableObject
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="tableSchema"></param>
     public TableSchemaViewModel(TableSchema tableSchema)
     {
         _tableSchema = tableSchema;
     }
 
-
     [ObservableProperty]
     private TableSchema _tableSchema;
+
+    [ObservableProperty]
+    private bool _isExpanded = false;
+
 }
