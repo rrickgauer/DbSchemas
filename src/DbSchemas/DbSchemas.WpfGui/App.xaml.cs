@@ -30,9 +30,11 @@ namespace DbSchemas.WpfGui
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
-                #region WpfUi
+                #region - WpfUi -
                 // App Host
                 services.AddHostedService<ApplicationHostService>();
+
+                services.AddSingleton<ISnackbarService, SnackbarService>();
 
                 // Page resolver service
                 services.AddSingleton<IPageService, PageService>();

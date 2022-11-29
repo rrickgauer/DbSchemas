@@ -25,9 +25,11 @@
                                d:Text="Table name" 
                                Grid.Column="0" FontSize="18" FontStyle="Italic"/>
 
+                    <!--Button to copy the column names to the clipboard-->
                     <ui:Button Grid.Column="1" 
                                Icon="DocumentCopy24"
-                               ToolTip="Copy column names" />
+                               ToolTip="Copy column names"
+                               Command="{Binding ViewModel.CopyColumnsCommand}"/>
 
                 </Grid>
             </ui:CardExpander.Header>

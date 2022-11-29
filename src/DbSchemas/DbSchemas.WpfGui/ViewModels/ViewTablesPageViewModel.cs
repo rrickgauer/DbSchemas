@@ -73,7 +73,11 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         }
     }
 
-
+    /// <summary>
+    /// Load the tables and the columns
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public async Task LoadTablesAsync()
     {
         if (Database is null)
@@ -86,10 +90,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         TableSchemas = BuildTableSchemaControls(dumpResult.TableSchemas);
 
         IsLoading = false;
-
-        int x = 10;
     }
 
+    /// <summary>
+    /// Build a list of TableSchemaUserControl's from the given list of table schemas.
+    /// </summary>
+    /// <param name="tableSchemas"></param>
+    /// <returns></returns>
     private static IEnumerable<TableSchemaUserControl> BuildTableSchemaControls(IEnumerable<TableSchema> tableSchemas)
     {
         List<TableSchemaUserControl> controls = new();
@@ -103,7 +110,5 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
         return controls;
     }
-
-
 
 }
