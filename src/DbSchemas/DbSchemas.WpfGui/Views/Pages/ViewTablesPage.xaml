@@ -17,22 +17,56 @@
     
     <Border Style="{StaticResource PageBorderStyle}">
 
-        <StackPanel>
-            
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--Page header-->
+            <TextBlock Text="View tables" 
+                       Grid.Column="0"
+                       Grid.Row="0"/>
+
             <!--Close page button-->
             <ui:Button Icon="Dismiss24" 
                        HorizontalAlignment="Right"
                        ToolTip="Close page"
+                       Grid.Row="0"
+                       Grid.Column="1"
                        Command="{Binding ViewModel.ClosePageCommand}" />
-            
+
+
             <!--Loading spinner-->
             <ui:ProgressRing IsIndeterminate="True" 
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
                              Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
-                             d:Visibility="Collapsed"/>
+                             d:Visibility="Visible"/>
+
+
+            <!--Tables-->
+            <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      PreviewMouseWheel="ListView_PreviewMouseWheel"
+                      ItemsSource="{Binding ViewModel.TableSchemas}"
+                      d:ItemsSource="{d:SampleData ItemCount=5}" />
+
             
+            <!--Sidebar-->
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <ui:Button Content="Export tables" HorizontalAlignment="Stretch" />
+            </StackPanel>
             
 
-        </StackPanel>
+        </Grid>
         
         
         

@@ -45,6 +45,7 @@ public partial class ConnectionCardViewModel : ObservableObject
     [RelayCommand]
     public async Task ViewTablesAsync()
     {
+        _viewTablesPage.ViewModel.Database = Database;
         _navigation.Navigate(_viewTablesPage.GetType());
     }
 }

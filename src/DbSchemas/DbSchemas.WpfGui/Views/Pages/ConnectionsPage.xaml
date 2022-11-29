@@ -79,11 +79,10 @@
                 <!--Connections list-->
                 <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
                           ItemsSource="{Binding ViewModel.ConnectionCards}"
-                          
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
-                          d:ItemsSource="{d:SampleData ItemCount=5}">
-                </ListView>
-                
+                          d:ItemsSource="{d:SampleData ItemCount=5}" />
+
+
             </Border>
 
         </Grid>
