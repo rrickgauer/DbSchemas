@@ -23,6 +23,6 @@ public partial class TableSchemaViewModel : ObservableObject
     private TableSchema _tableSchema;
 
     [ObservableProperty]
-    private bool _isExpanded = false;
+    private bool _isExpanded = true;
 
 }

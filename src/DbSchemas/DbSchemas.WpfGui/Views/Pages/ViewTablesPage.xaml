@@ -43,7 +43,10 @@
 
             <!--Page header-->
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource GridSectionStyle}">
-                <TextBlock Text="View tables" />
+                <TextBlock Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}" 
+                           d:Text="Connection name" FontSize="20" FontWeight="Bold"
+                           
+                           />
             </Border>
 
             <!--Close page button-->

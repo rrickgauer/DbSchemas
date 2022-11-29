@@ -9,13 +9,30 @@
              d:DataContext="{d:DesignInstance local:TableSchemaUserControl, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
-    <Border>
-        <ui:CardExpander Header="{Binding ViewModel.TableSchema.TableName}"
-                         d:Header="Table name"
-                         IsExpanded="{Binding ViewModel.IsExpanded, Mode=TwoWay}"
+    <Border Margin="0,0,0,50">
+        <ui:CardExpander IsExpanded="{Binding ViewModel.IsExpanded, Mode=TwoWay}"
                          d:IsExpanded="True">
 
-            
+            <!--Card header-->
+            <ui:CardExpander.Header>
+                <Grid Margin="0,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding ViewModel.TableSchema.TableName}"
+                               d:Text="Table name" 
+                               Grid.Column="0" FontSize="18" FontStyle="Italic"/>
+
+                    <ui:Button Grid.Column="1" 
+                               Icon="DocumentCopy24"
+                               ToolTip="Copy column names" />
+
+                </Grid>
+            </ui:CardExpander.Header>
+
+            <!--Columns datagrid-->
             <ui:DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
                          d:ItemsSource="{d:SampleData ItemCount=5}"
                          IsReadOnly="True"
@@ -24,7 +41,7 @@
 
                 <ui:DataGrid.Columns>
                     <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" MinWidth="200"/>
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                     <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}"/>
                     <DataGridTextColumn Header="Default Value" Binding="{Binding DefaultValue}"/>
