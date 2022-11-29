@@ -22,8 +22,9 @@
         <Style x:Key="SidebarButtonStyle" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="IsEnabled" Value="False" />
         </Style>
-
+        
     </ui:UiPage.Resources>
     
     
