@@ -6,6 +6,7 @@ using DbSchemas.Services;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -76,19 +77,67 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         }
     }
 
+    #region - Export data -
     [RelayCommand]
     public async Task ExportDataAsync()
     {
         int x = 10;
 
-        string outputText = OutputService.FormatDatabaseDump(_databaseDump);
-        FileInfo outputFile = new(@"C:\Users\1\Desktop\dumptest.txt");
+        // get the file location from the user
+        if (!GetOutputDataFileName(out string fileName))
+        {
+            return;
+        }
 
+        FileInfo outputFile = new(fileName);
+
+        // serialize the dump into a string
+        string outputText = OutputService.FormatDatabaseDump(_databaseDump);
+
+        // write the string to the file
         await OutputService.WriteDataToFile(outputText, outputFile);
 
+        OpenFile(outputFile.FullName);
+    }
+
+    private bool GetOutputDataFileName(out string fileName)
+    {
+        fileName = string.Empty;
+
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            FileName = $"{Database.DatabaseConnectionRecord.Name}-schemas",        // Default file name
+            DefaultExt = ".txt",                // Default file extension
+            Filter = "Text Document(*.txt)|*.txt"   // Filter files by extension
+        };
+
+        // Show save file dialog box
+        bool? result = dialog.ShowDialog();
+
+        if (!result.HasValue) return false;
+        else if (result.Value == false) return false;
+
+        // Process save file dialog box results
+        if (result == true)
+        {
+            // Save document
+            fileName = dialog.FileName;
+        }
+
+        return true;
     }
 
 
+    private void OpenFile(string fileName)
+    {
+        Process.Start(new ProcessStartInfo()
+        {
+            UseShellExecute = true,
+            FileName = fileName,
+        });
+    }
+
+    #endregion
 
     /// <summary>
     /// Load the tables and the columns
