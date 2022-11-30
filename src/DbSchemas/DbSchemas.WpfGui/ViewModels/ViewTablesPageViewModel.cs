@@ -6,6 +6,7 @@ using DbSchemas.Services;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,8 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     [ObservableProperty]
     private IEnumerable<TableSchemaUserControl> _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
 
+    private DatabaseDump _databaseDump = new();
+
 
     #region - INavigationAware -
     public void OnNavigatedFrom()
@@ -73,6 +76,20 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         }
     }
 
+    [RelayCommand]
+    public async Task ExportDataAsync()
+    {
+        int x = 10;
+
+        string outputText = OutputService.FormatDatabaseDump(_databaseDump);
+        FileInfo outputFile = new(@"C:\Users\1\Desktop\dumptest.txt");
+
+        await OutputService.WriteDataToFile(outputText, outputFile);
+
+    }
+
+
+
     /// <summary>
     /// Load the tables and the columns
     /// </summary>
@@ -85,9 +102,9 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
         IsLoading = true;
 
-        var dumpResult = await _dumpService.DumpDatabase(Database);
+        _databaseDump = await _dumpService.DumpDatabase(Database);
 
-        TableSchemas = BuildTableSchemaControls(dumpResult.TableSchemas);
+        TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
 
         IsLoading = false;
     }

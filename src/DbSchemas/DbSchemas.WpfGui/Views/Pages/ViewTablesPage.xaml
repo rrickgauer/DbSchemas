@@ -78,6 +78,8 @@
                 <StackPanel>
                     <!--Export data button-->
                     <ui:Button Style="{StaticResource SidebarButtonStyle}"
+                               Command="{Binding ViewModel.ExportDataCommand}"
+                               ToolTip="Export the table data to a text file"
                                Content="Export data" />
 
                     <!--Collapse all cards button-->
