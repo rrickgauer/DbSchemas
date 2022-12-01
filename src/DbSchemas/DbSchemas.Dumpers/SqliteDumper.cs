@@ -1,20 +1,17 @@
 ﻿using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Models;
 using DbSchemas.Sql.Commands;
-using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace DbSchemas.Dumpers;
 
 public class SqliteDumper : IDumper
 {
     public IDatabase DataBase { get; }
+
     private string _connectionString => DataBase.ConnectionString;
+    private const string TABLE_NAME_COLUMN = "table_name";
 
     /// <summary>
     /// Constructor
@@ -37,7 +34,7 @@ public class SqliteDumper : IDumper
 
         foreach (var row in dataTable.AsEnumerable())
         {
-            DumperUtilities.AddDataRowToDict(row, tableSchemas, DataBase.ColumnMapper, "table_name");
+            DumperUtilities.AddDataRowToDict(row, tableSchemas, DataBase.ColumnMapper, TABLE_NAME_COLUMN);
         }
 
         DatabaseDump result = new() 
@@ -54,10 +51,10 @@ public class SqliteDumper : IDumper
     /// <returns></returns>
     private async Task<DataTable> GetColumnsDataTable()
     {
-        using SqliteConnection connection = new(_connectionString);
+        using SQLiteConnection connection = new(_connectionString);
 
-        using SqliteCommand command = new(SqliteDatabaseCommands.SelectAllColumns, connection);
-        
+        using SQLiteCommand command = new(SqliteDatabaseCommands.SelectAllColumns, connection);
+
         DataTable dataTable = await DumperUtilities.ExecuteQueryAsync(command);
 
         return dataTable;

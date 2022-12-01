@@ -37,6 +37,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -56,16 +57,27 @@
             </Border>
 
             <!--Loading spinner-->
-            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GridSectionStyle}">
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GridSectionStyle}"
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                    d:Visibility="Visible"
+                    Height="300">
 
-                <ui:ProgressRing IsIndeterminate="True" 
-                                 Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" 
-                                 d:Visibility="Visible"/>
+                <ui:ProgressRing IsIndeterminate="True" />
             </Border>
 
+            <!--Status message-->
+            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                    Style="{StaticResource GridSectionStyle}" 
+                    Visibility="{Binding ViewModel.StatusMessageIsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                
+                <TextBlock d:Text="Could not connect to the database..." 
+                           Text="{Binding ViewModel.StatusMessageText}"/>
+            </Border>
 
             <!--Tables-->
-            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource GridSectionStyle}">
+            <Border Grid.Row="3" Grid.Column="0" 
+                    Style="{StaticResource GridSectionStyle}"
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
 
                 <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
@@ -74,7 +86,9 @@
             </Border>
 
             <!--Sidebar-->
-            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource GridSectionStyle}">
+            <Border Grid.Row="3" Grid.Column="1" 
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}"
+                    Style="{StaticResource GridSectionStyle}">
                 <StackPanel>
                     <!--Export data button-->
                     <ui:Button Style="{StaticResource SidebarButtonStyle}"
