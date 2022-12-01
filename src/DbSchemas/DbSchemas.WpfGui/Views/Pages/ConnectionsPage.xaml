@@ -36,6 +36,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -49,13 +50,22 @@
                            TextDecorations="{x:Null}" />
             </Border>
 
+
+            <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <ui:ProgressRing IsIndeterminate="True" />
+            </Border>
+            
+
             <!--Search text input-->
-            <Border Grid.Column="0" Grid.Row="1" Margin="20">
+            <Border Grid.Column="0" Grid.Row="2" Margin="20"
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
                 <ui:TextBox Text="{Binding ViewModel.ConnectionNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Border>
 
             <!--Sidebar-->
-            <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="20">
+            <Border Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Margin="20"
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -89,14 +99,14 @@
             </Border>
 
             <!--Connections-->
-            <Border Grid.Row="2" Grid.Column="0" Margin="20">
+            <Border Grid.Row="3" Grid.Column="0" Margin="20" 
+                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
 
                 <!--Connections list-->
                 <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
                           ItemsSource="{Binding ViewModel.ConnectionCards}"
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
                           d:ItemsSource="{d:SampleData ItemCount=5}" />
-
 
             </Border>
 
