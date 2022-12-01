@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DbSchemas.Domain.CustomExceptions;
 using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Models;
 using DbSchemas.Services;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -42,18 +44,24 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     [ObservableProperty]
     private IEnumerable<TableSchemaUserControl> _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
 
+    [ObservableProperty]
+    private bool _statusMessageIsVisible = false;
+
+    [ObservableProperty]
+    private string _statusMessageText = string.Empty;
+
     private DatabaseDump _databaseDump = new();
 
 
     #region - INavigationAware -
     public void OnNavigatedFrom()
     {
-        //throw new NotImplementedException();
+        ResetControls();
     }
 
     public async void OnNavigatedTo()
     {
-        await LoadTablesAsync();
+        await Task.Run(() => LoadTablesAsync());
     }
     #endregion
 
@@ -151,11 +159,25 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
         IsLoading = true;
 
-        _databaseDump = await _dumpService.DumpDatabase(Database);
+        try
+        {
+            _databaseDump = await _dumpService.DumpDatabase(Database);
+            
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
+            });
+            
+        }
+        catch (InvalidConnectionException)
+        {
+            StatusMessageText = "Could not connect to the database...";
+            StatusMessageIsVisible = true;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
 
-        TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
-
-        IsLoading = false;
     }
 
     /// <summary>
@@ -175,6 +197,14 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         }
 
         return controls;
+    }
+
+    private void ResetControls()
+    {
+        StatusMessageIsVisible = false;
+        StatusMessageText = string.Empty;
+        IsLoading = true;
+        _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
     }
 
 }
