@@ -163,7 +163,8 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         {
             _databaseDump = await _dumpService.DumpDatabase(Database);
             
-            Application.Current.Dispatcher.Invoke((Action)delegate {
+            // display the tables in the main thread
+            Application.Current.Dispatcher.Invoke(delegate {
                 TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
             });
             
