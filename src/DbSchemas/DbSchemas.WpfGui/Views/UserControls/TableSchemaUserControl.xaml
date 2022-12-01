@@ -42,7 +42,11 @@
             <!--Columns datagrid-->
             <DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
                       d:ItemsSource="{d:SampleData ItemCount=5}"
-                      
+                      AllowDrop="False"
+                      CanUserReorderColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
                       IsReadOnly="True"
                       SelectionMode="Single" 
                       SelectionUnit="FullRow"
@@ -62,7 +66,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" MinWidth="200"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" MinWidth="200"/>
 
                     <DataGridTemplateColumn Header="Nullable" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
