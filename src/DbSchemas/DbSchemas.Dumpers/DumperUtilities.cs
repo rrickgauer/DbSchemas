@@ -36,6 +36,8 @@ public static class DumperUtilities
         DataTable dataTable = new();
         dataTable.Load(reader);
 
+        await reader.CloseAsync();
+
         return dataTable;
     }
 
