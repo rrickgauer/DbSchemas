@@ -4,6 +4,7 @@ using DbSchemas.Domain.CustomExceptions;
 using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Models;
 using DbSchemas.Services;
+using DbSchemas.WpfGui.Views.Pages;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 {
     #region - Private members -
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly EditConnectionPage _editConnectionPage = App.GetService<EditConnectionPage>();
     private readonly DumpService _dumpService;
     #endregion
 
@@ -73,9 +75,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     [RelayCommand]
     public void ClosePage()
     {
-        _navigation.Navigate(typeof(Views.Pages.ConnectionsPage));
+        _navigation.Navigate(typeof(ConnectionsPage));
     }
 
+    /// <summary>
+    /// Navigate to the edit connection page.
+    /// </summary>
+    /// <param name="expandAll"></param>
     [RelayCommand]
     public void ToggleCardsExpansion(bool expandAll)
     {
@@ -84,6 +90,14 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
             control.ViewModel.IsExpanded = expandAll;
         }
     }
+
+    [RelayCommand]
+    public void EditConnection()
+    {
+        _editConnectionPage.ViewModel.Database = Database;
+        _navigation.Navigate(typeof(EditConnectionPage));
+    }
+
 
     #region - Export data -
     [RelayCommand]

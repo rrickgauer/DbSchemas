@@ -59,7 +59,7 @@
             <!--Loading spinner-->
             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GridSectionStyle}"
                     Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
-                    d:Visibility="Visible"
+                    d:Visibility="Collapsed"
                     Height="300">
 
                 <ui:ProgressRing IsIndeterminate="True" />
@@ -107,6 +107,13 @@
                                Content="Expand cards" 
                                Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
                                CommandParameter="{StaticResource TrueValue}" />
+
+                    <!--Export data button-->
+                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
+                               Command="{Binding ViewModel.EditConnectionCommand}"
+                               ToolTip="Edit the connection data"
+                               Content="Edit connection" />
+
                 </StackPanel>
             </Border>
 

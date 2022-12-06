@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -18,10 +19,17 @@ namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class ConnectionsPageViewModel : ObservableObject, INavigationAware
 {
+    #region - Private members -
     private readonly DatabaseConnectionRecordService _connectionRecordService;
     private readonly EditConnectionPageViewModel _editConnectionPageViewModel;
     private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    #endregion
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="connectionRecordService"></param>
+    /// <param name="editConnectionPageViewModel"></param>
     public ConnectionsPageViewModel(DatabaseConnectionRecordService connectionRecordService, EditConnectionPageViewModel editConnectionPageViewModel)
     {
         _connectionRecordService = connectionRecordService;
@@ -41,8 +49,11 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     [ObservableProperty]
     private DatabaseType? _selectedDatabaseTypeFilterOption = null;
 
+    [ObservableProperty]
+    private bool _isLoading = false;
 
-    #region INavigationAware
+
+    #region - INavigationAware -
     public void OnNavigatedFrom()
     {
         //throw new NotImplementedException();
@@ -50,8 +61,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
 
     public async void OnNavigatedTo()
     {
-        await FetchAllDatabases();
-        DisplayDatabases();
+        await Task.Run(() => FetchAllDatabases());
     }
     #endregion
 
@@ -65,31 +75,18 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
         DisplayDatabases();
     }
 
-
-
-    public void DisplayDatabases()
-    {
-        // start with all of them
-        ConnectionCards.ToList().ForEach(c => c.ViewModel.IsVisible = true);
-
-        // filter out ones that have the matching db type (if set)
-        if (SelectedDatabaseTypeFilterOption != null)
-        {
-            ConnectionCards.Where(c => c.ViewModel.Database.DatabaseConnectionRecord.DatabaseType != SelectedDatabaseTypeFilterOption).ToList().ForEach(c => c.ViewModel.IsVisible = false);
-        }
-
-        // filter out ones that have a name within the search box value
-        if (!string.IsNullOrWhiteSpace(ConnectionNameSearch) && ConnectionNameSearch.Length > 2)
-        {
-            ConnectionCards.Where(c => !c.ViewModel.Database.DatabaseConnectionRecord.Name.ToLower().Contains(ConnectionNameSearch.ToLower())).ToList().ForEach(c => c.ViewModel.IsVisible = false);
-        }
-    }
-
-
     private async Task FetchAllDatabases()
     {
+        IsLoading = true;
+
         _allDatabases = await _connectionRecordService.GetDatabasesAsync();
-        RenderConnectionCardControls(_allDatabases);
+
+        Application.Current.Dispatcher.Invoke(delegate {
+            RenderConnectionCardControls(_allDatabases);
+        });
+
+        IsLoading = false;
+
     }
 
     /// <summary>
@@ -108,6 +105,26 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
         }
 
         ConnectionCards = cards;
+        
+    }
+
+
+    public void DisplayDatabases()
+    {
+        // start with all of them
+        ConnectionCards.ToList().ForEach(c => c.ViewModel.IsVisible = true);
+
+        // filter out ones that have the matching db type (if set)
+        if (SelectedDatabaseTypeFilterOption != null)
+        {
+            ConnectionCards.Where(c => c.ViewModel.Database.DatabaseConnectionRecord.DatabaseType != SelectedDatabaseTypeFilterOption).ToList().ForEach(c => c.ViewModel.IsVisible = false);
+        }
+
+        // filter out ones that have a name within the search box value
+        if (!string.IsNullOrWhiteSpace(ConnectionNameSearch) && ConnectionNameSearch.Length > 2)
+        {
+            ConnectionCards.Where(c => !c.ViewModel.Database.DatabaseConnectionRecord.Name.ToLower().Contains(ConnectionNameSearch.ToLower())).ToList().ForEach(c => c.ViewModel.IsVisible = false);
+        }
     }
 
     /// <summary>
