@@ -89,11 +89,17 @@
             </StackPanel>
 
 
-            <StackPanel Style="{StaticResource formSectionStyle}" 
-                        Orientation="Horizontal">
+            <StackPanel Style="{StaticResource formSectionStyle}" Orientation="Horizontal">
                 
+                <!--Save the connection changes-->
                 <ui:Button Content="Save changes"
-                           Command="{Binding ViewModel.SaveConnectionChangesCommand}"/>
+                           Command="{Binding ViewModel.SaveConnectionChangesCommand}" Margin="0,0,5,0"/>
+
+                <!--Delete the connection-->
+                <ui:Button Content="Delete connection"
+                           Command="{Binding ViewModel.DeleteConnectionCommand}"
+                           IsEnabled="{Binding ViewModel.CanDeleteConnection}"/>
+
             </StackPanel>
 
         </StackPanel>

@@ -6,10 +6,10 @@ using DbSchemas.Domain.Records;
 using DbSchemas.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -31,10 +31,10 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanDeleteConnection))]
     private IDatabase? _database = null;
 
     public IEnumerable<DatabaseType> MyEnumTypeValues => Enum.GetValues(typeof(DatabaseType)).Cast<DatabaseType>();
-
 
     public bool CanUpdateConnection 
     { 
@@ -50,6 +50,22 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     }
 
 
+    public bool CanDeleteConnection
+    {
+        get
+        {
+            if (_database is null) 
+                return false;
+
+            else if (_database.DatabaseConnectionRecord is null) 
+                return false;
+
+            else if (!_database.DatabaseConnectionRecord.Id.HasValue) 
+                return false;
+
+            return true;
+        }
+    }
 
     #region INavigationAware
     public void OnNavigatedFrom()
@@ -64,6 +80,10 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     #endregion
 
 
+    /// <summary>
+    /// Save the connection data changes
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SaveConnectionChangesAsync()
     {
@@ -81,10 +101,48 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
         ClosePage();
     }
 
+    /// <summary>
+    /// Close the page
+    /// </summary>
     [RelayCommand]
     public void ClosePage()
     {
         _navigation.Navigate(typeof(ConnectionsPage));
+    }
+
+    /// <summary>
+    /// Delete the current connection
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    public async Task DeleteConnectionAsync()
+    {
+        if (!_database.DatabaseConnectionRecord.Id.HasValue)
+            return;
+
+        if (!ConfirmDelete())
+            return;
+
+        await _connectionRecordService.DeleteDatabaseAsync(_database.DatabaseConnectionRecord.Id.Value);
+
+        ClosePage();
+    }
+
+
+    /// <summary>
+    /// Prompt user to confirm that they want to delete the connection
+    /// </summary>
+    /// <returns></returns>
+    private bool ConfirmDelete()
+    {
+        var confirmation = MessageBox.Show("Are you sure you want to delete this connection?", "Confirm deletion", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+        if (confirmation != MessageBoxResult.Yes)
+        {
+            return false;
+        }
+
+        return true;
     }
 
 
