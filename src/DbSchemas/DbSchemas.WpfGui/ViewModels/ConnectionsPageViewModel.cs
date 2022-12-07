@@ -102,12 +102,21 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
             ConnectionCardViewModel viewModel = new(con);
             ConnectionCardUserControl control = new(viewModel);
             cards.Add(control);
+
+            control.ViewModel.WasDeleted += TestEvent;
         }
 
         ConnectionCards = cards;
         
     }
 
+
+    private async void TestEvent(object? sender, EventArgs args)
+    {
+        IsLoading = true;
+        await Task.Run(() => FetchAllDatabases());
+        IsLoading = false;
+    }
 
     public void DisplayDatabases()
     {

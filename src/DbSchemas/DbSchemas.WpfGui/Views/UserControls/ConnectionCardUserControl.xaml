@@ -143,7 +143,7 @@
 
 
                     <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="10" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                        
+
                         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                             <!--View tables button-->
                             <ui:Button Content="View tables" 
@@ -152,12 +152,15 @@
 
                             <!--Edit connection button-->
                             <ui:Button Content="Edit" 
-                                       Command="{Binding ViewModel.EditConnectionCommand}"/>
+                                       Command="{Binding ViewModel.EditConnectionCommand}" 
+                                       Margin="30,0,5,0" />
+
+                            <!--Delete connection button-->
+                            <ui:Button Content="Delete" 
+                                       Command="{Binding ViewModel.DeleteConnectionCommand}"/>
+
                         </StackPanel>
                     </Border>
-
-          
-
 
                 </Grid>
                 
