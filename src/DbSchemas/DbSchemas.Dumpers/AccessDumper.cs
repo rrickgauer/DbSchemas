@@ -1,12 +1,7 @@
 ﻿using DbSchemas.Domain.Databases;
 using DbSchemas.Domain.Models;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbSchemas.Dumpers;
 
@@ -23,6 +18,10 @@ public class AccessDumper : IDumper
         DataBase = database;
     }
 
+    /// <summary>
+    /// Dump the database
+    /// </summary>
+    /// <returns></returns>
     public async Task<DatabaseDump> DumpDatabaseAsync()
     {
         // get the table names
