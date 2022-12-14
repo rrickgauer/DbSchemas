@@ -56,6 +56,7 @@ public class DatabaseConnectionRecordService
         IDatabase database = record.DatabaseType switch
         {
             DatabaseType.SQLite => new SqliteDatabase(record),
+            DatabaseType.Access => new AccessDatabase(record),
             _ => new MysqlDatabase(record),
         };
 

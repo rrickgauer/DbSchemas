@@ -8,6 +8,7 @@ namespace DbSchemas.Domain.Enums;
 
 public enum DatabaseType : long
 {
-    MySql = 1,
+    MySql  = 1,
     SQLite = 2,
+    Access = 3,
 }
