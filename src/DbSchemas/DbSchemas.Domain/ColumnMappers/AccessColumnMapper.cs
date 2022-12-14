@@ -13,6 +13,14 @@ public class AccessColumnMapper : IColumnMapper
 
     public ColumnDefinition ToColumnDefinition(DataRow row)
     {
-        return new();
+        ColumnDefinition columnDefinition = new()
+        {
+            Position = (uint)row.Field<int>("ColumnOrdinal"),
+            Name = row.Field<string>("ColumnName"),
+            IsNullable = row.Field<bool>("AllowDbNull"),
+            Type = row.Field<Type>("DataType").Name,
+        };
+
+        return columnDefinition;
     }
 }

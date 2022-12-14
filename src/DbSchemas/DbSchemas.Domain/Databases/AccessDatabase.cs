@@ -17,13 +17,15 @@ public class AccessDatabase : IDatabase
             
             builder.Add("Provider", "Microsoft.ACE.OLEDB.12.0");
             
-            string dbPath = @"C:\Users\1\Desktop\AP0STE.mdb";
-            builder.Add("Data Source", dbPath);
+            builder.Add("Data Source", DatabaseConnectionRecord.File);
+
             builder.Add("OLE DB Services", -2);        // No pooling services
-            builder.Add("Jet OLEDB:Database Password", "sailboat");
-
-
-
+            
+            if (!string.IsNullOrWhiteSpace(DatabaseConnectionRecord.Password))
+            {
+                builder.Add("Jet OLEDB:Database Password", DatabaseConnectionRecord.Password);
+            }
+            
             return builder.ConnectionString;
         }
     }

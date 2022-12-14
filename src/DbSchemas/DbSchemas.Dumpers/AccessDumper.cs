@@ -43,6 +43,9 @@ public class AccessDumper : IDumper
             TableSchemas = schemas,
         };
 
+        // close the connection
+        await connection.CloseAsync();
+
         return databaseDump;
     }
 
@@ -53,6 +56,7 @@ public class AccessDumper : IDumper
     private async Task<OleDbConnection> GetOpenConnectionAsync()
     {
         OleDbConnection connection = new(DataBase.ConnectionString);
+        
         await connection.OpenAsync();
 
         return connection;
@@ -93,6 +97,12 @@ public class AccessDumper : IDumper
     }
 
 
+    /// <summary>
+    /// Get the columns in the specified table
+    /// </summary>
+    /// <param name="connection"></param>
+    /// <param name="tableName"></param>
+    /// <returns></returns>
     private async Task<DataTable> GetColumnsDataTable(OleDbConnection connection, string tableName)
     {
         using OleDbCommand cmd = new(tableName, connection);
