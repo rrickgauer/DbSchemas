@@ -72,7 +72,7 @@ public class AccessDumper : IDumper
         restrictions[3] = "TABLE";
         DataTable data = await connection.GetSchemaAsync("Tables", restrictions);
 
-        var tables = data.AsEnumerable().Select(r => r.Field<string>("TABLE_NAME"));
+        var tables = data.AsEnumerable().Select(r => r.Field<string>("TABLE_NAME")).Where(t => !t.StartsWith('~'));
 
         return tables;
     }

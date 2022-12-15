@@ -18,8 +18,11 @@ public class AccessColumnMapper : IColumnMapper
             Position = (uint)row.Field<int>("ColumnOrdinal"),
             Name = row.Field<string>("ColumnName"),
             IsNullable = row.Field<bool>("AllowDbNull"),
-            Type = row.Field<Type>("DataType").Name,
         };
+
+        string dataType = row.Field<Type>("DataType").Name;
+        int columnSize = row.Field<int>("ColumnSize");
+        columnDefinition.Type = $"{dataType} ({columnSize})";
 
         return columnDefinition;
     }
