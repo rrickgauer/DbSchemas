@@ -63,7 +63,8 @@ public static class OutputService
         var consoleTable = ConsoleTable.From(items);
         consoleTable.Options.NumberAlignment = Alignment.Left;
 
-        return FormatConsoleTable(consoleTable, format);
+        return FormatConsoleTable(consoleTable, ConsoleOutputFormat.Markdown);
+        //return FormatConsoleTable(consoleTable, format);
     }
 
     /// <summary>
