@@ -24,5 +24,7 @@ public sealed class MysqlDatabaseCommands
         FROM
             information_schema.columns t
         WHERE
-            table_schema = @database_name;";
+            table_schema = @database_name
+        ORDER BY
+            ordinal_position ASC;";
 }
