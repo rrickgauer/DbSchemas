@@ -42,7 +42,7 @@ public class MysqlDumper : IDumper
 
         DatabaseDump databaseDump = new()
         {
-            TableSchemas = tableSchemas.Values,
+            TableSchemas = tableSchemas.Values.OrderBy(o => o.TableName.ToLower()).ToList(),
         };
 
         return databaseDump;

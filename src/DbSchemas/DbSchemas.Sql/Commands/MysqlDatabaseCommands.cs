@@ -26,5 +26,6 @@ public sealed class MysqlDatabaseCommands
         WHERE
             table_schema = @database_name
         ORDER BY
+            table_name ASC,
             ordinal_position ASC;";
 }
