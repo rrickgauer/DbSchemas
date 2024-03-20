@@ -1,6 +1,6 @@
 ﻿using DbSchemas.WpfGui.ViewModels;
 using System.Windows.Controls;
-using Wpf.Ui.Common.Interfaces;
+
 
 namespace DbSchemas.WpfGui.Views.Pages;
 
@@ -14,6 +14,7 @@ public partial class EditConnectionPage : INavigableView<EditConnectionPageViewM
     public EditConnectionPage(EditConnectionPageViewModel viewModel)
     {
         ViewModel = viewModel;
+        DataContext = this;
 
         InitializeComponent();
         

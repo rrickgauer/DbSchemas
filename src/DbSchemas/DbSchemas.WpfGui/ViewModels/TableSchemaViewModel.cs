@@ -1,14 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DbSchemas.Domain.Models;
+using DbSchemas.ServiceHub.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Wpf.Ui.Common;
-using Wpf.Ui.Mvvm.Contracts;
+
+
+
 
 namespace DbSchemas.WpfGui.ViewModels;
 
@@ -51,7 +52,7 @@ public partial class TableSchemaViewModel : ObservableObject
         // set the clipboard text
         System.Windows.Clipboard.SetText(text);
 
-        _snackbarService.Show("Success!", "Columns copied to clipboard.", SymbolRegular.Checkmark24);
+        _snackbarService.Show("Success!", "Columns copied to clipboard.", ControlAppearance.Secondary, new SymbolIcon(SymbolRegular.Checkmark24), TimeSpan.FromSeconds(3));
 
     }
 

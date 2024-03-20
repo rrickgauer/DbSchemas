@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Wpf.Ui.Common.Interfaces;
+
 
 namespace DbSchemas.WpfGui.Views.Pages;
 
@@ -25,6 +25,7 @@ public partial class HomePage : INavigableView<HomePageViewModel>
     public HomePage(HomePageViewModel viewModel)
     {
         ViewModel = viewModel;
+        DataContext = this;
 
         InitializeComponent();
     }

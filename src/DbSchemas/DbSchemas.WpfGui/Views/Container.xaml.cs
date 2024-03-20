@@ -1,65 +1,67 @@
-﻿using System;
+﻿using DbSchemas.WpfGui.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
 
-namespace DbSchemas.WpfGui.Views
+using Wpf.Ui.Appearance;
+
+
+namespace DbSchemas.WpfGui.Views;
+
+/// <summary>
+/// Interaction logic for Container.xaml
+/// </summary>
+public partial class Container : INavigationWindow
 {
-    /// <summary>
-    /// Interaction logic for Container.xaml
-    /// </summary>
-    public partial class Container : INavigationWindow
+    public ContainerViewModel ViewModel { get; }
+
+    public Container(ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService, ISnackbarService snackbarService, IContentDialogService contentDialogService)
     {
-        public ViewModels.ContainerViewModel ViewModel
-        {
-            get;
-        }
+        ViewModel = viewModel;
+        DataContext = this;
 
-        public Container(ViewModels.ContainerViewModel viewModel, IPageService pageService, INavigationService navigationService, ISnackbarService snackbarService)
-        {
-            ViewModel = viewModel;
-            DataContext = this;
+        SystemThemeWatcher.Watch(this);
 
-            InitializeComponent();
-            SetPageService(pageService);
+        InitializeComponent();
+        SetPageService(pageService);
 
-            snackbarService.SetSnackbarControl(RootSnackbar);
+        navigationService.SetNavigationControl(RootNavigation);
+        snackbarService.SetSnackbarPresenter(SnackbarPresenter);
+        contentDialogService.SetContentPresenter(RootContentDialog);
+    }
 
-            navigationService.SetNavigationControl(RootNavigation);
-        }
+    #region INavigationWindow methods
 
-        #region INavigationWindow methods
+    public INavigationView GetNavigation() => RootNavigation;
 
-        public Frame GetFrame()
-            => RootFrame;
+    public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
 
-        public INavigation GetNavigation()
-            => RootNavigation;
+    public void SetPageService(IPageService pageService) => RootNavigation.SetPageService(pageService);
 
-        public bool Navigate(Type pageType)
-            => RootNavigation.Navigate(pageType);
+    public void ShowWindow() => Show();
 
-        public void SetPageService(IPageService pageService)
-            => RootNavigation.PageService = pageService;
+    public void CloseWindow() => Close();
 
-        public void ShowWindow()
-            => Show();
+    #endregion INavigationWindow methods
 
-        public void CloseWindow()
-            => Close();
+    /// <summary>
+    /// Raises the closed event.
+    /// </summary>
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
 
-        #endregion INavigationWindow methods
+        // Make sure that closing this window will begin the process of closing the application.
+        Application.Current.Shutdown();
+    }
 
-        /// <summary>
-        /// Raises the closed event.
-        /// </summary>
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
+    INavigationView INavigationWindow.GetNavigation()
+    {
+        throw new NotImplementedException();
+    }
 
-            // Make sure that closing this window will begin the process of closing the application.
-            Application.Current.Shutdown();
-        }
+    public void SetServiceProvider(IServiceProvider serviceProvider)
+    {
+        throw new NotImplementedException();
     }
 }

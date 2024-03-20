@@ -1,4 +1,4 @@
-﻿<ui:UiPage x:Class="DbSchemas.WpfGui.Views.Pages.EditConnectionPage"
+﻿<Page x:Class="DbSchemas.WpfGui.Views.Pages.EditConnectionPage"
            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,12 +7,12 @@
            xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
            d:DataContext="{d:DesignInstance local:EditConnectionPage, IsDesignTimeCreatable=False}"
            d:Foreground="White"
-           Scrollable="True"
+           
            mc:Ignorable="d" 
            d:DesignWidth="800"
            Title="EditConnectionPage">
 
-    <ui:UiPage.Resources>
+    <Page.Resources>
         <Style x:Key="formSectionStyle" TargetType="StackPanel">
             <Setter Property="Margin" Value="30" />
         </Style>
@@ -22,22 +22,30 @@
             <Setter Property="Margin" Value="0,0,0,5" />
         </Style>
         
-    </ui:UiPage.Resources>
+    </Page.Resources>
     
     <Border Style="{StaticResource PageBorderStyle}">
 
         <StackPanel>
 
-            <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+                <TextBlock Style="{StaticResource PageTitleStyle}" 
+                           Text="{Binding ViewModel.PageTitle, UpdateSourceTrigger=PropertyChanged}"
+                           d:Text="Sup" />
+
                 <!--Close page button-->
-                <ui:Button Icon="Dismiss24" 
-                       Command="{Binding ViewModel.ClosePageCommand}"
-                       HorizontalAlignment="Right" 
-                       Grid.Row="0"
-                       Grid.Column="0"
-                       ToolTip="Close page" />
-            </StackPanel>
-            
+                <ui:Button Style="{StaticResource CloseButtonStyle}"
+                           Command="{Binding ViewModel.ClosePageCommand}"
+                           HorizontalAlignment="Right" 
+                           Grid.Column="1" />
+            </Grid>
+
 
             <!--Name-->
             <StackPanel Style="{StaticResource formSectionStyle}">
@@ -108,4 +116,4 @@
     </Border>
     
     
-</ui:UiPage>
+</Page>

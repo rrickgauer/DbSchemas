@@ -1,6 +1,6 @@
-﻿using DbSchemas.Configurations;
-using DbSchemas.Repository;
-using DbSchemas.Services;
+﻿using DbSchemas.ServiceHub.Configurations;
+using DbSchemas.ServiceHub.Repository;
+using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Models;
 using DbSchemas.WpfGui.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,8 +10,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using Wpf.Ui.Mvvm.Contracts;
-using Wpf.Ui.Mvvm.Services;
+
+
 
 namespace DbSchemas.WpfGui
 {
@@ -27,26 +27,22 @@ namespace DbSchemas.WpfGui
         // https://docs.microsoft.com/dotnet/core/extensions/logging
         private static readonly IHost _host = Host
             .CreateDefaultBuilder()
-            .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
+            .ConfigureAppConfiguration(c => 
+            {
+                var directoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
+                c.SetBasePath(directoryName!);
+            })
             .ConfigureServices((context, services) =>
             {
                 #region - WpfUi -
-                // App Host
+                
                 services.AddHostedService<ApplicationHostService>();
-
                 services.AddSingleton<ISnackbarService, SnackbarService>();
-
-                // Page resolver service
                 services.AddSingleton<IPageService, PageService>();
-
-                // Theme manipulation
                 services.AddSingleton<IThemeService, ThemeService>();
-
-                // TaskBar manipulation
                 services.AddSingleton<ITaskBarService, TaskBarService>();
-
-                // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<IContentDialogService, ContentDialogService>();
 
                 // Main window container with navigation
                 services.AddScoped<INavigationWindow, Views.Container>();
@@ -95,7 +91,8 @@ namespace DbSchemas.WpfGui
         /// <returns>Instance of the service or <see langword="null"/>.</returns>
         public static T GetService<T>() where T : class
         {
-            return _host.Services.GetService(typeof(T)) as T;
+            return _host.Services.GetRequiredService<T>();
+            //return _host.Services.GetService(typeof(T)) as T;
         }
 
         /// <summary>

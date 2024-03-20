@@ -1,4 +1,4 @@
-﻿using Wpf.Ui.Common.Interfaces;
+﻿
 
 namespace DbSchemas.WpfGui.Views.Pages
 {
@@ -15,6 +15,7 @@ namespace DbSchemas.WpfGui.Views.Pages
         public SettingsPage(ViewModels.SettingsViewModel viewModel)
         {
             ViewModel = viewModel;
+            DataContext = this;
 
             InitializeComponent();
         }

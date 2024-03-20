@@ -1,80 +1,56 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-using System;
 using System.Collections.ObjectModel;
-using Wpf.Ui.Common;
-using Wpf.Ui.Controls;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
 
-namespace DbSchemas.WpfGui.ViewModels
+namespace DbSchemas.WpfGui.ViewModels;
+
+public partial class ContainerViewModel : ObservableObject
 {
-    public partial class ContainerViewModel : ObservableObject
+
+
+    #region - Generated Properties -
+
+    [ObservableProperty]
+    private string _applicationTitle = "WPF UI - UiDesktopApp1";
+
+    [ObservableProperty]
+    private ObservableCollection<object> _menuItems = new()
     {
-        private bool _isInitialized = false;
+            new NavigationViewItem()
+            {
+                Content = "Home",
+                Icon = new SymbolIcon(SymbolRegular.Home20),
+                TargetPageType = typeof(Views.Pages.HomePage)
+            },
 
-        [ObservableProperty]
-        private string _applicationTitle = String.Empty;
+            new NavigationViewItem()
+            {
+                Content = "Connections",
+                Icon = new SymbolIcon(SymbolRegular.DatabasePlugConnected20),
+                TargetPageType = typeof(Views.Pages.ConnectionsPage)
+            },
+    };
 
-        [ObservableProperty]
-        private ObservableCollection<INavigationControl> _navigationItems = new();
-
-        [ObservableProperty]
-        private ObservableCollection<INavigationControl> _navigationFooter = new();
-
-        [ObservableProperty]
-        private ObservableCollection<MenuItem> _trayMenuItems = new();
-
-        public ContainerViewModel(INavigationService navigationService)
+    [ObservableProperty]
+    private ObservableCollection<object> _footerMenuItems = new()
+    {
+        new NavigationViewItem()
         {
-            if (!_isInitialized)
-                InitializeViewModel();
+            Content = "Settings",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
+            TargetPageType = typeof(Views.Pages.SettingsPage)
         }
+    };
 
-        private void InitializeViewModel()
-        {
-            ApplicationTitle = "WPF UI - DbSchemas.WpfGui";
+    [ObservableProperty]
+    private ObservableCollection<MenuItem> _trayMenuItems = new()
+    {
+        new MenuItem { Header = "Home", Tag = "tray_home" }
+    };
 
-            NavigationItems = new ObservableCollection<INavigationControl>
-            {
-                new NavigationItem()
-                {
-                    Content = "Home",
-                    PageTag = "dashboard",
-                    Icon = SymbolRegular.Home24,
-                    PageType = typeof(Views.Pages.HomePage)
-                },
+    #endregion
+    
 
-                new NavigationItem()
-                {
-                    Content = "Connections",
-                    PageTag = "connections",
-                    Icon = SymbolRegular.DatabasePlugConnected20,
-                    PageType = typeof(Views.Pages.ConnectionsPage)
-                },
-            };
+    
 
-            NavigationFooter = new ObservableCollection<INavigationControl>
-            {
-                new NavigationItem()
-                {
-                    Content = "Settings",
-                    PageTag = "settings",
-                    Icon = SymbolRegular.Settings24,
-                    PageType = typeof(Views.Pages.SettingsPage)
-                }
-            };
 
-            TrayMenuItems = new ObservableCollection<MenuItem>
-            {
-                new MenuItem
-                {
-                    Header = "Home",
-                    Tag = "tray_home"
-                }
-            };
-
-            _isInitialized = true;
-        }
-    }
 }
