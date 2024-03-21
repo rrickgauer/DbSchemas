@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -14,8 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbSchemas.Assets\DbSchemas.Assets.csproj" />
-    <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
-    <ProjectReference Include="..\DbSchemas.Services\DbSchemas.Services.csproj" />
+    <ProjectReference Include="..\DbSchemas.ServiceHub\DbSchemas.ServiceHub.csproj" />
   </ItemGroup>
 
 </Project>

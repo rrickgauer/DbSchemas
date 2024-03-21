@@ -63,6 +63,21 @@
                 <Setter Property="Margin" Value="18,0,18,18" />
             </Style>
 
+            <!--Style for page titles-->
+            <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontStyle" Value="Normal" />
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+                <Setter Property="TextDecorations" Value="{x:Null}" />
+            </Style>
+
+
+            <Style x:Key="CloseButtonStyle" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
+                <Setter Property="ToolTip" Value="Close" />
+                <Setter Property="Icon" Value="{ui:SymbolIcon Dismiss24}" />
+            </Style>
+
         </ResourceDictionary>
 
 

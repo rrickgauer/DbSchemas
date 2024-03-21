@@ -23,7 +23,7 @@ public class ColorConverterMore : IValueConverter
     {
         var stringValue = value as string;
         var result = ColorConverter.ConvertFromString(stringValue) as Color?;
-        return result;
+        return result!;
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DbSchemas.Domain.CustomExceptions;
-using DbSchemas.Domain.Databases;
-using DbSchemas.Domain.Models;
-using DbSchemas.Services;
+using DbSchemas.ServiceHub.Domain.CustomExceptions;
+using DbSchemas.ServiceHub.Domain.Databases;
+using DbSchemas.ServiceHub.Domain.Models;
+using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
@@ -14,16 +14,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Wpf.Ui.Common.Interfaces;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
+
 
 namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class ViewTablesPageViewModel : ObservableObject, INavigationAware
 {
     #region - Private members -
-    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly INavigationView _navigation = App.GetService<INavigationService>().GetNavigationControl();
     private readonly EditConnectionPage _editConnectionPage = App.GetService<EditConnectionPage>();
     private readonly DumpService _dumpService;
     #endregion
@@ -103,8 +101,6 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     [RelayCommand]
     public async Task ExportDataAsync()
     {
-        int x = 10;
-
         // get the file location from the user
         if (!GetOutputDataFileName(out string fileName))
         {
@@ -128,7 +124,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
         var dialog = new Microsoft.Win32.SaveFileDialog
         {
-            FileName = $"{Database.DatabaseConnectionRecord.Name}-schemas",        // Default file name
+            FileName = $"{Database?.DatabaseConnectionRecord.Name}-schemas",        // Default file name
             DefaultExt = ".txt",                // Default file extension
             Filter = "Text Document(*.txt)|*.txt"   // Filter files by extension
         };
@@ -150,7 +146,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     }
 
 
-    private void OpenFile(string fileName)
+    private static void OpenFile(string fileName)
     {
         Process.Start(new ProcessStartInfo()
         {
@@ -200,7 +196,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     /// </summary>
     /// <param name="tableSchemas"></param>
     /// <returns></returns>
-    private static IEnumerable<TableSchemaUserControl> BuildTableSchemaControls(IEnumerable<TableSchema> tableSchemas)
+    private static List<TableSchemaUserControl> BuildTableSchemaControls(IEnumerable<TableSchema> tableSchemas)
     {
         List<TableSchemaUserControl> controls = new();
 
@@ -219,7 +215,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         StatusMessageIsVisible = false;
         StatusMessageText = string.Empty;
         IsLoading = true;
-        _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
+        TableSchemas = Enumerable.Empty<TableSchemaUserControl>();
     }
 
 }

@@ -1,19 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DbSchemas.Domain.Databases;
-using DbSchemas.Services;
+using DbSchemas.ServiceHub.Domain.Databases;
+using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
 
 namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class ConnectionCardViewModel : ObservableObject
 {
-    private readonly INavigation _navigation                                  = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly INavigationView _navigation                              = App.GetService<INavigationService>().GetNavigationControl();
     private readonly EditConnectionPage _editConnectionPage                   = App.GetService<EditConnectionPage>();
     private readonly ViewTablesPage _viewTablesPage                           = App.GetService<ViewTablesPage>();
     private readonly DatabaseConnectionRecordService _connectionRecordService = App.GetService<DatabaseConnectionRecordService>();
@@ -28,7 +26,7 @@ public partial class ConnectionCardViewModel : ObservableObject
     }
 
 
-    public EventHandler WasDeleted;
+    public EventHandler? WasDeleted;
 
 
 
@@ -44,7 +42,7 @@ public partial class ConnectionCardViewModel : ObservableObject
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
-    public async Task EditConnectionAsync()
+    public void EditConnection()
     {
         _editConnectionPage.ViewModel.Database = Database;
         _navigation.Navigate(_editConnectionPage.GetType());
@@ -55,7 +53,7 @@ public partial class ConnectionCardViewModel : ObservableObject
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
-    public async Task ViewTablesAsync()
+    public void ViewTables()
     {
         _viewTablesPage.ViewModel.Database = Database;
         _navigation.Navigate(_viewTablesPage.GetType());
@@ -67,16 +65,18 @@ public partial class ConnectionCardViewModel : ObservableObject
         if (!ConfirmDelete())
             return;
 
-        await _connectionRecordService.DeleteDatabaseAsync(Database.DatabaseConnectionRecord.Id.Value);
-
-        WasDeleted?.Invoke(this, EventArgs.Empty);
+        if (Database.DatabaseConnectionRecord.Id is long recordId)
+        {
+            await _connectionRecordService.DeleteDatabaseAsync(recordId);
+            WasDeleted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     /// <summary>
     /// Prompt user to confirm that they want to delete the connection
     /// </summary>
     /// <returns></returns>
-    private bool ConfirmDelete()
+    private static bool ConfirmDelete()
     {
         var confirmation = MessageBox.Show("Are you sure you want to delete this connection?", "Confirm deletion", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 

@@ -32,7 +32,7 @@
 
                     <!--Button to copy the column names to the clipboard-->
                     <ui:Button Grid.Column="1" 
-                               Icon="DocumentCopy24"
+                               Icon="{ui:SymbolIcon DocumentCopy24}"
                                ToolTip="Copy column names"
                                Command="{Binding ViewModel.CopyColumnsCommand}"/>
 

@@ -1,7 +1,7 @@
 ﻿using CommandLine;
-using DbSchemas.Configurations;
-using DbSchemas.Domain.CliArgs;
-using DbSchemas.Services;
+using DbSchemas.ServiceHub.Configurations;
+using DbSchemas.ServiceHub.Domain.CliArgs;
+using DbSchemas.ServiceHub.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 

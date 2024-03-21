@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>10.0</LangVersion>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>applicationIcon.ico</ApplicationIcon>
+    <UserSecretsId>8c6171ab-84ad-4cad-a811-672bffb593de</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-    <PackageReference Include="WPF-UI" Version="2.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="WPF-UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbSchemas.Assets\DbSchemas.Assets.csproj" />
-    <ProjectReference Include="..\DbSchemas.Configurations\DbSchemas.Configurations.csproj" />
-    <ProjectReference Include="..\DbSchemas.Services\DbSchemas.Services.csproj" />
+    <ProjectReference Include="..\DbSchemas.ServiceHub\DbSchemas.ServiceHub.csproj" />
   </ItemGroup>
 
 </Project>

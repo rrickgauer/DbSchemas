@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Wpf.Ui.Appearance;
 
 namespace DbSchemas.WpfGui.Converters;
 
 internal class EnumToBooleanConverter : IValueConverter
 {
-    public EnumToBooleanConverter()
-    {
-    }
-
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (parameter is not string enumString)
+        if (parameter is not String enumString)
+        {
             throw new ArgumentException("ExceptionEnumToBooleanConverterParameterMustBeAnEnumName");
+        }
 
-        if (!Enum.IsDefined(typeof(Wpf.Ui.Appearance.ThemeType), value))
+        if (!Enum.IsDefined(typeof(ApplicationTheme), value))
+        {
             throw new ArgumentException("ExceptionEnumToBooleanConverterValueMustBeAnEnum");
+        }
 
-        var enumValue = Enum.Parse(typeof(Wpf.Ui.Appearance.ThemeType), enumString);
+        var enumValue = Enum.Parse(typeof(ApplicationTheme), enumString);
 
         return enumValue.Equals(value);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (parameter is not string enumString)
+        if (parameter is not String enumString)
+        {
             throw new ArgumentException("ExceptionEnumToBooleanConverterParameterMustBeAnEnumName");
+        }
 
-        return Enum.Parse(typeof(Wpf.Ui.Appearance.ThemeType), enumString);
+        return Enum.Parse(typeof(ApplicationTheme), enumString);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DbSchemas.Domain.Databases;
-using DbSchemas.Domain.Enums;
-using DbSchemas.Services;
+using DbSchemas.ServiceHub.Domain.Databases;
+using DbSchemas.ServiceHub.Domain.Enums;
+using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Views.Pages;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
@@ -11,9 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Wpf.Ui.Common.Interfaces;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
+
+
 
 namespace DbSchemas.WpfGui.ViewModels;
 
@@ -22,7 +21,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     #region - Private members -
     private readonly DatabaseConnectionRecordService _connectionRecordService;
     private readonly EditConnectionPageViewModel _editConnectionPageViewModel;
-    private readonly INavigation _navigation = App.GetService<INavigationService>().GetNavigationControl();
+    private readonly INavigationView _navigation = App.GetService<INavigationService>().GetNavigationControl();
     #endregion
 
     /// <summary>
@@ -61,7 +60,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
 
     public async void OnNavigatedTo()
     {
-        await Task.Run(() => FetchAllDatabases());
+        await Task.Run(() => FetchAllDatabasesAsync());
     }
     #endregion
 
@@ -75,18 +74,18 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
         DisplayDatabases();
     }
 
-    private async Task FetchAllDatabases()
+    private async Task FetchAllDatabasesAsync()
     {
         IsLoading = true;
 
         _allDatabases = await _connectionRecordService.GetDatabasesAsync();
 
-        Application.Current.Dispatcher.Invoke(delegate {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
             RenderConnectionCardControls(_allDatabases);
         });
 
         IsLoading = false;
-
     }
 
     /// <summary>
@@ -114,7 +113,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     private async void TestEvent(object? sender, EventArgs args)
     {
         IsLoading = true;
-        await Task.Run(() => FetchAllDatabases());
+        await Task.Run(() => FetchAllDatabasesAsync());
         IsLoading = false;
     }
 
@@ -132,7 +131,9 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
         // filter out ones that have a name within the search box value
         if (!string.IsNullOrWhiteSpace(ConnectionNameSearch) && ConnectionNameSearch.Length > 2)
         {
-            ConnectionCards.Where(c => !c.ViewModel.Database.DatabaseConnectionRecord.Name.ToLower().Contains(ConnectionNameSearch.ToLower())).ToList().ForEach(c => c.ViewModel.IsVisible = false);
+            ConnectionCards.Where(c => !c.ViewModel.Database.DatabaseConnectionRecord.Name!.Contains(ConnectionNameSearch, StringComparison.CurrentCultureIgnoreCase))
+                .ToList()
+                .ForEach(c => c.ViewModel.IsVisible = false);
         }
     }
 

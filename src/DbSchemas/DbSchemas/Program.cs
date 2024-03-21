@@ -1,9 +1,8 @@
 ﻿using CommandLine;
 using DbSchemas;
-using DbSchemas.Configurations;
-using DbSchemas.Domain.CliArgs;
-using DbSchemas.Repository;
-using DbSchemas.Services;
+using DbSchemas.ServiceHub.Configurations;
+using DbSchemas.ServiceHub.Repository;
+using DbSchemas.ServiceHub.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
