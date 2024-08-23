@@ -1,4 +1,6 @@
 ﻿using DbSchemas.WpfGui.ViewModels;
+using System;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace DbSchemas.WpfGui.Views.UserControls;
@@ -15,5 +17,26 @@ public partial class TableSchemaUserControl : UserControl
         ViewModel = viewModel;
 
         InitializeComponent();
+
+        ViewModel.CopySelectedColumsEvent += OnViewModelCopySelectedColumsEvent;
+    }
+
+    private void OnViewModelCopySelectedColumsEvent(object? sender, System.EventArgs e)
+    {
+        var selectedItems = this.schemaGrid.SelectedItems;
+
+        try
+        {
+            var columns = selectedItems.Cast<ServiceHub.Domain.Models.ColumnDefinition>();
+            ViewModel.CopyColumnsToClipboard(columns);
+        }
+        catch(InvalidCastException)
+        {
+            return;
+        }  
+        catch(ArgumentException)
+        {
+            return;
+        }
     }
 }

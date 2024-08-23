@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DbSchemas.ServiceHub.Domain.Models;
 
-namespace DbSchemas.ServiceHub.Domain.Models;
-
-public class TableSchema
+public class TableSchema(string tableName)
 {
-    public string TableName { get; set; }
+    public string TableName { get; set; } = tableName;
     public List<ColumnDefinition> Columns { get; set; } = new();
-
-    public TableSchema(string tableName)
-    {
-        TableName = tableName;
-    }
 
     public TableSchema(string tableName, List<ColumnDefinition> columns) : this(tableName)
     {

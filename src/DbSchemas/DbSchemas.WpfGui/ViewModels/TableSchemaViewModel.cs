@@ -4,17 +4,15 @@ using DbSchemas.ServiceHub.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
-
 
 
 namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class TableSchemaViewModel : ObservableObject
 {
+
+    public event EventHandler<EventArgs>? CopySelectedColumsEvent;
+
     private readonly ISnackbarService _snackbarService = App.GetService<ISnackbarService>();
 
     /// <summary>
@@ -36,15 +34,25 @@ public partial class TableSchemaViewModel : ObservableObject
     /// Copy the column names to the clipboard
     /// </summary>
     [RelayCommand]
-    public void CopyColumns()
+    private void CopyColumns()
     {
-        // get a list of all the column names
-        var columnNames = TableSchema.Columns.Select(c => c.Name);
+        CopyColumnsToClipboard(TableSchema.Columns);
+    }
+
+    [RelayCommand]
+    private void CopySelectedColumns()
+    {
+        CopySelectedColumsEvent?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void CopyColumnsToClipboard(IEnumerable<ColumnDefinition> columns)
+    {
+        var columnNames = columns.Select(c => c.Name);
 
         // combine each name into a string with new lines after each name
         string text = string.Empty;
 
-        foreach(var column in columnNames)
+        foreach (var column in columnNames)
         {
             text += $"{column}{Environment.NewLine}";
         }
@@ -55,5 +63,4 @@ public partial class TableSchemaViewModel : ObservableObject
         _snackbarService.Show("Success!", "Columns copied to clipboard.", ControlAppearance.Secondary, new SymbolIcon(SymbolRegular.Checkmark24), TimeSpan.FromSeconds(3));
 
     }
-
 }

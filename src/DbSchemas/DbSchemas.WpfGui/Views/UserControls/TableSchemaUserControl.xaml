@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DbSchemas.WpfGui.Views.UserControls"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:helpers="clr-namespace:DbSchemas.WpfGui.Helpers"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance local:TableSchemaUserControl, IsDesignTimeCreatable=False}"
              d:DesignHeight="450" 
              d:DesignWidth="800">
 
     <UserControl.Resources>
-
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
     </UserControl.Resources>
     
     <Border Margin="0,0,0,50">
@@ -42,13 +43,14 @@
             <!--Columns datagrid-->
             <DataGrid ItemsSource="{Binding ViewModel.TableSchema.Columns}"
                       d:ItemsSource="{d:SampleData ItemCount=5}"
+                      x:Name="schemaGrid"
                       AllowDrop="False"
                       CanUserReorderColumns="False"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       CanUserResizeRows="False"
                       IsReadOnly="True"
-                      SelectionMode="Single" 
+                      SelectionMode="Extended" 
                       SelectionUnit="FullRow"
                       AutoGenerateColumns="False"
                       HorizontalScrollBarVisibility="Auto">
@@ -63,14 +65,40 @@
                     </Style>
                 </DataGrid.Resources>
 
+   
+
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" MinWidth="200"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" MinWidth="200"/>
+                    
 
-                    <DataGridTemplateColumn Header="Nullable" IsReadOnly="True">
+                    <DataGridTemplateColumn MinWidth="200" Header="Name">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <TextBlock Text="{Binding Name}">
+                                    
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu DataContext="{Binding Source={StaticResource Proxy}, Path=Data}"
+                                                     d:DataContext="{d:DesignInstance local:TableSchemaUserControl, IsDesignTimeCreatable=False}">
+                                            
+                                            <ui:MenuItem Header="Copy" 
+                                                         Command="{Binding ViewModel.CopySelectedColumnsCommand}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" MinWidth="200"/>
+                    
+                    
+
+                    <DataGridTemplateColumn Header="Nullable" IsReadOnly="True">
+                
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                
                                 <CheckBox IsChecked="{Binding IsNullable}"  HorizontalAlignment="Center" IsEnabled="False"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
