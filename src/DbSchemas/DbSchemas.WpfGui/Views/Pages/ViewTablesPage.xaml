@@ -55,7 +55,7 @@
                     Grid.Column="1"
                     Style="{StaticResource GridSectionStyle}">
 
-                <ui:Button Icon="Dismiss24"
+                <ui:Button Icon="{ui:SymbolIcon Dismiss24}"
                            HorizontalAlignment="Right"
                            ToolTip="Close page"
                            Command="{Binding ViewModel.ClosePageCommand}" />
