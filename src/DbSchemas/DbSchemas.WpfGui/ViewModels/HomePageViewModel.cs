@@ -39,9 +39,6 @@ public partial class HomePageViewModel : ObservableObject, INavigationAware
 
         var parentElement = _contentDialogService.GetContentPresenter();
 
-
-
-
         MessageBox.Show($"{result}");
     }
 

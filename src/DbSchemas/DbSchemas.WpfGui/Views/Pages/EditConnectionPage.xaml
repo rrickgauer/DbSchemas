@@ -86,7 +86,10 @@
             <!--Password-->
             <StackPanel Style="{StaticResource formSectionStyle}">
                 <Label Style="{StaticResource formSectionStyleLabel}" Content="Password"  />
-                <ui:TextBox Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ui:PasswordBox Password="{Binding ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                x:Name="pwrdBox"
+                                />
+
             </StackPanel>
 
 

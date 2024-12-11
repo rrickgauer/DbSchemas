@@ -17,6 +17,11 @@ public partial class EditConnectionPage : INavigableView<EditConnectionPageViewM
         DataContext = this;
 
         InitializeComponent();
-        
+        //this.pwrdBox.TextChanged += PwrdBox_TextChanged;
+    }
+
+    private void PwrdBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var ss = pwrdBox;
     }
 }
