@@ -8,6 +8,7 @@ using DbSchemas.WpfGui.Views.Pages;
 using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     private IDatabase? _database;
 
     [ObservableProperty]
-    private IEnumerable<TableSchemaUserControl> _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
+    private ObservableCollection<TableSchemaUserControl> _tableSchemas = new();
 
     [ObservableProperty]
     private bool _statusMessageIsVisible = false;
@@ -157,6 +158,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
     #endregion
 
+
     /// <summary>
     /// Load the tables and the columns
     /// </summary>
@@ -172,12 +174,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         try
         {
             _databaseDump = await _dumpService.DumpDatabase(Database);
-            
+
             // display the tables in the main thread
-            Application.Current.Dispatcher.Invoke(delegate {
-                TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TableSchemas = _databaseDump.TableSchemas.ToUserControls();
             });
-            
+
         }
         catch (InvalidConnectionException)
         {
@@ -191,31 +194,11 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
     }
 
-    /// <summary>
-    /// Build a list of TableSchemaUserControl's from the given list of table schemas.
-    /// </summary>
-    /// <param name="tableSchemas"></param>
-    /// <returns></returns>
-    private static List<TableSchemaUserControl> BuildTableSchemaControls(IEnumerable<TableSchema> tableSchemas)
-    {
-        List<TableSchemaUserControl> controls = new();
-
-        foreach (TableSchema tableSchema in tableSchemas)
-        {
-            TableSchemaViewModel viewModel = new(tableSchema);
-            TableSchemaUserControl control = new(viewModel);
-            controls.Add(control);
-        }
-
-        return controls;
-    }
-
     private void ResetControls()
     {
         StatusMessageIsVisible = false;
         StatusMessageText = string.Empty;
         IsLoading = true;
-        TableSchemas = Enumerable.Empty<TableSchemaUserControl>();
+        TableSchemas = new();
     }
-
 }
