@@ -1,4 +1,9 @@
-﻿using DbSchemas.WpfGui.ViewModels;
+﻿using DbSchemas.ServiceHub.Domain.Models;
+using DbSchemas.WpfGui.ViewModels;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +24,16 @@ public partial class ViewTablesPage : INavigableView<ViewTablesPageViewModel>
         DataContext = this;
 
         InitializeComponent();
+
+        this.tablesList.SelectionChanged += TablesList_SelectionChanged;
+        
+    }
+
+    private async void TablesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedTables = tablesList.SelectedItems.Cast<TableSchema>();
+
+        ViewModel.OpenTablesAsync(selectedTables);
     }
 
     private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

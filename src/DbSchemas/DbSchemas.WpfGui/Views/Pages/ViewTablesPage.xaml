@@ -90,10 +90,17 @@
                     Style="{StaticResource GridSectionStyle}"
                     Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}">
 
-                <ListView ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                <ListView ItemsSource="{Binding ViewModel.TableSchemas}"
                           PreviewMouseWheel="ListView_PreviewMouseWheel"
-                          ItemsSource="{Binding ViewModel.TableSchemas}"
-                          d:ItemsSource="{d:SampleData ItemCount=5}" />
+                          x:Name="tablesList"
+                          SelectionMode="Multiple"
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TableName}" Margin="5,0" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    </ListView>
             </Border>
 
             <!--Sidebar-->
