@@ -1,15 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
 using System.Threading.Tasks;
 using Wpf.Ui.Extensions;
 
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.Pages.Home;
 
 public partial class HomePageViewModel : ObservableObject, INavigationAware
 {

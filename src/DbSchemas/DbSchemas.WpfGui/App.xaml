@@ -77,6 +77,16 @@
                 <Setter Property="ToolTip" Value="Close" />
                 <Setter Property="Icon" Value="{ui:SymbolIcon Dismiss24}" />
             </Style>
+            
+            <!--Text Copyable Style-->
+            <Style x:Key="TextboxResetStyle" TargetType="TextBox">
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="CaretBrush" Value="Transparent" />
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            </Style>
 
         </ResourceDictionary>
 

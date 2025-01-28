@@ -1,16 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using DbSchemas.ServiceHub.Domain.Models;
+using DbSchemas.WpfGui.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.UserControls.TableSchemas;
 
 public partial class TableSchemaViewModel : ObservableObject
 {
-
     public event EventHandler<EventArgs>? CopySelectedColumsEvent;
 
     private readonly ISnackbarService _snackbarService = App.GetService<ISnackbarService>();
@@ -61,6 +62,12 @@ public partial class TableSchemaViewModel : ObservableObject
         System.Windows.Clipboard.SetText(text);
 
         _snackbarService.Show("Success!", "Columns copied to clipboard.", ControlAppearance.Secondary, new SymbolIcon(SymbolRegular.Checkmark24), TimeSpan.FromSeconds(3));
-
     }
+
+    [RelayCommand]
+    private void CloseTable()
+    {
+        WeakReferenceMessenger.Default.Send(new CloseOpenTableSchemaMessage(TableSchema));
+    }
+
 }

@@ -1,20 +1,18 @@
-﻿using DbSchemas.ServiceHub.Domain.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using DbSchemas.ServiceHub.Domain.Models;
+using DbSchemas.WpfGui.Messages;
 using DbSchemas.WpfGui.ViewModels;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-
-namespace DbSchemas.WpfGui.Views.Pages;
+namespace DbSchemas.WpfGui.Views.Pages.ViewTables;
 
 /// <summary>
 /// Interaction logic for ViewTablesPage.xaml
 /// </summary>
-public partial class ViewTablesPage : INavigableView<ViewTablesPageViewModel>
+public partial class ViewTablesPage : INavigableView<ViewTablesPageViewModel>, IRecipient<CloseOpenTableSchemaMessage>
 {
     public ViewTablesPageViewModel ViewModel { get; set; }
 
@@ -26,7 +24,15 @@ public partial class ViewTablesPage : INavigableView<ViewTablesPageViewModel>
         InitializeComponent();
 
         this.tablesList.SelectionChanged += TablesList_SelectionChanged;
-        
+        this.settingsDropdownButton.Click += SettingsDropdownButton_Click;
+
+        WeakReferenceMessenger.Default.RegisterAll(this);
+
+    }
+
+    private void SettingsDropdownButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.settingsDropdownButton.ContextMenu.IsOpen = true;
     }
 
     private async void TablesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -50,4 +56,12 @@ public partial class ViewTablesPage : INavigableView<ViewTablesPageViewModel>
             parent?.RaiseEvent(eventArg);
         }
     }
+
+    public void Receive(CloseOpenTableSchemaMessage message)
+    {
+        var openTables = tablesList.SelectedItems.Cast<TableSchema>().ToList();
+        var index = openTables.IndexOf(message.Value);
+        tablesList.SelectedItems.RemoveAt(index);
+    }
+
 }

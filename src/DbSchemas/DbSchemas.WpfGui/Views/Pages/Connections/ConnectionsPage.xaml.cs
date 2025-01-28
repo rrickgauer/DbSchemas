@@ -3,10 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-
-
-namespace DbSchemas.WpfGui.Views.Pages;
-
+namespace DbSchemas.WpfGui.Views.Pages.Connections;
 
 /// <summary>
 /// Interaction logic for ConnectionsPage.xaml
@@ -18,8 +15,8 @@ public partial class ConnectionsPage : INavigableView<ConnectionsPageViewModel>
     public ConnectionsPage(ConnectionsPageViewModel viewModel)
     {
         ViewModel = viewModel;
-        DataContext = this; 
-        
+        DataContext = this;
+
         InitializeComponent();
     }
 

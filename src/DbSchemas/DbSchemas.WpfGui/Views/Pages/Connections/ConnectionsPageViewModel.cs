@@ -3,18 +3,15 @@ using CommunityToolkit.Mvvm.Input;
 using DbSchemas.ServiceHub.Domain.Databases;
 using DbSchemas.ServiceHub.Domain.Enums;
 using DbSchemas.ServiceHub.Services;
-using DbSchemas.WpfGui.Views.Pages;
-using DbSchemas.WpfGui.Views.UserControls;
+using DbSchemas.WpfGui.Views.Pages.EditConnection;
+using DbSchemas.WpfGui.Views.UserControls.ConnectionCard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-
-
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.Pages.Connections;
 
 public partial class ConnectionsPageViewModel : ObservableObject, INavigationAware
 {
@@ -39,7 +36,7 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     private string _connectionNameSearch = string.Empty;
 
     [ObservableProperty]
-    private IEnumerable<ConnectionCardUserControl> _connectionCards = Enumerable.Empty<ConnectionCardUserControl>();
+    private IEnumerable<ConnectionCardControl> _connectionCards = Enumerable.Empty<ConnectionCardControl>();
 
     private IEnumerable<IDatabase> _allDatabases = Enumerable.Empty<IDatabase>();
 
@@ -94,12 +91,12 @@ public partial class ConnectionsPageViewModel : ObservableObject, INavigationAwa
     /// <param name="connections"></param>
     private void RenderConnectionCardControls(IEnumerable<IDatabase> connections)
     {
-        List<ConnectionCardUserControl> cards = new();
+        List<ConnectionCardControl> cards = new();
 
         foreach (var con in connections)
         {
             ConnectionCardViewModel viewModel = new(con);
-            ConnectionCardUserControl control = new(viewModel);
+            ConnectionCardControl control = new(viewModel);
             cards.Add(control);
 
             control.ViewModel.WasDeleted += TestEvent;

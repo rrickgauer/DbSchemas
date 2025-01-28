@@ -2,12 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using DbSchemas.ServiceHub.Domain.Databases;
 using DbSchemas.ServiceHub.Services;
-using DbSchemas.WpfGui.Views.Pages;
+using DbSchemas.WpfGui.Views.Pages.EditConnection;
+using DbSchemas.WpfGui.Views.Pages.ViewTables;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.UserControls.ConnectionCard;
 
 public partial class ConnectionCardViewModel : ObservableObject
 {
