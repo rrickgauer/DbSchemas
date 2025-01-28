@@ -5,13 +5,12 @@ using DbSchemas.ServiceHub.Domain.Databases;
 using DbSchemas.ServiceHub.Domain.Models;
 using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Views.Pages;
-using DbSchemas.WpfGui.Views.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -42,7 +41,8 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     private IDatabase? _database;
 
     [ObservableProperty]
-    private IEnumerable<TableSchemaUserControl> _tableSchemas = Enumerable.Empty<TableSchemaUserControl>();
+    //private ObservableCollection<TableSchemaUserControl> _tableSchemas = new();
+    private ObservableCollection<TableSchema> _tableSchemas = new();
 
     [ObservableProperty]
     private bool _statusMessageIsVisible = false;
@@ -51,6 +51,42 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     private string _statusMessageText = string.Empty;
 
     private DatabaseDump _databaseDump = new();
+
+    [ObservableProperty]
+    private ObservableCollection<TableSchema> _openTables = new();
+
+
+
+    public void OpenTablesAsync(IEnumerable<TableSchema> tables)
+    {
+        foreach(var openTable in OpenTables)
+        {
+            if (!tables.Contains(openTable))
+            {
+                OpenTables.Remove(openTable);
+            }
+        }
+
+        foreach(var table in tables)
+        {
+            if (!OpenTables.Contains(table))
+            {
+                OpenTables.Add(table);
+            }
+        }
+
+    }
+
+    public void OpenTableAsync(TableSchema table)
+    {
+        if (OpenTables.Contains(table))
+        {
+            return;
+        }
+
+        OpenTables.Add(table);
+    }
+
 
 
     #region - INavigationAware -
@@ -83,10 +119,14 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     [RelayCommand]
     public void ToggleCardsExpansion(bool expandAll)
     {
-        foreach (var control in TableSchemas)
-        {
-            control.ViewModel.IsExpanded = expandAll;
-        }
+        //foreach (var control in TableSchemas)
+        //{
+        //    control.ViewModel.IsExpanded = expandAll;
+        //}
+
+        
+
+        var ss = 1;
     }
 
     [RelayCommand]
@@ -157,6 +197,7 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
     #endregion
 
+
     /// <summary>
     /// Load the tables and the columns
     /// </summary>
@@ -172,12 +213,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
         try
         {
             _databaseDump = await _dumpService.DumpDatabase(Database);
-            
+
             // display the tables in the main thread
-            Application.Current.Dispatcher.Invoke(delegate {
-                TableSchemas = BuildTableSchemaControls(_databaseDump.TableSchemas);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TableSchemas = new(_databaseDump.TableSchemas);
             });
-            
+
         }
         catch (InvalidConnectionException)
         {
@@ -191,31 +233,11 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
 
     }
 
-    /// <summary>
-    /// Build a list of TableSchemaUserControl's from the given list of table schemas.
-    /// </summary>
-    /// <param name="tableSchemas"></param>
-    /// <returns></returns>
-    private static List<TableSchemaUserControl> BuildTableSchemaControls(IEnumerable<TableSchema> tableSchemas)
-    {
-        List<TableSchemaUserControl> controls = new();
-
-        foreach (TableSchema tableSchema in tableSchemas)
-        {
-            TableSchemaViewModel viewModel = new(tableSchema);
-            TableSchemaUserControl control = new(viewModel);
-            controls.Add(control);
-        }
-
-        return controls;
-    }
-
     private void ResetControls()
     {
         StatusMessageIsVisible = false;
         StatusMessageText = string.Empty;
         IsLoading = true;
-        TableSchemas = Enumerable.Empty<TableSchemaUserControl>();
+        TableSchemas = new();
     }
-
 }

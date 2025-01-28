@@ -1,5 +1,8 @@
-﻿using DbSchemas.WpfGui.ViewModels;
+﻿using DbSchemas.ServiceHub.Domain.Models;
+using DbSchemas.WpfGui.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -40,3 +43,28 @@ public partial class TableSchemaUserControl : UserControl
         }
     }
 }
+
+
+public static class TableSchemaUserControlExtensions
+{
+    /// <summary>
+    /// Build a list of TableSchemaUserControl's from the given list of table schemas.
+    /// </summary>
+    /// <param name="tableSchemas"></param>
+    /// <returns></returns>
+    public static ObservableCollection<TableSchemaUserControl> ToUserControls(this IEnumerable<TableSchema> tableSchemas)
+    {
+        var controls = tableSchemas.Select(schema =>
+        {
+            TableSchemaViewModel viewModel = new(schema);
+            TableSchemaUserControl control = new(viewModel);
+            return control;
+        });
+
+        return new(controls);
+    }
+}
+
+
+
+

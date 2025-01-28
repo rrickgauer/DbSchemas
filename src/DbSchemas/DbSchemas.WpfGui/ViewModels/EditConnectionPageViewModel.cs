@@ -35,7 +35,14 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     [NotifyPropertyChangedFor(nameof(CanDeleteConnection))]
     private IDatabase? _database = null;
 
+    partial void OnDatabaseChanged(IDatabase? oldValue, IDatabase? newValue)
+    {
+        Password = newValue?.DatabaseConnectionRecord.Password ?? string.Empty;
+    }
 
+
+    [ObservableProperty]
+    private string _password = string.Empty;
 
     partial void OnDatabaseChanged(IDatabase? value)
     {
@@ -102,6 +109,11 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
     public async Task SaveConnectionChangesAsync()
     {
         if (!CanUpdateConnection) return;
+
+        if (Database is not null)
+        {
+            Database.DatabaseConnectionRecord.Password = Password;
+        }
 
         if (Database!.DatabaseConnectionRecord.Id is null)
         {
