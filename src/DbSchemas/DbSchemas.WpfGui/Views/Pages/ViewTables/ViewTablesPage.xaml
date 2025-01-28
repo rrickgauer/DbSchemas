@@ -1,21 +1,26 @@
-﻿<Page x:Class="DbSchemas.WpfGui.Views.Pages.ViewTablesPage"
+﻿<Page x:Class="DbSchemas.WpfGui.Views.Pages.ViewTables.ViewTablesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:DbSchemas.WpfGui.Views.Pages"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DbSchemas.WpfGui.Views.Pages.ViewTables"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:helpers="clr-namespace:DbSchemas.WpfGui.Helpers"
       mc:Ignorable="d"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       d:DataContext="{d:DesignInstance local:ViewTablesPage, IsDesignTimeCreatable=False}"
       d:DesignWidth="800"
       d:Foreground="White"
       Title="ViewTablesPage">
+
     <Page.Resources>
 
         <!--Grid section style-->
         <Style x:Key="GridSectionStyle" TargetType="Border">
             <Setter Property="Margin" Value="10" />
         </Style>
+
+        <helpers:BindingProxy x:Key="Proxy" Data="{Binding}" />
 
         <!--Sidebar button style-->
         <Style x:Key="SidebarButtonStyle" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
@@ -29,8 +34,8 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -43,11 +48,13 @@
             <Border Grid.Row="0"
                     Grid.Column="0"
                     Style="{StaticResource GridSectionStyle}">
-                
-                <TextBlock Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}"
-                           d:Text="Connection name"
-                           FontSize="20"
-                           FontWeight="Bold" />
+
+                <TextBox Text="{Binding ViewModel.Database.DatabaseConnectionRecord.Name}"
+                         d:Text="Connection name"
+                         FontSize="20"
+                         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                         FontWeight="Bold"
+                         Style="{StaticResource TextboxResetStyle}" />
             </Border>
 
             <!--Close page button-->
@@ -55,10 +62,46 @@
                     Grid.Column="1"
                     Style="{StaticResource GridSectionStyle}">
 
-                <ui:Button Icon="{ui:SymbolIcon Dismiss24}"
-                           HorizontalAlignment="Right"
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    
+                    <ui:Button ToolTip="Settings"
+                               Margin="0,0,5,0"
+                               Icon="{ui:SymbolIcon Settings24}"
+                               Name="settingsDropdownButton">
+                        <ui:Button.ContextMenu>
+                            <ContextMenu DataContext="{Binding Source={StaticResource Proxy}, Path=Data}"
+                                         d:DataContext="{d:DesignInstance local:ViewTablesPage, IsDesignTimeCreatable=False}">
+                                
+                                <!--Export data button-->
+                                <ui:MenuItem Command="{Binding ViewModel.ExportDataCommand}"
+                                             ToolTip="Export the table data to a text file"
+                                             Header="Export data" />
+
+                                <!--Collapse all cards button-->
+                                <ui:MenuItem Header="Collapse cards"
+                                             Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
+                                             CommandParameter="{StaticResource FalseValue}" />
+
+                                <!--Expand all cards button-->
+                                <ui:MenuItem Header="Expand cards"
+                                             Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
+                                             CommandParameter="{StaticResource TrueValue}" />
+
+                                <!--Export data button-->
+                                <ui:MenuItem Command="{Binding ViewModel.EditConnectionCommand}"
+                                             ToolTip="Edit the connection data"
+                                             Header="Edit connection" />
+                            </ContextMenu>
+                        </ui:Button.ContextMenu>
+                    </ui:Button>
+
+                    <ui:Button Icon="{ui:SymbolIcon Dismiss24}"
                            ToolTip="Close page"
                            Command="{Binding ViewModel.ClosePageCommand}" />
+                </StackPanel>
+
+
             </Border>
 
             <!--Loading spinner-->
@@ -84,7 +127,7 @@
                            Text="{Binding ViewModel.StatusMessageText}" />
             </Border>
 
-            <!--Tables-->
+            <!--Tables List-->
             <Border Grid.Row="3"
                     Grid.Column="0"
                     Style="{StaticResource GridSectionStyle}"
@@ -100,40 +143,23 @@
                             <TextBlock Text="{Binding TableName}" Margin="5,0" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                    </ListView>
+                </ListView>
             </Border>
 
-            <!--Sidebar-->
+            <!--Open Tables-->
             <Border Grid.Row="3"
-                    Grid.Column="1"
-                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityInverseConverter}}"
-                    Style="{StaticResource GridSectionStyle}">
-                <StackPanel>
-                    <!--Export data button-->
-                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Command="{Binding ViewModel.ExportDataCommand}"
-                               ToolTip="Export the table data to a text file"
-                               Content="Export data" />
+                    Grid.Column="1">
+                <ListView ItemsSource="{Binding ViewModel.OpenTables}"
+                          ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                          d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
 
-                    <!--Collapse all cards button-->
-                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Content="Collapse cards"
-                               Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
-                               CommandParameter="{StaticResource FalseValue}" />
 
-                    <!--Expand all cards button-->
-                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Content="Expand cards"
-                               Command="{Binding ViewModel.ToggleCardsExpansionCommand}"
-                               CommandParameter="{StaticResource TrueValue}" />
-
-                    <!--Export data button-->
-                    <ui:Button Style="{StaticResource SidebarButtonStyle}"
-                               Command="{Binding ViewModel.EditConnectionCommand}"
-                               ToolTip="Edit the connection data"
-                               Content="Edit connection" />
-
-                </StackPanel>
             </Border>
 
         </Grid>

@@ -4,14 +4,14 @@ using DbSchemas.ServiceHub.Domain.Databases;
 using DbSchemas.ServiceHub.Domain.Enums;
 using DbSchemas.ServiceHub.Domain.Records;
 using DbSchemas.ServiceHub.Services;
-using DbSchemas.WpfGui.Views.Pages;
+using DbSchemas.WpfGui.Views.Pages.Connections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.Pages.EditConnection;
 
 public partial class EditConnectionPageViewModel : ObservableObject, INavigationAware
 {

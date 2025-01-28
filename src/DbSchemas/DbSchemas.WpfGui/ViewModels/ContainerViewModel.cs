@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DbSchemas.WpfGui.Views.Pages.Connections;
+using DbSchemas.WpfGui.Views.Pages.Home;
+using DbSchemas.WpfGui.Views.Pages.Settings;
 using System.Collections.ObjectModel;
 
 namespace DbSchemas.WpfGui.ViewModels;
 
 public partial class ContainerViewModel : ObservableObject
 {
-
-
     #region - Generated Properties -
 
     [ObservableProperty]
@@ -19,14 +20,14 @@ public partial class ContainerViewModel : ObservableObject
             {
                 Content = "Home",
                 Icon = new SymbolIcon(SymbolRegular.Home20),
-                TargetPageType = typeof(Views.Pages.HomePage)
+                TargetPageType = typeof(HomePage)
             },
 
             new NavigationViewItem()
             {
                 Content = "Connections",
                 Icon = new SymbolIcon(SymbolRegular.DatabasePlugConnected20),
-                TargetPageType = typeof(Views.Pages.ConnectionsPage)
+                TargetPageType = typeof(ConnectionsPage)
             },
     };
 
@@ -37,7 +38,7 @@ public partial class ContainerViewModel : ObservableObject
         {
             Content = "Settings",
             Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
-            TargetPageType = typeof(Views.Pages.SettingsPage)
+            TargetPageType = typeof(SettingsPage)
         }
     };
 

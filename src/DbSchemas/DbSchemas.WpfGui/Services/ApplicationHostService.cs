@@ -1,4 +1,5 @@
 ﻿using DbSchemas.WpfGui.Views;
+using DbSchemas.WpfGui.Views.Pages.Home;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace DbSchemas.WpfGui.Services
                 _navigationWindow = (_serviceProvider.GetService(typeof(INavigationWindow)) as INavigationWindow)!;
                 _navigationWindow!.ShowWindow();
 
-                _navigationWindow.Navigate(typeof(Views.Pages.HomePage));
+                _navigationWindow.Navigate(typeof(HomePage));
             }
 
             await Task.CompletedTask;

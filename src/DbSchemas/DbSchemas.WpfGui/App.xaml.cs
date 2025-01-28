@@ -3,6 +3,11 @@ using DbSchemas.ServiceHub.Repository;
 using DbSchemas.ServiceHub.Services;
 using DbSchemas.WpfGui.Models;
 using DbSchemas.WpfGui.Services;
+using DbSchemas.WpfGui.Views.Pages.Connections;
+using DbSchemas.WpfGui.Views.Pages.EditConnection;
+using DbSchemas.WpfGui.Views.Pages.Home;
+using DbSchemas.WpfGui.Views.Pages.Settings;
+using DbSchemas.WpfGui.Views.Pages.ViewTables;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -51,20 +56,21 @@ namespace DbSchemas.WpfGui
 
                 #region Views and ViewModels
 
-                services.AddScoped<Views.Pages.SettingsPage>();
-                services.AddScoped<ViewModels.SettingsViewModel>();
+                services.AddScoped<SettingsPage>();
+                services.AddScoped<SettingsViewModel>();
 
-                services.AddScoped<Views.Pages.HomePage>();
-                services.AddScoped<ViewModels.HomePageViewModel>();
+                services.AddScoped<HomePage>();
+                services.AddScoped<HomePageViewModel>();
 
-                services.AddScoped<Views.Pages.ConnectionsPage>();
-                services.AddScoped<ViewModels.ConnectionsPageViewModel>();
+                services.AddScoped<ConnectionsPage>();
+                services.AddScoped<ConnectionsPageViewModel>();
 
-                services.AddScoped<Views.Pages.EditConnectionPage>();
-                services.AddScoped<ViewModels.EditConnectionPageViewModel>();
+                services.AddScoped<EditConnectionPage>();
+                services.AddScoped<EditConnectionPageViewModel>();
 
-                services.AddScoped<Views.Pages.ViewTablesPage>();
-                services.AddScoped<ViewModels.ViewTablesPageViewModel>();
+                services.AddScoped<ViewTablesPage>();
+                services.AddScoped<ViewTablesPageViewModel>();
+
 
                 #endregion
 

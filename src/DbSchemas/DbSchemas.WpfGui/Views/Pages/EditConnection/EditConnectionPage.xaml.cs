@@ -1,8 +1,7 @@
 ﻿using DbSchemas.WpfGui.ViewModels;
 using System.Windows.Controls;
 
-
-namespace DbSchemas.WpfGui.Views.Pages;
+namespace DbSchemas.WpfGui.Views.Pages.EditConnection;
 
 /// <summary>
 /// Interaction logic for EditConnectionPage.xaml

@@ -4,18 +4,19 @@ using DbSchemas.ServiceHub.Domain.CustomExceptions;
 using DbSchemas.ServiceHub.Domain.Databases;
 using DbSchemas.ServiceHub.Domain.Models;
 using DbSchemas.ServiceHub.Services;
-using DbSchemas.WpfGui.Views.Pages;
+using DbSchemas.WpfGui.Views.Pages.Connections;
+using DbSchemas.WpfGui.Views.Pages.EditConnection;
+using DbSchemas.WpfGui.Views.UserControls.TableSchemas;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.Pages.ViewTables;
 
 public partial class ViewTablesPageViewModel : ObservableObject, INavigationAware
 {
@@ -41,7 +42,6 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     private IDatabase? _database;
 
     [ObservableProperty]
-    //private ObservableCollection<TableSchemaUserControl> _tableSchemas = new();
     private ObservableCollection<TableSchema> _tableSchemas = new();
 
     [ObservableProperty]
@@ -53,41 +53,13 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     private DatabaseDump _databaseDump = new();
 
     [ObservableProperty]
-    private ObservableCollection<TableSchema> _openTables = new();
-
+    private ObservableCollection<TableSchemaControl> _openTables = new();
 
 
     public void OpenTablesAsync(IEnumerable<TableSchema> tables)
     {
-        foreach(var openTable in OpenTables)
-        {
-            if (!tables.Contains(openTable))
-            {
-                OpenTables.Remove(openTable);
-            }
-        }
-
-        foreach(var table in tables)
-        {
-            if (!OpenTables.Contains(table))
-            {
-                OpenTables.Add(table);
-            }
-        }
-
+        OpenTables = tables.ToUserControls();
     }
-
-    public void OpenTableAsync(TableSchema table)
-    {
-        if (OpenTables.Contains(table))
-        {
-            return;
-        }
-
-        OpenTables.Add(table);
-    }
-
-
 
     #region - INavigationAware -
     public void OnNavigatedFrom()
@@ -110,23 +82,6 @@ public partial class ViewTablesPageViewModel : ObservableObject, INavigationAwar
     public void ClosePage()
     {
         _navigation.Navigate(typeof(ConnectionsPage));
-    }
-
-    /// <summary>
-    /// Navigate to the edit connection page.
-    /// </summary>
-    /// <param name="expandAll"></param>
-    [RelayCommand]
-    public void ToggleCardsExpansion(bool expandAll)
-    {
-        //foreach (var control in TableSchemas)
-        //{
-        //    control.ViewModel.IsExpanded = expandAll;
-        //}
-
-        
-
-        var ss = 1;
     }
 
     [RelayCommand]
