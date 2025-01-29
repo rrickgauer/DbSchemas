@@ -8,6 +8,7 @@ using DbSchemas.WpfGui.Views.Pages.EditConnection;
 using DbSchemas.WpfGui.Views.Pages.Home;
 using DbSchemas.WpfGui.Views.Pages.Settings;
 using DbSchemas.WpfGui.Views.Pages.ViewTables;
+using DbSchemas.WpfGui.Views.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -50,8 +51,8 @@ namespace DbSchemas.WpfGui
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
 
                 // Main window container with navigation
-                services.AddScoped<INavigationWindow, Views.Container>();
-                services.AddScoped<ViewModels.ContainerViewModel>();
+                services.AddScoped<INavigationWindow, Container>();
+                services.AddScoped<ContainerViewModel>();
                 #endregion
 
                 #region Views and ViewModels

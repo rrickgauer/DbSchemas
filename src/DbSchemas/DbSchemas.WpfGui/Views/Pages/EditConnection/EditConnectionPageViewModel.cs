@@ -40,16 +40,13 @@ public partial class EditConnectionPageViewModel : ObservableObject, INavigation
         Password = newValue?.DatabaseConnectionRecord.Password ?? string.Empty;
     }
 
-
-    [ObservableProperty]
-    private string _password = string.Empty;
-
     partial void OnDatabaseChanged(IDatabase? value)
     {
         PageTitle = CanDeleteConnection ? PageTitleEditConnectionText : PageTitleNewConnectionText;
     }
 
-
+    [ObservableProperty]
+    private string _password = string.Empty;
 
     [ObservableProperty]
     private string _pageTitle = PageTitleNewConnectionText;
