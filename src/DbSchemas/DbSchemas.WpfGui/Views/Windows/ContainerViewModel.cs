@@ -4,14 +4,14 @@ using DbSchemas.WpfGui.Views.Pages.Home;
 using DbSchemas.WpfGui.Views.Pages.Settings;
 using System.Collections.ObjectModel;
 
-namespace DbSchemas.WpfGui.ViewModels;
+namespace DbSchemas.WpfGui.Views.Windows;
 
 public partial class ContainerViewModel : ObservableObject
 {
     #region - Generated Properties -
 
     [ObservableProperty]
-    private string _applicationTitle = "WPF UI - UiDesktopApp1";
+    private string _applicationTitle = "Database Schemas";
 
     [ObservableProperty]
     private ObservableCollection<object> _menuItems = new()
@@ -49,9 +49,4 @@ public partial class ContainerViewModel : ObservableObject
     };
 
     #endregion
-    
-
-    
-
-
 }

@@ -1,4 +1,4 @@
-﻿using DbSchemas.WpfGui.ViewModels;
+﻿
 using System.Windows.Controls;
 
 namespace DbSchemas.WpfGui.Views.Pages.EditConnection;

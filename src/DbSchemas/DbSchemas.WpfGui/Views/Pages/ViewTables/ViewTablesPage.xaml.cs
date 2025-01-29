@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using DbSchemas.ServiceHub.Domain.Models;
 using DbSchemas.WpfGui.Messages;
-using DbSchemas.WpfGui.ViewModels;
+
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;

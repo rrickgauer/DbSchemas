@@ -1,12 +1,8 @@
-﻿using DbSchemas.WpfGui.ViewModels;
-using System;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-
 using Wpf.Ui.Appearance;
 
-
-namespace DbSchemas.WpfGui.Views;
+namespace DbSchemas.WpfGui.Views.Windows;
 
 /// <summary>
 /// Interaction logic for Container.xaml

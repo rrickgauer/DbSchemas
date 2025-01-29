@@ -1,5 +1,6 @@
 ﻿using DbSchemas.WpfGui.Views;
 using DbSchemas.WpfGui.Views.Pages.Home;
+using DbSchemas.WpfGui.Views.Windows;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
