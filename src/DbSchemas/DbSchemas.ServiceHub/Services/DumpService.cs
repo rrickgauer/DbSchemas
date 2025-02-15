@@ -36,6 +36,7 @@ public class DumpService
             DatabaseType.SQLite => new SqliteDumper(database),
             DatabaseType.MySql => new MysqlDumper(database),
             DatabaseType.Access => new AccessDumper(database),
+            DatabaseType.Postgres => new PostgresDumper(database),
             _ => null,
         };
 
