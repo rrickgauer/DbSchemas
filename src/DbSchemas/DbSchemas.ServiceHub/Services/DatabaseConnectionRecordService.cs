@@ -50,7 +50,9 @@ public class DatabaseConnectionRecordService(DatabaseConnectionRecordRepository 
         {
             DatabaseType.SQLite => new SqliteDatabase(record),
             DatabaseType.Access => new AccessDatabase(record),
-            _ => new MysqlDatabase(record),
+            DatabaseType.Postgres => new PostgresDatabase(record),
+            DatabaseType.MySql => new MysqlDatabase(record),
+            _ => throw new NotImplementedException(),
         };
 
         return database;

@@ -2,23 +2,26 @@
 using DbSchemas.ServiceHub.Domain.Models;
 using DbSchemas.ServiceHub.Sql.Commands;
 using MySql.Data.MySqlClient;
+using Npgsql;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DbSchemas.ServiceHub.Dumpers;
 
-/// <summary>
-/// Constructor
-/// </summary>
-/// <param name="dataBase"></param>
-public class MysqlDumper(IDatabase dataBase) : IDumper
+public class PostgresDumper : IDumper
 {
-    public IDatabase DataBase { get; } = dataBase;
+    public IDatabase DataBase { get; }
     private string _connectionString => DataBase.ConnectionString;
 
-    /// <summary>
-    /// Dump the database
-    /// </summary>
-    /// <returns></returns>
+    public PostgresDumper(IDatabase database)
+    {
+        DataBase = database;
+    }
+
     public async Task<DatabaseDump> DumpDatabaseAsync()
     {
         using DataTable dataTable = await GetColumnsDataTable();
@@ -39,19 +42,24 @@ public class MysqlDumper(IDatabase dataBase) : IDumper
     }
 
 
-    /// <summary>
-    /// Get a datatable of all the columns in the database (each table)
-    /// </summary>
-    /// <returns></returns>
     private async Task<DataTable> GetColumnsDataTable()
     {
-        using MySqlConnection connection = new(_connectionString);
-        using MySqlCommand command = new(MysqlDatabaseCommands.SelectAllColumns, connection);
 
-        command.Parameters.AddWithValue("@database_name", DataBase.DatabaseConnectionRecord.DatabaseName);
+        var ss = _connectionString;
 
-        DataTable dataTable = await DumperUtilities.ExecuteQueryAsync(command);
+        var sa = 1;
 
-        return dataTable;
+        await using var datasource = NpgsqlDataSource.Create(_connectionString);
+        await using var connection = datasource.OpenConnection();
+
+        await using var command = new NpgsqlCommand(PostgresCommands.SelectAllColumns, connection)
+        {
+            //Parameters =
+            //{
+            //    new() { Value = DataBase.DatabaseConnectionRecord.DatabaseName }
+            //},
+        };
+
+        return await DumperUtilities.ExecuteQueryAsync(command);
     }
 }
