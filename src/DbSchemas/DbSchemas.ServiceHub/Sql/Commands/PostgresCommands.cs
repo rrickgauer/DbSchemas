@@ -14,7 +14,7 @@ public sealed class PostgresCommands
             table_name,
             ordinal_position,
             column_name,
-            data_type, 
+            concat_ws(' ', data_type, character_maximum_length) as data_type,
             is_nullable,
             column_default
         FROM
