@@ -53,9 +53,19 @@ public partial class TableSchemaViewModel : ObservableObject
         // combine each name into a string with new lines after each name
         string text = string.Empty;
 
+        bool isFirst = true;
+
         foreach (var column in columnNames)
         {
-            text += $"{column}{Environment.NewLine}";
+            if (isFirst)
+            {
+                isFirst = false;
+                text += $"{column}";
+            }
+            else
+            {
+                text += $"{Environment.NewLine}{column}";
+            }
         }
 
         // set the clipboard text
