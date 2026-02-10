@@ -1,0 +1,15 @@
+{
+  "name": "dbschemas",
+  "version": "1.0.0",
+  "description": "Database Schemas",
+  "main": "main.js",
+  "scripts": {
+	"start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Rickgauer",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^40.2.1"
+  }
+}
