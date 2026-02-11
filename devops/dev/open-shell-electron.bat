@@ -1,0 +1,1 @@
+wt -d "C:\xampp\htdocs\files\DbSchemas\src\electron\dbschemas"

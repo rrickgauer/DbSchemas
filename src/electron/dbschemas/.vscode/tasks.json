@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "label": "npm: build",
+            "detail": "rollup -c && npm run copy-views"
+        },
+        {
+            "label": "Compile Sass",
+            "type": "shell",
+            
+            "command": "sass --quiet src/frontend/css/style.scss dist/frontend/css/style.css",
+            "problemMatcher": []
+        }
+    ]
+}
