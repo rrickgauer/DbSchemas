@@ -1,6 +1,7 @@
 
 import { ConnectionApiResponse } from "../../domain/models/connections/ConnectionApiResponse";
 import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
+import { ConnectionFormApiRequest } from "../../domain/models/connections/ConnectionFormApiRequest";
 import { datesParse, datesToIso } from "../../utilities/dates";
 import { TwoWayMapper } from "./basic-mappers";
 
@@ -42,4 +43,40 @@ export class ConnectionModelApiResponseMapper extends TwoWayMapper<ConnectionMod
 
         return result;
     }
+}
+
+
+export class ConnectionModelApiRequestFormMapper extends TwoWayMapper<ConnectionModel, ConnectionFormApiRequest>
+{
+    protected isInput(payload: any): payload is ConnectionModel
+    {
+        return payload instanceof ConnectionModel;
+    }
+    protected toOutput(payload: ConnectionModel): ConnectionFormApiRequest
+    {
+        return {
+            name: payload.name,
+            connectionType: payload.connectionType,
+            databaseName: payload.databaseName,
+            host: payload.host,
+            file: payload.file,
+            username: payload.username,
+            password: payload.password,
+        }
+    }
+    protected toInput(payload: ConnectionFormApiRequest): ConnectionModel
+    {
+        const result = new ConnectionModel();
+
+        result.name = payload.name;
+        result.connectionType = payload.connectionType;
+        result.databaseName = payload.databaseName ?? null;
+        result.host = payload.host ?? null;
+        result.file = payload.file ?? null;
+        result.username = payload.username ?? null;
+        result.password = payload.password ?? null;
+        
+        return result;
+    }
+    
 }

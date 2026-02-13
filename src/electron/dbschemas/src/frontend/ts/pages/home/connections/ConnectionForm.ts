@@ -1,6 +1,6 @@
 import { NativeEventSubmit } from "../../../../../shared/domain/constants/native-events";
 import { IController } from "../../../contracts/IController";
-import { FormInputSelect } from "../../../helpers/form-inputs/FormInputSelect";
+import { FormInputSelect, FormInputSelectNumber } from "../../../helpers/form-inputs/FormInputSelect";
 import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
 import { bootstrapShowModal } from "../../../utilities/bootstrap";
@@ -23,17 +23,16 @@ const ELE = new ConnectionFormElements();
 
 export class ConnectionForm implements IController
 {
-    private _container: HTMLDivElement;
-    private _form: HTMLFormElement;
-    private _inputConnectionName: FormInputText;
-    private _inputDatabaseName: FormInputText;
-    private _inputHost: FormInputText;
-    private _inputFile: FormInputText;
-    private _inputPassword: FormInputText;
-    private _inputConnectionType: FormInputSelect<unknown>;
-    private _btnSubmit: SpinnerButton;
-    private _fieldset: HTMLFieldSetElement;
-
+    private readonly _container: HTMLDivElement;
+    private readonly _form: HTMLFormElement;
+    private readonly _inputConnectionName: FormInputText;
+    private readonly _inputDatabaseName: FormInputText;
+    private readonly _inputHost: FormInputText;
+    private readonly _inputFile: FormInputText;
+    private readonly _inputPassword: FormInputText;
+    private readonly _inputConnectionType: FormInputSelectNumber;
+    private readonly _btnSubmit: SpinnerButton;
+    private readonly _fieldset: HTMLFieldSetElement;
 
     constructor()
     {
@@ -42,7 +41,7 @@ export class ConnectionForm implements IController
         this._form = domGetClass<HTMLFormElement>(ELE.formClass, this._container);
 
         this._inputConnectionName = domGetFormInputById(ELE.inputNameId, FormInputText);
-        this._inputConnectionType = domGetFormInputById(ELE.inputTypeId, FormInputSelect);
+        this._inputConnectionType = domGetFormInputById(ELE.inputTypeId, FormInputSelectNumber);
         this._inputDatabaseName = domGetFormInputById(ELE.inputDatabaseNameId, FormInputText);
         this._inputHost = domGetFormInputById(ELE.inputHostId, FormInputText);
         this._inputFile = domGetFormInputById(ELE.inputFileId, FormInputText);
@@ -52,12 +51,22 @@ export class ConnectionForm implements IController
         this._fieldset = domQuery<HTMLFieldSetElement>('fieldset', this._container);
     }
 
+    public show(): void
+    {
+        bootstrapShowModal(this._container);
+    }
+
     public control(): void
     {
         this.addListeners();
     }
 
     private addListeners()
+    {
+        this.addFormSubmitListener();
+    }
+
+    private addFormSubmitListener()
     {
         this._form.addEventListener(NativeEventSubmit, async (e) =>
         {
@@ -66,8 +75,5 @@ export class ConnectionForm implements IController
         });
     }
 
-    public show(): void
-    {
-        bootstrapShowModal(this._container);
-    }
+
 }

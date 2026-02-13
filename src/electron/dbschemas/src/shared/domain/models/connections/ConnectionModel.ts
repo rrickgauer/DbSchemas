@@ -15,3 +15,4 @@ export class ConnectionModel
     public username: Nullable<string> = null;
     public password: Nullable<string> = null;
 }
+

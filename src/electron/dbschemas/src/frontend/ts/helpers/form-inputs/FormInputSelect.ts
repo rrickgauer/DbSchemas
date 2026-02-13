@@ -10,9 +10,7 @@ export class FormInputSelect<T> extends FormInput<T | null>
     {
         super(e);
         this.input = e;
-
         this.selectInput = new SelectInput<T>(e);
-
     }
 
     public get value()
@@ -24,5 +22,11 @@ export class FormInputSelect<T> extends FormInput<T | null>
     {
         this.selectInput.currentOptionValue = value;
     }
-
 }
+
+export class FormInputSelectNumber extends FormInputSelect<number>
+{
+    
+}
+
+
