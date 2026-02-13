@@ -23,7 +23,7 @@ public class SqliteDatabase(DatabaseConnectionRecord databaseConnectionRecord) :
             DataSource = DatabaseConnectionRecord.File,
         };
 
-        stringBuilder.Add("FailIfMissing", "True");
+        //stringBuilder.Add("FailIfMissing", "True");
 
         return stringBuilder.ConnectionString;
     }

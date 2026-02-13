@@ -1,0 +1,29 @@
+@use "sass:map";
+
+@use "_custom-bootstrap.scss";
+@use "_variables.scss";
+
+.connections-list {
+    padding: 0;
+    // border: 1px solid black;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.connections-list-item {
+
+    & {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 0.25rem;
+    }
+}
+
+.connection-form {
+    .form-input {
+        margin-bottom: 1rem;
+    }
+}

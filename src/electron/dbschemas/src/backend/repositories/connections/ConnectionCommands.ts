@@ -1,0 +1,2 @@
+
+export const SELECT_ALL_DATABASE_CONNECTIONS = `SELECT * FROM Databases;`;

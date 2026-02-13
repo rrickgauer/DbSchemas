@@ -1,0 +1,14 @@
+<%
+    const listClass = `connections-list`;
+    const containerClass = `${listClass}-container`;
+    const btnNewConnectionClass = `btn-${listClass}-new`;
+%>
+
+
+<div class="<%= containerClass %>">
+    <h3>Your Connections</h3>
+    <button class="btn btn-sm btn-light border-light-subtle w-100 mb-3 <%= btnNewConnectionClass %>">New</button>
+
+    <ul class="<%= listClass %>"></ul>
+</div>
+

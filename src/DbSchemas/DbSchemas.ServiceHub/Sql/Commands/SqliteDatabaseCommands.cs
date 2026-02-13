@@ -19,7 +19,11 @@ public sealed class SqliteDatabaseCommands
         )
         SELECT
             at.name table_name,
-            pti.*
+            pti.cid,
+            pti.name,
+            pti.type,
+            pti.notnull,
+            CAST(pti.dflt_value AS TEXT) AS dflt_value
         FROM
             all_tables at
             INNER JOIN pragma_table_info(at.name) pti
