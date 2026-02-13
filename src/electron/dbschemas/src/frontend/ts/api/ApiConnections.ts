@@ -1,7 +1,6 @@
-import { ConnectionApiResponse } from "../../../shared/domain/models/ConnectionApiResponse";
+
+import { ConnectionApiResponse } from "../../../shared/domain/models/connections/ConnectionApiResponse";
 import { API_ENDPOINT_CONNECTIONS } from "./api-endpoints";
-
-
 
 export class ApiConnections
 {

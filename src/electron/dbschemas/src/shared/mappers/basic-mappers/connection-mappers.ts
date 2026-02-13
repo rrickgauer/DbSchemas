@@ -1,5 +1,6 @@
-import { ConnectionApiResponse } from "../../domain/models/ConnectionApiResponse";
-import { ConnectionModel } from "../../domain/models/ConnectionModel";
+
+import { ConnectionApiResponse } from "../../domain/models/connections/ConnectionApiResponse";
+import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
 import { datesParse, datesToIso } from "../../utilities/dates";
 import { TwoWayMapper } from "./basic-mappers";
 

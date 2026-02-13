@@ -1,4 +1,4 @@
-import { ConnectionModel } from "../../../shared/domain/models/ConnectionModel";
+import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 
 export type HomePageViewModel = {
     title: string;

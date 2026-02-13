@@ -1,5 +1,5 @@
 import { NativeEventClick } from "../../../../../shared/domain/constants/native-events";
-import { ConnectionModel } from "../../../../../shared/domain/models/ConnectionModel";
+import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
 import { IControllerAsync } from "../../../contracts/IController";
 import { toastShowSuccess } from "../../../helpers/toasts/toasts";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";

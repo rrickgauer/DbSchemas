@@ -1,4 +1,5 @@
-import { ConnectionType } from "../enums/ConnectionType";
+import { ConnectionType } from "../../enums/ConnectionType";
+
 
 export interface ConnectionDbRecord {
     id: number | null;

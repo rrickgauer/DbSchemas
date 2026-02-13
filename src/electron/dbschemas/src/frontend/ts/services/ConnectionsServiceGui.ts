@@ -1,4 +1,5 @@
-import { ConnectionModel } from "../../../shared/domain/models/ConnectionModel";
+
+import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
 import { ApiConnections } from "../api/ApiConnections";
 

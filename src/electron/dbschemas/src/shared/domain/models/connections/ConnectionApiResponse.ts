@@ -1,7 +1,5 @@
-import { ConnectionType } from "../enums/ConnectionType";
-import { Nullable } from "../types/types";
-
-
+import { ConnectionType } from "../../enums/ConnectionType";
+import { Nullable } from "../../types/types";
 
 export type ConnectionApiResponse = {
     id: number;

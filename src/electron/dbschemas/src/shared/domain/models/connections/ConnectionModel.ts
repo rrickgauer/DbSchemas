@@ -1,7 +1,7 @@
-import { ConnectionType } from "../enums/ConnectionType";
-import { DateTimeValid, Nullable } from "../types/types";
-import { EMPTY_STRING } from "../constants/strings";
-import { datesGetCurrentDatetime } from "../../utilities/dates";
+import { datesGetCurrentDatetime } from "../../../utilities/dates";
+import { EMPTY_STRING } from "../../constants/strings";
+import { ConnectionType } from "../../enums/ConnectionType";
+import { DateTimeValid, Nullable } from "../../types/types";
 
 export class ConnectionModel
 {

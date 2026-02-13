@@ -1,4 +1,5 @@
-import { ConnectionModel } from "../../../shared/domain/models/ConnectionModel";
+
+import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 import { ConnectionTableMapper } from "../../../shared/mappers/table-mappers/ConnectionTableMapper";
 import { IConnectionRepository } from "../../repositories/connections/IConnectionRepository";
 
