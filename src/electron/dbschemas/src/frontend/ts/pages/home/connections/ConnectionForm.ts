@@ -140,7 +140,12 @@ export class ConnectionForm implements IController
         this.getFormInputs().forEach((formInput) => formInput.clearValidation());
     }
 
-    private getFormInputs(): FormInput<any>[]
+    private clearInputValues(): void
+    {
+        this.getFormInputs().forEach((input) => input.value = null);
+    }
+
+    private getFormInputs(): FormInput<any | null>[]
     {
         return [
             this._inputConnectionName,
