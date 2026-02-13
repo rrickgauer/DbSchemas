@@ -2,6 +2,7 @@ import { NativeEventSubmit } from "../../../../../shared/domain/constants/native
 import { ConnectionType } from "../../../../../shared/domain/enums/ConnectionType";
 import { ConnectionFormApiRequest } from "../../../../../shared/domain/models/connections/ConnectionFormApiRequest";
 import { IController } from "../../../contracts/IController";
+import { FormInput } from "../../../helpers/form-inputs/FormInput";
 import { FormInputSelect, FormInputSelectNumber } from "../../../helpers/form-inputs/FormInputSelect";
 import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
@@ -62,6 +63,7 @@ export class ConnectionForm implements IController
         this._inputFile = domGetFormInputById(ELE.inputFileId, FormInputText);
         this._inputUsername = domGetFormInputById(ELE.inputUsernameId, FormInputText);
         this._inputPassword = domGetFormInputById(ELE.inputPasswordId, FormInputText);
+
         this._btnSubmit = new SpinnerButton(domGetClass('btn-submit', this._container));
         this._fieldset = domQuery<HTMLFieldSetElement>('fieldset', this._container);
     }
@@ -98,13 +100,14 @@ export class ConnectionForm implements IController
             return;
         }
 
-
     }
 
     
 
     private getValidatedFormData(): ConnectionFormApiRequest | null
     {
+        this.clearInputValidations();
+
         let isValid = true;
 
         if (!this._inputConnectionName.checkForValue('Required'))
@@ -128,6 +131,22 @@ export class ConnectionForm implements IController
         };
     }
 
-    
+    private clearInputValidations(): void
+    {
+        this.getFormInputs().forEach((formInput) => formInput.clearValidation());
+    }
+
+    private getFormInputs(): FormInput<any>[]
+    {
+        return [
+            this._inputConnectionName,
+            this._inputConnectionType,
+            this._inputDatabaseName,
+            this._inputHost,
+            this._inputFile,
+            this._inputUsername,
+            this._inputPassword,
+        ]
+    }
 
 }
