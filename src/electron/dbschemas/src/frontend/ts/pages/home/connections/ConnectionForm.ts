@@ -8,6 +8,7 @@ import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
 import { bootstrapShowModal } from "../../../utilities/bootstrap";
 import { domGetClass, domGetFormInputById, domQuery } from "../../../utilities/dom";
+import { formsSetIsDisabled } from "../../../utilities/forms";
 
 class ConnectionFormElements
 {
@@ -100,9 +101,12 @@ export class ConnectionForm implements IController
             return;
         }
 
+        formsSetIsDisabled(this._btnSubmit, this._fieldset, true);
+
     }
 
-    
+
+
 
     private getValidatedFormData(): ConnectionFormApiRequest | null
     {
