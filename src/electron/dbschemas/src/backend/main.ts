@@ -3,14 +3,6 @@ import { router } from './protocol/routes';
 import path from 'path';
 
 
-
-if (process.env.NODE_ENV === 'development') {
-    require('electron-reload')(__dirname, {
-        electron: require('electron'),
-        hardResetMethod: 'exit'
-    });
-}
-
 protocol.registerSchemesAsPrivileged([
     {
         scheme: 'app',
