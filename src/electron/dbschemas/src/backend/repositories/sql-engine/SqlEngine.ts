@@ -3,7 +3,7 @@ import { DataRow, ParameterBindings } from '../../../shared/domain/types/types';
 
 
 
-const EMPTY_PARMS = {};
+const EMPTY_PARMS = {} as ParameterBindings;
 
 export class SqlEngine
 {

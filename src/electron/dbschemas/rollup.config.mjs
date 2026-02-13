@@ -11,7 +11,16 @@ export default [
             format: 'cjs',
             sourcemap: true,
         },
-        external: ['electron', 'fs', 'path', 'url'],
+        external: [
+            'electron',
+            'fs',
+            'path',
+            'url',
+            'crypto',
+            'better-sqlite3',
+            'ejs'
+        ],
+
         plugins: [typescript()]
     },
 
@@ -22,7 +31,10 @@ export default [
             format: 'cjs',
             sourcemap: true,
         },
-        external: ['electron'],
+        external: [
+            'electron',
+            'crypto'
+        ],
         plugins: [typescript()]
     },
 
@@ -42,6 +54,15 @@ export default [
             }),
             commonjs(),
             typescript(),
-        ]
-    }
+        ],
+        external: [
+            'electron',
+            'fs',
+            'path',
+            'url',
+            'crypto',
+            'better-sqlite3',
+            'ejs'
+        ],
+    },
 ];
