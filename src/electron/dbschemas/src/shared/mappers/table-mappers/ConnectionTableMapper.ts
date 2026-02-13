@@ -1,4 +1,5 @@
-import { ConnectionModel } from "../../domain/models/ConnectionModel";
+
+import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
 import { DataRow } from "../../domain/types/types";
 import { datesParse } from "../../utilities/dates";
 import { getValueDefault } from "../../utilities/misc";
