@@ -7,9 +7,9 @@
 </head>
 
 <body>
-
+    <%- include('../../includes/page-top-bundle'); -%>
+    
     <div class="container-fluid mt-2">
-
         <div class="row">
             <div class="col-md-4 col-lg-3 col-xl-2">
                 <%- include('connections-list'); -%>
@@ -19,8 +19,7 @@
 
     <%- include('connection-modal'); -%>
     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+    <%- include('../../includes/header'); -%>
     <script src="frontend/home.js"></script>
 </body>
 

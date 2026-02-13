@@ -8,7 +8,7 @@ export class ConnectionRepository implements IConnectionRepository
     public getAllConnections(): DataTable
     {
         const sqlEngine = new SqlEngine();
-        return sqlEngine.selectAll(SELECT_ALL_DATABASE_CONNECTIONS);
+        return sqlEngine.selectAll(SELECT_ALL_DATABASE_CONNECTIONS) as DataTable;
     }
 }
 
