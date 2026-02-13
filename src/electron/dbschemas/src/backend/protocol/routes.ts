@@ -10,8 +10,5 @@ export const router = new AppRouter();
 router.get('/home', async () => getHomePage());
 router.get('/', async () => getHomePage());
 
+// api routes
 router.get('/api/connections', async () => getConnections());
-
-// Later you can add:
-// router.get('/api/lists', getListsApi);
-// router.get('/settings', getSettingsPage);

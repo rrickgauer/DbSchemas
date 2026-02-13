@@ -26,20 +26,16 @@ export class AppRouter
         }
 
         // try serving static files
-        const filePath = path.join(
-            process.cwd(),
-            'dist',
-            parsedUrl.pathname
-        );
+        const staticFilePath = path.join(process.cwd(), 'dist', parsedUrl.pathname);
 
-        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile())
+        if (fs.existsSync(staticFilePath) && fs.statSync(staticFilePath).isFile())
         {
-            const file = fs.readFileSync(filePath);
+            const file = fs.readFileSync(staticFilePath);
 
             return new Response(file, {
                 status: 200,
                 headers: {
-                    'Content-Type': getContentType(filePath)
+                    'Content-Type': getContentType(staticFilePath)
                 }
             });
         }
