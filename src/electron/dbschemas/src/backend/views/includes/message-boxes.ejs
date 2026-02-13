@@ -1,0 +1,65 @@
+
+<%
+    const modalClass = `message-box`;
+    const contentClass = `modal-body-content`;
+    const footerClass = `modal-body-footer`;
+    const standardMessageBoxId = `message-box-standard`;
+    const successMessageBoxId = `message-box-success`;
+    const errorMessageBoxId = `message-box-error`;
+    const confirmMessageBoxId = `message-box-confirm`;
+%>
+
+<div id="message-box-container">
+
+    <% getModalHtml(standardMessageBoxId, 'Details') %>
+    <% getModalHtml(successMessageBoxId, 'Success') %>
+    <% getModalHtml(errorMessageBoxId, 'Error') %>
+
+    <!-- Confirm -->
+    <div class="modal <%= modalClass %>" tabindex="-1" id="<%= confirmMessageBoxId %>">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="<%= contentClass %>"></div>
+                    <div class="<%= footerClass %>">
+                        <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success ms-1" data-js-confirm></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%
+    function getModalHtml(modalId, title)
+    {
+        let html = //html
+        `
+        <div class="modal <%= modalClass %>" tabindex="-1" id="<%= modalId %>">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5"><%= title %></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="<%= contentClass %>"></div>
+                        <div class="<%= footerClass %>">
+                            <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        `;
+    }
+%>
