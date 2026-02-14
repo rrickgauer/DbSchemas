@@ -1,4 +1,5 @@
 // src/main/protocol/routes.ts
+import { API_ENDPOINT_CONNECTIONS } from '../../shared/domain/enums/ApiEndpoints';
 import { getConnections } from '../controllers/api/api-connections-controllers';
 import { getHomePage } from '../controllers/gui/gui-controllers';
 import { AppRouter } from './router';
@@ -11,4 +12,4 @@ router.get('/home', getHomePage);
 router.get('/', getHomePage);
 
 // api routes
-router.get('/api/connections', getConnections);
+router.get(`${API_ENDPOINT_CONNECTIONS}`, getConnections);

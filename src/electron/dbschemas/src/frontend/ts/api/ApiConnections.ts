@@ -3,7 +3,7 @@ import { HttpMethods } from "../../../shared/domain/constants/HttpMethods";
 import { ConnectionApiResponse } from "../../../shared/domain/models/connections/ConnectionApiResponse";
 import { ConnectionFormApiRequest } from "../../../shared/domain/models/connections/ConnectionFormApiRequest";
 import { sendJsonApiRequest } from "../utilities/Requests";
-import { API_ENDPOINT_CONNECTIONS } from "./ApiEndpoints";
+import { API_ENDPOINT_CONNECTIONS } from "../../../shared/domain/enums/ApiEndpoints";
 
 export class ApiConnections
 {
