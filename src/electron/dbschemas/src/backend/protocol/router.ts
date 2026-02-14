@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { HttpStatusCode } from '../../frontend/ts/api/HttpStatusCode';
+import { HttpMethods } from '../../shared/domain/constants/HttpMethods';
 
 
 // export type RouteHandler = (url: URL) => Promise<Response>;
@@ -18,15 +19,38 @@ export class AppRouter
 {
     private readonly _routes = new Map<string, RouteHandler>();
 
-    public get(path: string, handler: RouteHandler)
+    //#region - Set handlers -
+    public get(path: string, handler: RouteHandler): void
     {
-        this._routes.set(`GET ${path}`, handler);
+        this.setRouteHandler(path, handler, HttpMethods.GET);
     }
 
-    public post(path: string, handler: RouteHandler)
+    public post(path: string, handler: RouteHandler): void
     {
-        this._routes.set(`POST ${path}`, handler);
+        this.setRouteHandler(path, handler, HttpMethods.POST);
     }
+
+    public put(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.PUT);
+    }
+
+    public delete(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.DELETE);
+    }
+
+    public patch(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.PATCH);
+    }
+
+    private setRouteHandler(path: string, handler: RouteHandler, httpMethod: HttpMethods): void
+    {
+        this._routes.set(`${httpMethod} ${path}`, handler);
+    }
+    //#endregion
+
 
     public async handle(request: Request): Promise<Response>
     {
@@ -70,10 +94,6 @@ export class AppRouter
     }
 
 }
-
-
-
-
 
 function getContentType(filePath: string): string
 {
