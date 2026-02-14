@@ -7,8 +7,8 @@ import { AppRouter } from './router';
 export const router = new AppRouter();
 
 // Page routes
-router.get('/home', async () => getHomePage());
-router.get('/', async () => getHomePage());
+router.get('/home', getHomePage);
+router.get('/', getHomePage);
 
 // api routes
-router.get('/api/connections', async () => getConnections());
+router.get('/api/connections', getConnections);

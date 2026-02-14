@@ -1,51 +1,79 @@
 import fs from 'fs';
 import path from 'path';
+import { HttpStatusCode } from '../../frontend/ts/api/HttpStatusCode';
 
 
-export type RouteHandler = (url: URL) => Promise<Response>;
+// export type RouteHandler = (url: URL) => Promise<Response>;
+
+export type ControllerArgs = {
+    url: URL;
+    request: Request;
+}
+
+export type RouteHandler = (args: ControllerArgs) => Promise<Response>;
+
+const NOT_FOUND_RESPONSE = new Response('Not Found', { status: 404 });
 
 export class AppRouter
 {
-    private routes = new Map<string, RouteHandler>();
+    private readonly _routes = new Map<string, RouteHandler>();
 
     public get(path: string, handler: RouteHandler)
     {
-        this.routes.set(`GET ${path}`, handler);
+        this._routes.set(`GET ${path}`, handler);
+    }
+
+    public post(path: string, handler: RouteHandler)
+    {
+        this._routes.set(`POST ${path}`, handler);
     }
 
     public async handle(request: Request): Promise<Response>
     {
         // try dynamic routing
-        const parsedUrl = new URL(request.url);
+        const urlString = typeof request.url === 'string' ? request.url : '';
+        const parsedUrl = new URL(urlString, 'app://localhost');
+
         const key = `${request.method} ${parsedUrl.pathname}`;
-        const handler = this.routes.get(key);
+        const handler = this._routes.get(key);
 
         if (handler)
         {
-            return handler(parsedUrl);
-        }
-
-        // try serving static files
-        const staticFilePath = path.join(process.cwd(), 'dist', parsedUrl.pathname);
-
-        if (fs.existsSync(staticFilePath) && fs.statSync(staticFilePath).isFile())
-        {
-            const file = fs.readFileSync(staticFilePath);
-
-            return new Response(file, {
-                status: 200,
-                headers: {
-                    'Content-Type': getContentType(staticFilePath)
-                }
+            return handler({
+                url: parsedUrl,
+                request: request,
             });
         }
 
-        // not found
-        console.warn('router.handle no route registered for:', key);
-        return new Response('Not Found', { status: 404 });
-
+        // try serving static files
+        const staticFileResponse = this.tryReturnStaticFile(parsedUrl);
+        return staticFileResponse ?? NOT_FOUND_RESPONSE;
     }
+
+    private tryReturnStaticFile(parsedUrl: URL): Response | null
+    {
+        const staticFilePath = path.join(process.cwd(), 'dist', parsedUrl.pathname);
+
+        if (!fs.existsSync(staticFilePath) || !fs.statSync(staticFilePath).isFile())
+        {
+            return null;
+        }
+
+        const file = fs.readFileSync(staticFilePath);
+
+        return new Response(file, {
+            status: HttpStatusCode.OK,
+            headers: {
+                'Content-Type': getContentType(staticFilePath)
+            }
+        });
+    }
+
 }
+
+
+
+
 
 function getContentType(filePath: string): string
 {
