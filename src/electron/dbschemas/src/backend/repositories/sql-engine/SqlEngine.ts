@@ -1,13 +1,19 @@
 import Database, { Database as DbConnection } from 'better-sqlite3';
 import { DataRow, ParameterBindings } from '../../../shared/domain/types/types';
-
-
+import { IApplicationData } from '../../domain/ApplicationData/IApplicationData';
 
 const EMPTY_PARMS = {} as ParameterBindings;
 
 export class SqlEngine
 {
-    private readonly _dbFile = 'C:\\Users\\Ryan.Rickgauer\\AppData\\Local\\DbSchemas\\DbSchemas-Data.db';
+    private readonly _applicationData: IApplicationData;
+    private readonly _dbFile: string;
+
+    constructor(applicationData: IApplicationData)
+    {
+        this._applicationData = applicationData;
+        this._dbFile = this._applicationData.DatabaseFile;
+    }
 
     public select(sql: string): DataRow | null;
     public select(sql: string, parms: ParameterBindings): DataRow | null;

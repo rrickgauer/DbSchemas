@@ -1,7 +1,7 @@
 import ejs from 'ejs';
 import { HomePageViewModel } from '../../domain/view-models/home-page-view-model';
 import { HOME_PAGE_VIEW_FILE } from '../../../shared/domain/constants/gui-view-files';
-import { connectionService as ConnectionService} from '../../utilities/dependencies';
+import { diConnectionService as ConnectionService} from '../../utilities/dependencies';
 
 export async function getHomePage(): Promise<Response>
 {

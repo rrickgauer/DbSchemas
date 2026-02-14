@@ -18,7 +18,9 @@ export default [
             'url',
             'crypto',
             'better-sqlite3',
-            'ejs'
+            'ejs',
+            'node:path',
+            'os',
         ],
 
         plugins: [typescript()]

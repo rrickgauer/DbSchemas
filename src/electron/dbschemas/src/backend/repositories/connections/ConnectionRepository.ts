@@ -5,10 +5,16 @@ import { IConnectionRepository } from "./IConnectionRepository";
 
 export class ConnectionRepository implements IConnectionRepository
 {
+    private readonly _sqlEngine: SqlEngine;
+
+    constructor(sqlEngine: SqlEngine)
+    {
+        this._sqlEngine = sqlEngine;
+    }
+
     public getAllConnections(): DataTable
     {
-        const sqlEngine = new SqlEngine();
-        return sqlEngine.selectAll(SELECT_ALL_DATABASE_CONNECTIONS) as DataTable;
+        return this._sqlEngine.selectAll(SELECT_ALL_DATABASE_CONNECTIONS) as DataTable;
     }
 }
 
