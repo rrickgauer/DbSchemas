@@ -3,7 +3,7 @@ import { Nullable } from "../../types/types";
 
 
 
-export type ConnectionFormApiRequest = {
+export type ConnectionApiRequestForm = {
     name: string;
     connectionType: ConnectionType;
     databaseName?: Nullable<string>;

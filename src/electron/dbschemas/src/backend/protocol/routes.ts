@@ -13,4 +13,4 @@ router.get('/', getHomePage);
 
 // api routes
 router.get(`${API_ENDPOINT_CONNECTIONS}`, apiGetConnections);
-router.get(`${API_ENDPOINT_CONNECTIONS}`, apiPostConnection);
+router.post(`${API_ENDPOINT_CONNECTIONS}`, apiPostConnection);

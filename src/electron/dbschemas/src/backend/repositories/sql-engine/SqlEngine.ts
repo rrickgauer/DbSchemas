@@ -50,6 +50,14 @@ export class SqlEngine
         return result as DataRow[];
     }
 
+    public modifyReturningRowId(sql: string, parms: ParameterBindings): number
+    {
+        const connection = this.getDbConnection();
+        const stmt = connection.prepare(sql);
+        const result = stmt.run(parms);
+        return result.lastInsertRowid as number;
+    }
+
 
     private getDbConnection(): DbConnection
     {

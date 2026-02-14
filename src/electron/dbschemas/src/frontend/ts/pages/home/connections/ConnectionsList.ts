@@ -50,11 +50,6 @@ export class ConnectionsList implements IControllerAsync
         this._btnNewConnection.addEventListener(NativeEventClick, (e) =>
         {
             this._connectionForm.show();
-
-            toastShowSuccess({
-                message: 'testing',
-                title: 'rmr',
-            });
         });
     }
 

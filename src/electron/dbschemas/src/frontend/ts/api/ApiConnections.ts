@@ -1,7 +1,7 @@
 
 import { HttpMethods } from "../../../shared/domain/constants/HttpMethods";
 import { ConnectionApiResponse } from "../../../shared/domain/models/connections/ConnectionApiResponse";
-import { ConnectionFormApiRequest } from "../../../shared/domain/models/connections/ConnectionFormApiRequest";
+import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { sendJsonApiRequest } from "../utilities/Requests";
 import { API_ENDPOINT_CONNECTIONS } from "../../../shared/domain/enums/ApiEndpoints";
 
@@ -14,16 +14,14 @@ export class ApiConnections
         return await fetch(this._url);
     }
 
-    public async post(connectionData: ConnectionFormApiRequest): Promise<ConnectionApiResponse>
+    public async post(connectionData: ConnectionApiRequestForm): Promise<Response>
     {
         const url = `${this._url}`;
 
-        const response = await sendJsonApiRequest(url, {
+        return await sendJsonApiRequest(url, {
             data: connectionData,
             method: HttpMethods.POST,
         });
-
-        return await response.json();
     }
 }
 

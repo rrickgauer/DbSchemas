@@ -1,14 +1,18 @@
+import { ConnectionService } from "../../../../../backend/services/connections/ConnectionService";
 import { NativeEventSubmit } from "../../../../../shared/domain/constants/native-events";
 import { ConnectionType } from "../../../../../shared/domain/enums/ConnectionType";
-import { ConnectionFormApiRequest } from "../../../../../shared/domain/models/connections/ConnectionFormApiRequest";
+import { ConnectionApiRequestForm } from "../../../../../shared/domain/models/connections/ConnectionApiRequestForm";
+import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
 import { IController } from "../../../contracts/IController";
 import { FormInput } from "../../../helpers/form-inputs/FormInput";
 import { FormInputSelect, FormInputSelectNumber } from "../../../helpers/form-inputs/FormInputSelect";
 import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
+import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { bootstrapShowModal } from "../../../utilities/bootstrap";
 import { domGetClass, domGetFormInputById, domQuery } from "../../../utilities/dom";
-import { formsSetIsDisabled } from "../../../utilities/forms";
+import { formsSetIsDisabled as formsToggleIsDisabled } from "../../../utilities/forms";
+import { executeServiceCall } from "../../../utilities/ServiceResponses";
 
 class ConnectionFormElements
 {
@@ -38,6 +42,7 @@ export class ConnectionForm implements IController
     private readonly _btnSubmit: SpinnerButton;
     private readonly _fieldset: HTMLFieldSetElement;
     private readonly _inputUsername: FormInputText;
+    private _connectionService: ConnectionsServiceGui;
     
     private get _selectedConnectionType(): ConnectionType
     {
@@ -64,9 +69,9 @@ export class ConnectionForm implements IController
         this._inputFile = domGetFormInputById(ELE.inputFileId, FormInputText);
         this._inputUsername = domGetFormInputById(ELE.inputUsernameId, FormInputText);
         this._inputPassword = domGetFormInputById(ELE.inputPasswordId, FormInputText);
-
         this._btnSubmit = new SpinnerButton(domGetClass('btn-submit', this._container));
         this._fieldset = domQuery<HTMLFieldSetElement>('fieldset', this._container);
+        this._connectionService = new ConnectionsServiceGui();
     }
 
     public show(): void
@@ -101,14 +106,25 @@ export class ConnectionForm implements IController
             return;
         }
 
-        formsSetIsDisabled(this._btnSubmit, this._fieldset, true);
+        formsToggleIsDisabled(this._btnSubmit, this._fieldset, true);
+
+        const newConnection = await this.sendFormApiRequest(formData);
+
+        formsToggleIsDisabled(this._btnSubmit, this._fieldset, false);
+
 
     }
 
+    private async sendFormApiRequest(formData: ConnectionApiRequestForm): Promise<ConnectionModel | null>
+    {
+        return await executeServiceCall({
+            callback: () => this._connectionService.createConnection(formData),
+            errorMessage: `Connection not created`,
+            successMessage: `Connection created successfully`,
+        });
+    }
 
-
-
-    private getValidatedFormData(): ConnectionFormApiRequest | null
+    private getValidatedFormData(): ConnectionApiRequestForm | null
     {
         this.clearInputValidations();
 
@@ -143,6 +159,7 @@ export class ConnectionForm implements IController
     private clearInputValues(): void
     {
         this.getFormInputs().forEach((input) => input.value = null);
+        this._selectedConnectionType = ConnectionType.MySQL;
     }
 
     private getFormInputs(): FormInput<any | null>[]
