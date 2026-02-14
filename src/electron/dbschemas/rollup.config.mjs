@@ -55,7 +55,10 @@ export default [
                 preferBuiltins: false
             }),
             commonjs(),
-            typescript(),
+            typescript({
+                sourceMap: true,
+                inlineSources: true
+            }),
         ],
         external: [
             'electron',

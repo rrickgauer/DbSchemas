@@ -33,7 +33,10 @@ app.whenReady().then(() =>
 
     win.loadURL('app:///home');
 
-    // win.webContents.openDevTools();
+    // win.webContents.openDevTools({ 
+    //     mode: 'detach', 
+    //     activate: false, 
+    // });
 });
 
 

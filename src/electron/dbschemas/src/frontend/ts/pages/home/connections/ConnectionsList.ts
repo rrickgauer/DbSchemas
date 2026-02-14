@@ -1,10 +1,12 @@
 import { NativeEventClick } from "../../../../../shared/domain/constants/native-events";
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
+import { handleApiResponseException } from "../../../../../shared/utilities/Errors";
 import { IControllerAsync } from "../../../contracts/IController";
-import { toastShowSuccess } from "../../../helpers/toasts/toasts";
+import { toastShowError, toastShowSuccess, toastShowUnexpectedErrorMessage } from "../../../helpers/toasts/toasts";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { ConnectionListItemTemplate, ConnectionListItemTemplateElements } from "../../../templates/ConnectionListItemTemplate";
 import { domGetClass } from "../../../utilities/dom";
+import { executeServiceCall } from "../../../utilities/ServiceResponses";
 import { ConnectionForm } from "./ConnectionForm";
 
 export class ConnectionsListElements
@@ -26,7 +28,7 @@ export class ConnectionsList implements IControllerAsync
     private _btnNewConnection: HTMLButtonElement;
     private _connectionForm: ConnectionForm;
 
-    constructor()
+    constructor ()
     {
         this._connectionService = new ConnectionsServiceGui();
         this._htmlEngine = new ConnectionListItemTemplate();
@@ -77,9 +79,12 @@ export class ConnectionsList implements IControllerAsync
         this._connectionsListContainer.insertAdjacentHTML("afterbegin", html);
     }
 
-    private async getConnections(): Promise<ConnectionModel[]>
+    private async getConnections(): Promise<ConnectionModel[] | null>
     {
-        return await this._connectionService.getConnections();
+        return await executeServiceCall({
+            callback: () => this._connectionService.getConnections(),
+            errorMessage: `Unable to fetch connections`,
+        });
     }
     //#endregion
 }

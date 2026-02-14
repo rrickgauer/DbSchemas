@@ -1,6 +1,7 @@
 import { ApiForbiddenException } from "../../../shared/domain/errors/ApiForbiddenException";
 import { ApiNotFoundException } from "../../../shared/domain/errors/ApiNotFoundException";
-import { ServiceResponse, ServiceResponseBase } from "../../../shared/domain/ServiceResponses/responses";
+import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
+import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
 import { HttpStatusCode } from "./HttpStatusCode";
 
 

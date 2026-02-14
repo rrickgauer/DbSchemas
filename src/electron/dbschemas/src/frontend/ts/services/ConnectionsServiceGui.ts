@@ -1,7 +1,7 @@
 
 import { ConnectionApiResponse } from "../../../shared/domain/models/connections/ConnectionApiResponse";
 import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
-import { ServiceResponse } from "../../../shared/domain/ServiceResponses/responses";
+import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
 import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
 import { ApiConnections } from "../api/ApiConnections";
 import { toServiceResponse } from "../api/responses";
