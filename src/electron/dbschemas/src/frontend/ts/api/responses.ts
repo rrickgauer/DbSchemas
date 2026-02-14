@@ -1,10 +1,17 @@
 import { ApiForbiddenException } from "../../../shared/domain/errors/ApiForbiddenException";
 import { ApiNotFoundException } from "../../../shared/domain/errors/ApiNotFoundException";
 import { ServiceResponse, ServiceResponseBase } from "../../../shared/domain/ServiceResponses/responses";
-import { Nullable } from "../../../shared/domain/types/types";
-import { isString } from "../../../shared/utilities/converters";
-import { isNull, notNull } from "../../../shared/utilities/nullable";
 import { HttpStatusCode } from "./HttpStatusCode";
+
+
+
+export function makeServiceResponse<T>(args: {data?: T | null, errorMessage?: string | null}): ServiceResponse<T>
+{
+    return new ServiceResponse<T>({
+        data: args.data,
+        errorMessage: args.errorMessage, 
+    });
+}
 
 /**
  * Create a new empty service response

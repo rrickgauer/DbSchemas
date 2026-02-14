@@ -9,11 +9,9 @@ export class ApiConnections
 {
     private _url = `${API_ENDPOINT_CONNECTIONS}`;
 
-    public async get(): Promise<ConnectionApiResponse[]>
+    public async get(): Promise<Response>
     {
-        const response = await fetch(this._url);
-
-        return await response.json();
+        return await fetch(this._url);
     }
 
     public async post(connectionData: ConnectionFormApiRequest): Promise<ConnectionApiResponse>
