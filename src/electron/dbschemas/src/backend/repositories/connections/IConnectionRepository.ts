@@ -6,6 +6,8 @@ export interface IConnectionRepository
 {
     getAllConnections(): DataTable
     insertConnection(newConnectionData: ConnectionApiRequestForm): number;
+    updateConnection(connectionId: number, data: ConnectionApiRequestForm): number;
+    getConnection(connectionId: number): DataRow | null;
 }   
 
 

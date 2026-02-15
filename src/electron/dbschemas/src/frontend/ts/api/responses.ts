@@ -2,7 +2,7 @@ import { ApiForbiddenException } from "../../../shared/domain/errors/ApiForbidde
 import { ApiNotFoundException } from "../../../shared/domain/errors/ApiNotFoundException";
 import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
-import { HttpStatusCode } from "./HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/domain/enums/HttpStatusCode";
 
 
 

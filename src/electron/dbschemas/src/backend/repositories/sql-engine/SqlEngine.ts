@@ -9,7 +9,7 @@ export class SqlEngine
     private readonly _applicationData: IApplicationData;
     private readonly _dbFile: string;
 
-    constructor(applicationData: IApplicationData)
+    constructor (applicationData: IApplicationData)
     {
         this._applicationData = applicationData;
         this._dbFile = this._applicationData.DatabaseFile;
@@ -46,7 +46,7 @@ export class SqlEngine
         }
 
         const result = stmt.all(parms);
-        
+
         return result as DataRow[];
     }
 
@@ -56,6 +56,21 @@ export class SqlEngine
         const stmt = connection.prepare(sql);
         const result = stmt.run(parms);
         return result.lastInsertRowid as number;
+    }
+
+    public modify(sql: string): number;
+    public modify(sql: string, parms: ParameterBindings): number;
+    public modify(sql: string, parms?: ParameterBindings): number
+    {
+        if (!parms)
+        {
+            parms = EMPTY_PARMS;
+        }
+
+        const connection = this.getDbConnection();
+        const stmt = connection.prepare(sql);
+        const result = stmt.run(parms);
+        return result.changes;
     }
 
 

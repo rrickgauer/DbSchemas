@@ -5,6 +5,7 @@ import { isString } from "./converters";
 import { DateTimeValid, Nullable } from '../domain/types/types';
 import { notNull } from './nullable';
 import { Valid } from 'luxon/src/_util';
+import { ArgumentException } from '../domain/errors/ArgumentException';
 
 export function datesAddWeeks(value: dt, weeks: number): DateTimeValid
 {
@@ -57,7 +58,7 @@ export function datesGetFullDateDisplay(dateValue: string): string;
 export function datesGetFullDateDisplay(dateValue: dt): string;
 export function datesGetFullDateDisplay(dateValue: string | dt): string
 {
-    let datetime = isString(dateValue) ? datesParse(dateValue) : dateValue;
+    let datetime = isString(dateValue) ? datesParseString(dateValue) : dateValue;
     return datetime.toLocaleString(dt.DATE_SHORT);
 }
 
@@ -67,17 +68,27 @@ export function datesGetDateAndTimeDisplay(value: dt | string): string
 {
     if (isString(value))
     {
-        value = datesParse(value);
+        value = datesParseString(value);
     }
 
     return value.toLocaleString(DateTime.DATETIME_SHORT);
 }
 
-export function datesParse(dateValue: string): DateTimeValid
+export function datesParseString(dateValue: string): DateTimeValid
 {
-    const result = dt.fromISO(dateValue) as DateTimeValid;
+    let isoDate = dt.fromISO(dateValue);
+    if (isoDate.isValid)
+    {
+        return isoDate;
+    }
 
-    return result;
+    const sqlDate = dt.fromSQL(dateValue);
+    if (sqlDate.isValid)
+    {
+        return sqlDate;
+    }
+
+    throw new ArgumentException(`dateValue`);
 }
 
 export function datesToIso(date: DateTime): string
@@ -91,7 +102,7 @@ export function datesToDateOnlyString(value: string | dt): string
 {
     if (isString(value))
     {
-        value = datesParse(value);
+        value = datesParseString(value);
     }
 
     return value.toISODate()!;
@@ -134,7 +145,7 @@ export function datesToHtmlTimeInputString(date: dt | string | null): string | n
 
     if (isString(date))
     {
-        date = datesParse(date);
+        date = datesParseString(date);
     }
 
     return date.toLocaleString(dt.TIME_24_SIMPLE);
@@ -151,7 +162,7 @@ export function datesToHttpTimeString(value: dt | string | null): string | null
 
     if (isString(value))
     {
-        value = datesParse(value);
+        value = datesParseString(value);
     }
 
     return value.toLocaleString(dt.TIME_24_WITH_SECONDS)
@@ -166,7 +177,7 @@ export function datesToDisplayTime(value: dt | string): string
 {
     if (isString(value))
     {
-        value = datesParse(value);
+        value = datesParseString(value);
     }
 
     return value.toLocaleString(dt.TIME_SIMPLE);
@@ -176,7 +187,7 @@ export function datesToDisplayTime(value: dt | string): string
 
 export function datesGetInputValue(inputElement: HTMLInputElement): DateTimeValid | null
 {
-    return notNull(inputElement.value) ? datesParse(inputElement.value) : null;
+    return notNull(inputElement.value) ? datesParseString(inputElement.value) : null;
 }
 
 export function datesToSortValue(date: string): number;
@@ -185,7 +196,7 @@ export function datesToSortValue(date: string | dt): number
 {
     if (isString(date))
     {
-        date = datesParse(date);
+        date = datesParseString(date);
     }
 
     return date.toUnixInteger();
@@ -206,7 +217,7 @@ export function datesGetTimeAgo(start: dt | string, end?: dt): string
 
     if (isString(start))
     {
-        start = datesParse(start);
+        start = datesParseString(start);
     }
 
     const minutesDiff = Math.floor(end.diff(start, 'minutes').minutes);

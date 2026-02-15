@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { datesParse } from "../../../../shared/utilities/dates";
+import { datesParseString } from "../../../../shared/utilities/dates";
 import { notNull } from "../../../../shared/utilities/nullable";
 import { FormInput } from "./FormInput";
 
@@ -10,7 +10,7 @@ export class FormInputDate extends FormInput<DateTime | null>
 
     public get value(): DateTime | null
     {
-        return notNull(this.input.value) ? datesParse(this.input.value) : null;
+        return notNull(this.input.value) ? datesParseString(this.input.value) : null;
     }
 
     public set value(value: DateTime | null)

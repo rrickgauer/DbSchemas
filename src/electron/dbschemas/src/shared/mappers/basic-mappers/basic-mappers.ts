@@ -1,12 +1,19 @@
 
 
-export abstract class OneWayMapper<TResult, TSource>
+export abstract class OneWayMapper<TSource, TResult>
 {
-    public abstract map(payload: TSource): TResult;
+    protected abstract mapModel(payload: TSource): TResult;
     
-    public mapAll(payload: TSource[]): TResult[]
+    public map(payload: TSource): TResult;
+    public map(payload: TSource[]): TResult[];
+    public map(payload: TSource | TSource[]): TResult | TResult[]
     {
-        return payload.map((x) => this.map(x));
+        if (!Array.isArray(payload))
+        {
+            return this.mapModel(payload);
+        }
+
+        return payload.map((x) => this.mapModel(x));
     }
 }
 

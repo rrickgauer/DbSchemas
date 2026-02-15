@@ -1,13 +1,13 @@
 import { NativeEventClick } from "../../../../../shared/domain/constants/native-events";
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
-import { handleApiResponseException } from "../../../../../shared/utilities/Errors";
 import { IControllerAsync } from "../../../contracts/IController";
-import { toastShowError, toastShowSuccess, toastShowUnexpectedErrorMessage } from "../../../helpers/toasts/toasts";
+import { ConnectionsListRefreshMessage, ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
-import { ConnectionListItemTemplate, ConnectionListItemTemplateElements } from "../../../templates/ConnectionListItemTemplate";
-import { domGetClass } from "../../../utilities/dom";
+import { ConnectionListItemAction, ConnectionListItemTemplate, ConnectionListItemTemplateElements } from "../../../templates/ConnectionListItemTemplate";
+import { domGetClass, domGetElementOrParentWithClassName } from "../../../utilities/dom";
 import { executeServiceCall } from "../../../utilities/ServiceResponses";
 import { ConnectionForm } from "./ConnectionForm";
+import { ConnectionsListItem } from "./ConnectionsListItem";
 
 export class ConnectionsListElements
 {
@@ -21,12 +21,11 @@ const ITEM = new ConnectionListItemTemplateElements();
 
 export class ConnectionsList implements IControllerAsync
 {
-    private _connectionService: ConnectionsServiceGui;
-    private _htmlEngine: ConnectionListItemTemplate;
-    private _connectionsListContainer: HTMLUListElement;
-    private _container: HTMLDivElement;
-    private _btnNewConnection: HTMLButtonElement;
-    private _connectionForm: ConnectionForm;
+    private readonly _connectionService: ConnectionsServiceGui;
+    private readonly _htmlEngine: ConnectionListItemTemplate;
+    private readonly _connectionsListContainer: HTMLUListElement;
+    private readonly _container: HTMLDivElement;
+    private readonly _btnNewConnection: HTMLButtonElement;
 
     constructor ()
     {
@@ -35,21 +34,51 @@ export class ConnectionsList implements IControllerAsync
         this._container = domGetClass<HTMLDivElement>(ELE.containerClass);
         this._connectionsListContainer = domGetClass<HTMLUListElement>(ELE.listClass, this._container);
         this._btnNewConnection = domGetClass<HTMLButtonElement>(ELE.btnNewConnectionClass, this._container);
-        this._connectionForm = new ConnectionForm();
     }
 
     public async control(): Promise<void>
     {
+        ConnectionForm.initialize();
         this.addListeners();
-        this._connectionForm.control();
         await this.refreshConnectionsList();
     }
 
-    private addListeners()
+    private addListeners(): void
     {
-        this._btnNewConnection.addEventListener(NativeEventClick, (e) =>
+        this.addNewConnectionButtonClickListener();
+        this.addConnectionsListRefreshMessageListener();
+        this.addActionButtonClickListener();
+    }
+
+    private addNewConnectionButtonClickListener(): void
+    {
+        this._btnNewConnection.addEventListener(NativeEventClick, async (e) =>
         {
-            this._connectionForm.show();
+            ShowConnectionFormMessage.invoke(this, {
+                connectionId: null,
+            });
+        });
+    }
+
+    private addConnectionsListRefreshMessageListener(): void
+    {
+        ConnectionsListRefreshMessage.addListener(async (m) =>
+        {
+            await this.refreshConnectionsList();
+        });
+    }
+
+    private addActionButtonClickListener(): void
+    {
+        this._container.addEventListener(NativeEventClick, async (e) =>
+        {
+            const target = domGetElementOrParentWithClassName(e.target, ITEM.actionButtonClass);
+            if (target)
+            {
+                const action = target?.getAttribute(ITEM.actionButtonAttr) as ConnectionListItemAction;
+                const listItem = new ConnectionsListItem(target);
+                await listItem.handleActionClick(action);
+            }
         });
     }
 

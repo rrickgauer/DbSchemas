@@ -46,8 +46,12 @@ export default [
         },
         output: {
             dir: 'dist/frontend',
-            format: 'es',
+            format: 'iife',
+            inlineDynamicImports: true,
             sourcemap: true,
+            globals: {
+                bootstrap: 'bootstrap',
+            },
         },
         plugins: [
             resolve({
@@ -67,7 +71,8 @@ export default [
             'url',
             'crypto',
             'better-sqlite3',
-            'ejs'
+            'ejs',
+            'bootstrap',
         ],
     },
 ];

@@ -35,4 +35,29 @@ export class ConnectionsServiceGui
             errorMessage: apiResponse.errorMessage,
         });
     }
+
+    public async saveConnection(connectionId: number, data: ConnectionApiRequestForm): Promise<ServiceResponse<ConnectionModel>>
+    {
+        const response = await this._api.put(connectionId, setNullValues(data));
+        const apiResponse = await toServiceResponse<ConnectionApiResponse>(response);
+        const model = notNull(apiResponse.data) ? this._connectionMapper.map(apiResponse.data) : null;
+
+        return new ServiceResponse({
+            data: model,
+            errorMessage: apiResponse.errorMessage,
+        });
+    }
+
+    public async getConnection(connectionId: number): Promise<ServiceResponse<ConnectionModel>>
+    {
+        console.log('here');
+        const response = await this._api.get(connectionId);
+        const apiResponse = await toServiceResponse<ConnectionApiResponse>(response);
+        const model = notNull(apiResponse.data) ? this._connectionMapper.map(apiResponse.data) : null;
+
+        return new ServiceResponse({
+            data: model,
+            errorMessage: apiResponse.errorMessage,
+        });
+    }
 }

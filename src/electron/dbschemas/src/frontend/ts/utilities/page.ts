@@ -1,6 +1,3 @@
-
-import 'bootstrap';
-
 export function pageReady(callback: () => void)
 {
     if (document.readyState !== 'loading')

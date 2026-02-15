@@ -1,23 +1,22 @@
 import fs from 'fs';
 import path from 'path';
-import { HttpStatusCode } from '../../frontend/ts/api/HttpStatusCode';
+import { HttpStatusCode } from '../../shared/domain/enums/HttpStatusCode';
 import { HttpMethods } from '../../shared/domain/constants/HttpMethods';
-
-
-// export type RouteHandler = (url: URL) => Promise<Response>;
-
-export type ControllerArgs = {
-    url: URL;
-    request: Request;
-}
+import { ControllerArgs } from './ControllerArgs';
+import { match, MatchFunction } from 'path-to-regexp';
+import { HTTP_RESPONSE_NOT_FOUND } from '../../shared/domain/constants/HttpResponses';
 
 export type RouteHandler = (args: ControllerArgs) => Promise<Response>;
 
-const NOT_FOUND_RESPONSE = new Response('Not Found', { status: 404 });
+type RouteDefinition = {
+    method: HttpMethods;
+    matcher: MatchFunction<object>;
+    handler: RouteHandler;
+};
 
 export class AppRouter
 {
-    private readonly _routes = new Map<string, RouteHandler>();
+    private readonly _routes: RouteDefinition[] = [];
 
     //#region - Set handlers -
     public get(path: string, handler: RouteHandler): void
@@ -47,31 +46,43 @@ export class AppRouter
 
     private setRouteHandler(path: string, handler: RouteHandler, httpMethod: HttpMethods): void
     {
-        this._routes.set(`${httpMethod} ${path}`, handler);
+        const matcher = match(path, { decode: decodeURIComponent });
+
+        this._routes.push({
+            method: httpMethod,
+            matcher,
+            handler
+        });
     }
     //#endregion
 
 
     public async handle(request: Request): Promise<Response>
     {
-        // try dynamic routing
         const urlString = typeof request.url === 'string' ? request.url : '';
         const parsedUrl = new URL(urlString, 'app://localhost');
 
-        const key = `${request.method} ${parsedUrl.pathname}`;
-        const handler = this._routes.get(key);
-
-        if (handler)
+        for (const route of this._routes)
         {
-            return handler({
+            if (route.method !== request.method)
+                continue;
+
+            const result = route.matcher(parsedUrl.pathname);
+            if (!result)
+                continue;
+
+            const parms = result.params as Record<string, string>;
+
+            return route.handler({
                 url: parsedUrl,
-                request: request,
+                request,
+                params: parms,
             });
         }
 
-        // try serving static files
+        // fallback: static files
         const staticFileResponse = this.tryReturnStaticFile(parsedUrl);
-        return staticFileResponse ?? NOT_FOUND_RESPONSE;
+        return staticFileResponse ?? HTTP_RESPONSE_NOT_FOUND;
     }
 
     private tryReturnStaticFile(parsedUrl: URL): Response | null

@@ -2,8 +2,13 @@
 import { ConnectionApiResponse } from "../../domain/models/connections/ConnectionApiResponse";
 import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
 import { ConnectionApiRequestForm } from "../../domain/models/connections/ConnectionApiRequestForm";
-import { datesParse, datesToIso } from "../../utilities/dates";
-import { TwoWayMapper } from "./basic-mappers";
+import { datesParseString, datesToIso } from "../../utilities/dates";
+import { OneWayMapper, TwoWayMapper } from "./basic-mappers";
+import { ServiceResponse } from "../../domain/ServiceResponses/ServiceResponse";
+import { isNull } from "../../utilities/nullable";
+import { HttpStatusCode } from "../../domain/enums/HttpStatusCode";
+import { Nullable } from "../../domain/types/types";
+import { HTTP_RESPONSE_NOT_FOUND } from "../../domain/constants/HttpResponses";
 
 export class ConnectionModelApiResponseMapper extends TwoWayMapper<ConnectionModel, ConnectionApiResponse>
 {
@@ -34,7 +39,7 @@ export class ConnectionModelApiResponseMapper extends TwoWayMapper<ConnectionMod
         result.id = payload.id;
         result.name = payload.name;
         result.connectionType = payload.connectionType;
-        result.createdOn = datesParse(payload.createdOn);
+        result.createdOn = datesParseString(payload.createdOn);
         result.databaseName = payload.databaseName;
         result.host = payload.host;
         result.file = payload.file;
@@ -52,6 +57,7 @@ export class ConnectionModelApiRequestFormMapper extends TwoWayMapper<Connection
     {
         return payload instanceof ConnectionModel;
     }
+
     protected toOutput(payload: ConnectionModel): ConnectionApiRequestForm
     {
         return {
@@ -64,6 +70,7 @@ export class ConnectionModelApiRequestFormMapper extends TwoWayMapper<Connection
             password: payload.password,
         }
     }
+
     protected toInput(payload: ConnectionApiRequestForm): ConnectionModel
     {
         const result = new ConnectionModel();
@@ -75,8 +82,32 @@ export class ConnectionModelApiRequestFormMapper extends TwoWayMapper<Connection
         result.file = payload.file ?? null;
         result.username = payload.username ?? null;
         result.password = payload.password ?? null;
-        
+
         return result;
     }
-    
+
 }
+
+
+export class ConnectionModelHttpResponseMapper extends OneWayMapper<ServiceResponse<ConnectionModel>, Response>
+{
+    protected mapModel(serviceResponse: ServiceResponse<ConnectionModel>): Response
+    {
+        if (serviceResponse.hasError())
+        {
+            return new Response(serviceResponse.errorMessage, {
+                status: HttpStatusCode.BadRequest,
+            });
+        }
+
+        if (isNull(serviceResponse.data))
+        {
+            return HTTP_RESPONSE_NOT_FOUND;
+        }
+
+        const body = JSON.stringify(serviceResponse.data);
+        return new Response(body);
+    }
+
+}
+

@@ -4,6 +4,7 @@ import { ApplicationDataProduction } from "../domain/ApplicationData/Application
 import { ConnectionRepository } from "../repositories/connections/ConnectionRepository";
 import { SqlEngine } from "../repositories/sql-engine/SqlEngine";
 import { ConnectionService } from "../services/connections/ConnectionService";
+import { IConnectionService } from "../services/connections/IConnectionService";
 
 const diApplicationData = new ApplicationDataProduction();
 
@@ -12,7 +13,7 @@ const diSqlEngine = new SqlEngine(diApplicationData);
 const diConnectionsRepository = new ConnectionRepository(diSqlEngine);
 const diConnectionTableMapper = new ConnectionTableMapper();
 
-export const diConnectionService: ConnectionService = new ConnectionService({
+export const diConnectionService: IConnectionService = new ConnectionService({
     mapper: diConnectionTableMapper,
     repo: diConnectionsRepository,
 });

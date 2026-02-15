@@ -12,6 +12,7 @@
         inputFileId = `${this.formClass}-input-file`;
         inputUsernameId = `${this.formClass}-input-username`;
         inputPasswordId = `${this.formClass}-input-password`;
+        spinner = `${this.formClass}-spinner`;
     }
 
     const ELE = new ConnectionElements();
@@ -27,6 +28,11 @@
             </div>
             <div class="modal-body">
                 
+                <div class="my-5 <%= ELE.spinner %>">
+                    <%- include('../../includes/spinner'); -%>
+                </div>
+
+
                 <form class="<%= ELE.formClass %>">
                     <fieldset>
                         <div class="<%= FORM_INPUT %>">
