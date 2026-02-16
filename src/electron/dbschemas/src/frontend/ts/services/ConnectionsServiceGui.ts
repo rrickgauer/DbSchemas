@@ -1,4 +1,3 @@
-
 import { ConnectionApiResponse } from "../../../shared/domain/models/connections/ConnectionApiResponse";
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
@@ -6,7 +5,8 @@ import { ServiceResponse } from "../../../shared/domain/ServiceResponses/Service
 import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
 import { notNull, setNullValues } from "../../../shared/utilities/nullable";
 import { ApiConnections } from "../api/ApiConnections";
-import { toServiceResponse } from "../api/responses";
+import { toServiceResponse, toServiceResponseNoContent } from "../api/responses";
+import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
 
 export class ConnectionsServiceGui
 {
@@ -50,7 +50,6 @@ export class ConnectionsServiceGui
 
     public async getConnection(connectionId: number): Promise<ServiceResponse<ConnectionModel>>
     {
-        console.log('here');
         const response = await this._api.get(connectionId);
         const apiResponse = await toServiceResponse<ConnectionApiResponse>(response);
         const model = notNull(apiResponse.data) ? this._connectionMapper.map(apiResponse.data) : null;
@@ -59,5 +58,11 @@ export class ConnectionsServiceGui
             data: model,
             errorMessage: apiResponse.errorMessage,
         });
+    }
+
+    public async deleteConnection(connectionId: number): Promise<ServiceResponseBase>
+    {
+        const response = await this._api.delete(connectionId);
+        return await toServiceResponseNoContent(response);
     }
 }

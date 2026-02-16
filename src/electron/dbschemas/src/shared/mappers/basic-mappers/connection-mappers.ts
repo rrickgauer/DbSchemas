@@ -3,12 +3,8 @@ import { ConnectionApiResponse } from "../../domain/models/connections/Connectio
 import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
 import { ConnectionApiRequestForm } from "../../domain/models/connections/ConnectionApiRequestForm";
 import { datesParseString, datesToIso } from "../../utilities/dates";
-import { OneWayMapper, TwoWayMapper } from "./basic-mappers";
-import { ServiceResponse } from "../../domain/ServiceResponses/ServiceResponse";
-import { isNull } from "../../utilities/nullable";
-import { HttpStatusCode } from "../../domain/enums/HttpStatusCode";
+import { TwoWayMapper } from "./basic-mappers";
 import { Nullable } from "../../domain/types/types";
-import { HTTP_RESPONSE_NOT_FOUND } from "../../domain/constants/HttpResponses";
 
 export class ConnectionModelApiResponseMapper extends TwoWayMapper<ConnectionModel, ConnectionApiResponse>
 {
@@ -88,26 +84,4 @@ export class ConnectionModelApiRequestFormMapper extends TwoWayMapper<Connection
 
 }
 
-
-export class ConnectionModelHttpResponseMapper extends OneWayMapper<ServiceResponse<ConnectionModel>, Response>
-{
-    protected mapModel(serviceResponse: ServiceResponse<ConnectionModel>): Response
-    {
-        if (serviceResponse.hasError())
-        {
-            return new Response(serviceResponse.errorMessage, {
-                status: HttpStatusCode.BadRequest,
-            });
-        }
-
-        if (isNull(serviceResponse.data))
-        {
-            return HTTP_RESPONSE_NOT_FOUND;
-        }
-
-        const body = JSON.stringify(serviceResponse.data);
-        return new Response(body);
-    }
-
-}
 

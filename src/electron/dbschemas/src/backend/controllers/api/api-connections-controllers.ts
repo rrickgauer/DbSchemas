@@ -1,7 +1,10 @@
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
-import { ConnectionModelApiResponseMapper, ConnectionModelHttpResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
+import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
+import { OneWayMapper } from "../../../shared/mappers/basic-mappers/basic-mappers";
+import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
+import { ServiceResponseBaseHttpResponseMapper, ServiceResponseHttpResponseMapper } from "../../../shared/mappers/basic-mappers/ServiceResponseMappers";
 import { ControllerArgs as EndpointArgs } from '../../protocol/ControllerArgs';
 import { diConnectionService } from "../../utilities/dependencies";
 
@@ -54,10 +57,34 @@ export async function apiConnectionsPut(args: EndpointArgs): Promise<Response>
 }
 
 
-function toApiResponse(serviceResponse: ServiceResponse<ConnectionModel>): Response
+/**
+ * DELETE: /api/connections/:connectionId
+ */
+export async function apiConnectionsDelete(args: EndpointArgs): Promise<Response>
 {
-    const responseMapper = new ConnectionModelHttpResponseMapper();
-    return responseMapper.map(serviceResponse);
+    const connectionService = diConnectionService;
+    const connectionId = getConnectionIdFromArgs(args);
+    const deleteResponse = connectionService.deleteConnection(connectionId);
+    return toApiResponse(deleteResponse);
+}
+
+
+function toApiResponse(serviceResponse: ServiceResponse<ConnectionModel>): Response;
+function toApiResponse(serviceResponse: ServiceResponseBase): Response;
+function toApiResponse(serviceResponse: ServiceResponse<ConnectionModel> | ServiceResponseBase ): Response
+{
+    let mapper: OneWayMapper<unknown, Response>;
+
+    if (serviceResponse instanceof ServiceResponse)
+    {
+        mapper = new ServiceResponseHttpResponseMapper();
+    }
+    else
+    {
+        mapper = new ServiceResponseBaseHttpResponseMapper();
+    }
+
+    return mapper.map(serviceResponse);
 }
 
 function getConnectionIdFromArgs(args: EndpointArgs): number

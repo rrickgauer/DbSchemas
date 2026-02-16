@@ -8,6 +8,7 @@ export interface IConnectionRepository
     insertConnection(newConnectionData: ConnectionApiRequestForm): number;
     updateConnection(connectionId: number, data: ConnectionApiRequestForm): number;
     getConnection(connectionId: number): DataRow | null;
+    deleteConnection(connectionId: number): number;
 }   
 
 

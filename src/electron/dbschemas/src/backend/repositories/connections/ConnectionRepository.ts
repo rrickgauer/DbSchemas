@@ -1,14 +1,14 @@
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { DataRow, DataTable } from "../../../shared/domain/types/types";
 import { SqlEngine } from "../sql-engine/SqlEngine";
-import { SQL_COMMAND_INSERT_NEW_CONNECTION, SQL_COMMAND_SELECT_ALL_CONNECTIONS, SQL_COMMAND_SELECT_CONNECTION, SQL_COMMAND_UPDATE_CONNECTION } from './ConnectionCommands';
+import { SQL_COMMAND_DELETE_CONNECTION, SQL_COMMAND_INSERT_NEW_CONNECTION, SQL_COMMAND_SELECT_ALL_CONNECTIONS, SQL_COMMAND_SELECT_CONNECTION, SQL_COMMAND_UPDATE_CONNECTION } from './ConnectionCommands';
 import { IConnectionRepository } from "./IConnectionRepository";
 
 export class ConnectionRepository implements IConnectionRepository
 {
     private readonly _sqlEngine: SqlEngine;
 
-    constructor(sqlEngine: SqlEngine)
+    constructor (sqlEngine: SqlEngine)
     {
         this._sqlEngine = sqlEngine;
     }
@@ -48,6 +48,13 @@ export class ConnectionRepository implements IConnectionRepository
             host: data.host,
             password: data.password,
             username: data.username,
+            id: connectionId,
+        });
+    }
+
+    public deleteConnection(connectionId: number): number
+    {
+        return this._sqlEngine.modify(SQL_COMMAND_DELETE_CONNECTION, {
             id: connectionId,
         });
     }

@@ -2,6 +2,7 @@
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
+import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
 import { ConnectionTableMapper } from "../../../shared/mappers/table-mappers/ConnectionTableMapper";
 import { isNull } from "../../../shared/utilities/nullable";
 import { IConnectionRepository } from "../../repositories/connections/IConnectionRepository";
@@ -66,6 +67,12 @@ export class ConnectionService implements IConnectionService
         }
 
         return result;
+    }
+
+    public deleteConnection(connectionId: number): ServiceResponseBase
+    {
+        this._repo.deleteConnection(connectionId);
+        return new ServiceResponseBase();
     }
     
 }

@@ -54,3 +54,11 @@ export const SQL_COMMAND_UPDATE_CONNECTION = `
         id = @id;
 `;
 
+
+export const SQL_COMMAND_DELETE_CONNECTION = `
+DELETE FROM Databases
+WHERE id = @id
+LIMIT 1;
+`;
+
+
