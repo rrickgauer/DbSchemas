@@ -1,17 +1,21 @@
 // src/main/protocol/routes.ts
-import { getConnections } from '../controllers/api/api-connections-controllers';
+import { API_ENDPOINT_CONNECTION_SINGLE, API_ENDPOINT_CONNECTIONS } from '../../shared/domain/constants/ApiEndpoints';
+import { apiConnectionsDelete, apiConnectionsGet, apiConnectionsGetAll, apiConnectionsPost, apiConnectionsPut } from '../controllers/api/api-connections-controllers';
 import { getHomePage } from '../controllers/gui/gui-controllers';
 import { AppRouter } from './router';
-
 
 export const router = new AppRouter();
 
 // Page routes
-router.get('/home', async () => getHomePage());
-router.get('/', async () => getHomePage());
+router.get('/home', getHomePage);
+router.get('/', getHomePage);
 
-router.get('/api/connections', async () => getConnections());
+// api routes
 
-// Later you can add:
-// router.get('/api/lists', getListsApi);
-// router.get('/settings', getSettingsPage);
+//#region - Connections -
+router.get(API_ENDPOINT_CONNECTIONS, apiConnectionsGetAll);
+router.post(API_ENDPOINT_CONNECTIONS, apiConnectionsPost);
+router.get(API_ENDPOINT_CONNECTION_SINGLE, apiConnectionsGet);
+router.put(API_ENDPOINT_CONNECTION_SINGLE, apiConnectionsPut);
+router.delete(API_ENDPOINT_CONNECTION_SINGLE, apiConnectionsDelete);
+//#endregion

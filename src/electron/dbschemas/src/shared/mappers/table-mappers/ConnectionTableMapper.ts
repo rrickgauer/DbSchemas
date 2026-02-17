@@ -1,6 +1,7 @@
-import { ConnectionModel } from "../../domain/models/ConnectionModel";
+
+import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
 import { DataRow } from "../../domain/types/types";
-import { datesParse } from "../../utilities/dates";
+import { datesParseString } from "../../utilities/dates";
 import { getValueDefault } from "../../utilities/misc";
 import { TableMapper } from "./TableMapper";
 
@@ -14,7 +15,7 @@ export class ConnectionTableMapper extends TableMapper<ConnectionModel>
         result.name = getValueDefault(row.name, result.name);
         result.connectionType = getValueDefault(row.database_type_id, result.connectionType);
         result.databaseName = getValueDefault(row.database_name, result.databaseName);
-        result.createdOn = datesParse(row.created_on);
+        result.createdOn = datesParseString(row.created_on);
         result.host = row.host;
         result.file = row.file;
         result.username = row.username;

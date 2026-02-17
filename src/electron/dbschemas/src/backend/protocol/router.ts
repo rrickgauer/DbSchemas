@@ -1,54 +1,109 @@
 import fs from 'fs';
 import path from 'path';
+import { HttpStatusCode } from '../../shared/domain/enums/HttpStatusCode';
+import { HttpMethods } from '../../shared/domain/constants/HttpMethods';
+import { ControllerArgs } from './ControllerArgs';
+import { match, MatchFunction } from 'path-to-regexp';
+import { HTTP_RESPONSE_NOT_FOUND } from '../../shared/domain/constants/HttpResponses';
 
+export type RouteHandler = (args: ControllerArgs) => Promise<Response>;
 
-export type RouteHandler = (url: URL) => Promise<Response>;
+type RouteDefinition = {
+    method: HttpMethods;
+    matcher: MatchFunction<object>;
+    handler: RouteHandler;
+};
 
 export class AppRouter
 {
-    private routes = new Map<string, RouteHandler>();
+    private readonly _routes: RouteDefinition[] = [];
 
-    public get(path: string, handler: RouteHandler)
+    //#region - Set handlers -
+    public get(path: string, handler: RouteHandler): void
     {
-        this.routes.set(`GET ${path}`, handler);
+        this.setRouteHandler(path, handler, HttpMethods.GET);
     }
+
+    public post(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.POST);
+    }
+
+    public put(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.PUT);
+    }
+
+    public delete(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.DELETE);
+    }
+
+    public patch(path: string, handler: RouteHandler): void
+    {
+        this.setRouteHandler(path, handler, HttpMethods.PATCH);
+    }
+
+    private setRouteHandler(path: string, handler: RouteHandler, httpMethod: HttpMethods): void
+    {
+        const matcher = match(path, { decode: decodeURIComponent });
+
+        this._routes.push({
+            method: httpMethod,
+            matcher,
+            handler
+        });
+    }
+    //#endregion
+
 
     public async handle(request: Request): Promise<Response>
     {
-        // try dynamic routing
-        const parsedUrl = new URL(request.url);
-        const key = `${request.method} ${parsedUrl.pathname}`;
-        const handler = this.routes.get(key);
+        const urlString = typeof request.url === 'string' ? request.url : '';
+        const parsedUrl = new URL(urlString, 'app://localhost');
 
-        if (handler)
+        for (const route of this._routes)
         {
-            return handler(parsedUrl);
-        }
+            if (route.method !== request.method)
+                continue;
 
-        // try serving static files
-        const filePath = path.join(
-            process.cwd(),
-            'dist',
-            parsedUrl.pathname
-        );
+            const result = route.matcher(parsedUrl.pathname);
+            if (!result)
+                continue;
 
-        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile())
-        {
-            const file = fs.readFileSync(filePath);
+            const parms = result.params as Record<string, string>;
 
-            return new Response(file, {
-                status: 200,
-                headers: {
-                    'Content-Type': getContentType(filePath)
-                }
+            return route.handler({
+                url: parsedUrl,
+                request,
+                params: parms,
             });
         }
 
-        // not found
-        console.warn('router.handle no route registered for:', key);
-        return new Response('Not Found', { status: 404 });
-
+        // fallback: static files
+        const staticFileResponse = this.tryReturnStaticFile(parsedUrl);
+        return staticFileResponse ?? HTTP_RESPONSE_NOT_FOUND;
     }
+
+    private tryReturnStaticFile(parsedUrl: URL): Response | null
+    {
+        const staticFilePath = path.join(process.cwd(), 'dist', parsedUrl.pathname);
+
+        if (!fs.existsSync(staticFilePath) || !fs.statSync(staticFilePath).isFile())
+        {
+            return null;
+        }
+
+        const file = fs.readFileSync(staticFilePath);
+
+        return new Response(file, {
+            status: HttpStatusCode.OK,
+            headers: {
+                'Content-Type': getContentType(staticFilePath)
+            }
+        });
+    }
+
 }
 
 function getContentType(filePath: string): string

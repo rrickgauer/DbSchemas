@@ -1,16 +1,21 @@
 
 import { ConnectionTableMapper } from "../../shared/mappers/table-mappers/ConnectionTableMapper";
+import { ApplicationDataProduction } from "../domain/ApplicationData/ApplicationDataProduction";
 import { ConnectionRepository } from "../repositories/connections/ConnectionRepository";
-import { IConnectionRepository } from "../repositories/connections/IConnectionRepository";
+import { SqlEngine } from "../repositories/sql-engine/SqlEngine";
 import { ConnectionService } from "../services/connections/ConnectionService";
+import { IConnectionService } from "../services/connections/IConnectionService";
 
+const diApplicationData = new ApplicationDataProduction();
 
-export const connectionsRepository: IConnectionRepository = new ConnectionRepository();
-export const connectionTableMapper: ConnectionTableMapper = new ConnectionTableMapper();
+const diSqlEngine = new SqlEngine(diApplicationData);
 
-export const connectionService: ConnectionService = new ConnectionService({
-    mapper: connectionTableMapper,
-    repo: connectionsRepository,
+const diConnectionsRepository = new ConnectionRepository(diSqlEngine);
+const diConnectionTableMapper = new ConnectionTableMapper();
+
+export const diConnectionService: IConnectionService = new ConnectionService({
+    mapper: diConnectionTableMapper,
+    repo: diConnectionsRepository,
 });
 
 
