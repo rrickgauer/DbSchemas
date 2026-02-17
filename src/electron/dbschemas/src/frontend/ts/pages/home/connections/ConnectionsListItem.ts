@@ -1,10 +1,10 @@
-import { isNull } from "../../../../../shared/utilities/nullable";
-import { ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
+import { ConnectionsListViewConnectionMessage, ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
+import { TableServiceGui } from "../../../services/TableServiceGui";
 import { ConnectionListItemAction, ConnectionListItemTemplateElements } from "../../../templates/ConnectionListItemTemplate";
-import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/bootstrap";
-import { domGetClosestClass } from "../../../utilities/dom";
-import { executeServiceCall } from "../../../utilities/ServiceResponses";
+import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
+import { domGetClosestClass } from "../../../utilities/DomUtility";
+import { executeServiceCall } from "../../../utilities/ServiceUtility";
 
 const ELE = new ConnectionListItemTemplateElements();
 
@@ -12,6 +12,7 @@ export class ConnectionsListItem
 {
     private _container: HTMLElement;
     private _connectionService: ConnectionsServiceGui;
+    private _tablesService: TableServiceGui;
 
     public get connectionId(): number
     {
@@ -22,6 +23,7 @@ export class ConnectionsListItem
     {
         this._container = domGetClosestClass<HTMLElement>(ELE.containerClass, e);
         this._connectionService = new ConnectionsServiceGui();
+        this._tablesService = new TableServiceGui();
     }
 
     public async handleActionClick(action: ConnectionListItemAction): Promise<void>
@@ -34,6 +36,10 @@ export class ConnectionsListItem
 
             case ConnectionListItemAction.Delete:
                 await this.deleteItem();
+                break;
+
+            case ConnectionListItemAction.View:
+                await this.viewConnection();
                 break;
 
             default:
@@ -73,5 +79,12 @@ export class ConnectionsListItem
         {
             bootstrapShowElement(this._container);
         }
+    }
+
+    public viewConnection(): void
+    {
+        ConnectionsListViewConnectionMessage.invoke(this, {
+            connectionId: this.connectionId,
+        });
     }
 }

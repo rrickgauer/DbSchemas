@@ -1,7 +1,7 @@
-import { datesGetCurrentDatetime } from "../../../utilities/dates";
-import { EMPTY_STRING } from "../../constants/strings";
+import { datesGetCurrentDatetime } from "../../../utilities/DatesUtility";
+import { EMPTY_STRING } from "../../constants/StringConstants";
 import { ConnectionType } from "../../enums/ConnectionType";
-import { DateTimeValid, Nullable } from "../../types/types";
+import { DateTimeValid, Nullable } from "../../types/CustomTypes";
 
 export class ConnectionModel
 {

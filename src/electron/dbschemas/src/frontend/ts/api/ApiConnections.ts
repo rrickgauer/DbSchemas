@@ -1,7 +1,7 @@
 
 import { HttpMethods } from "../../../shared/domain/constants/HttpMethods";
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
-import { sendJsonApiRequest } from "../utilities/Requests";
+import { sendJsonApiRequest } from "../utilities/RequestUtility";
 import { API_ENDPOINT_CONNECTIONS } from "../../../shared/domain/constants/ApiEndpoints";
 
 export class ApiConnections
@@ -58,7 +58,6 @@ export class ApiConnections
         return url;
     }
 }
-
 
 
 

@@ -1,6 +1,6 @@
 
-import { Guid } from "../../../../shared/domain/types/types";
-import { getRandomGuid } from "../../../../shared/utilities/guids";
+import { Guid } from "../../../../shared/domain/types/CustomTypes";
+import { getRandomGuid } from "../../../../shared/utilities/GuidUtility";
 import { ToastType } from "./ToastType";
 
 export abstract class ToastBase

@@ -1,0 +1,10 @@
+@use "mixins" as mixins;
+
+.my-shadow {
+    @include mixins.custom-shadow;
+    
+}
+
+.myshadow-light {
+    @include mixins.custom-shadow-light;
+}

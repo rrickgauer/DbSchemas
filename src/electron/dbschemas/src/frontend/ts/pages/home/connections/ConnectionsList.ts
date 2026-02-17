@@ -1,11 +1,11 @@
-import { NativeEventClick } from "../../../../../shared/domain/constants/native-events";
+import { NativeEventClick } from "../../../../../shared/domain/constants/NativeEvents";
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
 import { IControllerAsync } from "../../../contracts/IController";
 import { ConnectionsListRefreshMessage, ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { ConnectionListItemAction, ConnectionListItemTemplate, ConnectionListItemTemplateElements } from "../../../templates/ConnectionListItemTemplate";
-import { domGetClass, domGetElementOrParentWithClassName } from "../../../utilities/dom";
-import { executeServiceCall } from "../../../utilities/ServiceResponses";
+import { domGetClass, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
+import { executeServiceCall } from "../../../utilities/ServiceUtility";
 import { ConnectionForm } from "./ConnectionForm";
 import { ConnectionsListItem } from "./ConnectionsListItem";
 

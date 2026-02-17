@@ -1,7 +1,6 @@
 import { app, BrowserWindow, protocol } from 'electron';
-import { router } from './protocol/routes';
 import path from 'path';
-
+import { router } from './protocol/RoutesMapper';
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -33,10 +32,7 @@ app.whenReady().then(() =>
 
     win.loadURL('app:///home');
 
-    // win.webContents.openDevTools({ 
-    //     mode: 'detach', 
-    //     activate: false, 
-    // });
+    // win.webContents.openDevTools();
 });
 
 

@@ -1,0 +1,21 @@
+.connections-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.connections-list-item {
+    & {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 0.25rem;
+    }
+}
+
+.connection-form {
+    .form-input {
+        margin-bottom: 1rem;
+    }
+}

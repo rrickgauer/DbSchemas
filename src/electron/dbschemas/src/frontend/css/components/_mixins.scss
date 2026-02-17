@@ -1,0 +1,38 @@
+//------------------------------------------
+// screen sizes mixins
+//------------------------------------------
+@mixin medium-screen {
+    @media screen and (min-width: 768px) {
+        @content; // This will inject whatever styles you pass in
+    }
+}
+
+@mixin large-screen {
+    @media screen and (min-width: 992px) {
+        @content; // This will inject whatever styles you pass in
+    }
+}
+
+@mixin larger-screen {
+    @media screen and (min-width: 1200px) {
+        @content; // This will inject whatever styles you pass in
+    }
+}
+
+@mixin largest-screen {
+    @media screen and (min-width: 1400px) {
+        @content; // This will inject whatever styles you pass in
+    }
+}
+
+
+//------------------------------------------
+// Shadows
+//------------------------------------------
+@mixin custom-shadow {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+@mixin custom-shadow-light {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
+}

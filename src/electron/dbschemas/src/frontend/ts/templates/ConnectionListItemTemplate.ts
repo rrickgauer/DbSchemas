@@ -6,6 +6,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 
 export enum ConnectionListItemAction
 {
+    View = 'view',
     Edit = 'edit',
     Delete = 'delete',
 }
@@ -31,6 +32,7 @@ export class ConnectionListItemTemplate extends HtmlTemplate<ConnectionModel>
                 <div class="dropstart">
                     <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded'></i></button>
                     <div class="dropdown-menu">
+                        <button type="button" class="dropdown-item ${ELE.actionButtonClass}" ${ELE.actionButtonAttr}="${ConnectionListItemAction.View}">View</button>
                         <button type="button" class="dropdown-item ${ELE.actionButtonClass}" ${ELE.actionButtonAttr}="${ConnectionListItemAction.Edit}">Edit</button>
                         <button type="button" class="dropdown-item ${ELE.actionButtonClass}" ${ELE.actionButtonAttr}="${ConnectionListItemAction.Delete}">Delete</button>
                     </div>
@@ -43,3 +45,6 @@ export class ConnectionListItemTemplate extends HtmlTemplate<ConnectionModel>
     }
 
 }
+
+
+

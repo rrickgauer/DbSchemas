@@ -1,6 +1,6 @@
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
-import { DataRow, DataTable } from "../../../shared/domain/types/types";
-import { SqlEngine } from "../sql-engine/SqlEngine";
+import { DataRow, DataTable } from "../../../shared/domain/types/CustomTypes";
+import { SqlEngine } from "../SqlEngine/SqlEngine";
 import { SQL_COMMAND_DELETE_CONNECTION, SQL_COMMAND_INSERT_NEW_CONNECTION, SQL_COMMAND_SELECT_ALL_CONNECTIONS, SQL_COMMAND_SELECT_CONNECTION, SQL_COMMAND_UPDATE_CONNECTION } from './ConnectionCommands';
 import { IConnectionRepository } from "./IConnectionRepository";
 

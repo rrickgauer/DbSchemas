@@ -1,4 +1,4 @@
-import { Nullable } from "../types/types";
+import { Nullable } from "../types/CustomTypes";
 import { ServiceResponseBaseArgs } from "./ServiceResponseBase";
 import { ServiceResponseBase } from "./ServiceResponseBase";
 

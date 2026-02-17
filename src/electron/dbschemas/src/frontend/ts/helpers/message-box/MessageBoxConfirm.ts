@@ -1,6 +1,6 @@
 ﻿
-import { NativeEventClick } from "../../../../shared/domain/constants/native-events";
-import { BootstrapModalEvents } from "../../domain/bootstrap/events/bootstrap-events";
+import { NativeEventClick } from "../../../../shared/domain/constants/NativeEvents";
+import { BootstrapModalEvents } from "../../domain/bootstrap/events/BootstrapEvents";
 import { MessageBoxBase } from "./MessageBoxBase";
 import { MessageBoxType } from "./MessageBoxType";
 

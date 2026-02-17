@@ -1,0 +1,13 @@
+
+.tables-list {
+    & {
+        padding-bottom: 10rem;  // pad the bottom of the list
+    }
+
+    &-item {
+        &:hover {
+            font-weight: bolder;
+            cursor: pointer;
+        }
+    }
+}

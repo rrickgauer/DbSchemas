@@ -1,5 +1,5 @@
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
-import { DataRow, DataTable } from "../../../shared/domain/types/types";
+import { DataRow, DataTable } from "../../../shared/domain/types/CustomTypes";
 
 
 export interface IConnectionRepository

@@ -1,5 +1,5 @@
 
-import { pageReady } from "../../utilities/page";
+import { pageReady } from "../../utilities/PageUtility";
 import { HomePage } from "./HomePage";
 
 pageReady(async () => {
