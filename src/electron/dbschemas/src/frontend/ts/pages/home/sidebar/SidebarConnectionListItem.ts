@@ -1,7 +1,11 @@
 import { ConnectionType } from "../../../../../shared/domain/enums/ConnectionType";
+import { ConnectionDeletedMessage, ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
+import { toastShowSuccess } from "../../../helpers/toasts/ToastUtility";
+import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { ConnectionSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/ConnectionSidebarListItemTemplate";
 import { TableSidebarListItemTemplate } from "../../../templates/connections-sidebar/TableSidebarListItemTemplate";
+import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
 import { domGetClass, domGetClosestClass } from "../../../utilities/DomUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
 
@@ -12,6 +16,7 @@ export class SidebarConnectionListItem
     private _container: HTMLLIElement;
     private _tableService: TableServiceGui;
     private _tablesList: HTMLUListElement;
+    private _connectionService: ConnectionsServiceGui;
 
     public get connectionType(): ConnectionType
     {
@@ -23,17 +28,29 @@ export class SidebarConnectionListItem
         return parseInt(this._container.getAttribute(ELE.connnectionIdAttr)!);
     }
 
-    constructor(e: Element)
+    constructor (e: Element)
     {
         this._container = domGetClosestClass<HTMLLIElement>(ELE.containerClass, e);
         this._tableService = new TableServiceGui();
         this._tablesList = domGetClass<HTMLUListElement>(ELE.tablesListClass, this._container);
+        this._connectionService = new ConnectionsServiceGui();
     }
 
+
+    public editConnection(): void
+    {
+        // opent the connection form modal
+        ShowConnectionFormMessage.invoke(this, {
+            connectionId: this.connectionId,
+        });
+    }
+
+    //#region - Refresh tables -
     public async refreshTables(): Promise<void>
     {
         if (this.connectionType != ConnectionType.Postgres)
         {
+            console.assert(false, `Can't retrieve columns for this type`);
             return;
         }
 
@@ -44,7 +61,6 @@ export class SidebarConnectionListItem
             this.setTablesListHtml(tableNames);
         }
     }
-
 
     private async getTableNamesFromApi(): Promise<string[] | null>
     {
@@ -64,4 +80,54 @@ export class SidebarConnectionListItem
 
         this._tablesList.innerHTML = html;
     }
+    //#endregion
+
+
+    //#region - Delete connection -
+    public async deleteConnection(): Promise<void>
+    {
+        if (!this.confirmDelete())
+        {
+            return;
+        }
+
+        bootstrapHideElement(this._container);
+
+        const isDeleted = await this.sendApiDeleteRequest();
+        if (!isDeleted)
+        {
+            bootstrapShowElement(this._container);
+            return;
+        }
+
+        ConnectionDeletedMessage.invoke(this, this.connectionId);
+
+        this._container.remove();
+
+        toastShowSuccess({
+            message: `Connection deleted`,
+        });
+    }
+
+    private confirmDelete(): boolean
+    {
+        return confirm(`Are you sure you want to delete this connection?`)
+    }
+
+    private async sendApiDeleteRequest(): Promise<boolean>
+    {
+        const response = await executeServiceCall({
+            callback: () => this._connectionService.deleteConnection(this.connectionId),
+            errorMessage: `Connection not deleted`,
+        });
+
+        if (response == null)
+        {
+            return false;
+        }
+
+        return !response.hasError();
+    }
+
+    //#endregion
 }

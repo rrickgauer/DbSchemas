@@ -27,6 +27,11 @@ export function bootstrapHideOffcanvas(element: Element): void
     Offcanvas.getOrCreateInstance(element).hide();
 }
 
+export function bootstrapShowDropdown(element: Element): void
+{
+    Dropdown.getOrCreateInstance(element).show();
+}
+
 export function bootstrapHideDropdown(element: Element): void;
 export function bootstrapHideDropdown(element: Element, handleButton: boolean): void;
 export function bootstrapHideDropdown(element: Element, handleButton?: boolean): void
