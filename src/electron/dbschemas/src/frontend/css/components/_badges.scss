@@ -1,0 +1,10 @@
+@use "variables" as variables;
+
+
+// .badge-[sqlite, access, postgres, mysql]
+@each $type, $color in variables.$connectionTypeColors {
+    .badge-#{$type} {
+        color: white;
+        background-color: $color;
+    }
+}

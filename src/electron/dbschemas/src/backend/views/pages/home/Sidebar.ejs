@@ -1,0 +1,20 @@
+<%
+    const listClass = `connections-sidebar-list`;
+    const containerClass = `${listClass}-container`;
+    const btnCloseSidebarClass = `${listClass}-btn-close`;
+    const btnShowSidebarClass = `${listClass}-btn-show-sidebar`;
+    const headerClass = `${listClass}-header`;
+%>
+
+
+<button type="button" class="btn btn-light <%= btnShowSidebarClass %> d-none"><i class='bx bx-menu'></i></button>
+
+<div class="app-column-content <%= containerClass %>">
+    <div class="<%= headerClass %>">
+        <h5 class="m-0 me-auto">Your Connections</h5>
+        <button type="button" class="btn-close <%= btnCloseSidebarClass %>" aria-label="Close"></button>
+    </div>
+    
+    <ul class="list-unstyled <%= listClass %>"></ul>
+</div>
+

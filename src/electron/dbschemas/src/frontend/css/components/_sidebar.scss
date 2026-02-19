@@ -1,0 +1,91 @@
+.connection-form {
+    .form-input {
+        margin-bottom: 1rem;
+    }
+}
+
+
+.app-column-sidebar,
+.connections-sidebar-list-container {
+    min-width: 490px;
+    overflow-x: hidden;
+}
+
+.app-column-sidebar.collapsed,
+.connections-sidebar-list-container.collapsed {
+    min-width: 0;
+    width: 50px;
+}
+
+.connections-sidebar-list-container.collapsed {
+    min-width: 0;
+    display: none;
+}
+
+
+.connections-sidebar-list {
+    &-container {
+        padding: 1rem;
+        border-right: 1px solid hsl(0, 0%, 90%);
+    }
+
+    &-btn-show-sidebar {
+        position: absolute;
+        top: 5px;
+        left: 0.5em;
+        z-index: 999;
+        margin-top: 0.5rem;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid hsl(0, 0%, 90%);
+        padding-bottom: 1rem;
+    }
+
+    &-item {
+        &-tables-list {
+            margin-left: 2.5em;
+        }
+
+        &-btn-toggle {
+            padding: .25rem .5rem;
+
+            &::before {
+                display: inline-block;
+                width: 1.25em;
+                line-height: 0;
+                content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+                transition: transform .35s ease;
+                transform-origin: .5em 50%;
+            }
+
+            &[aria-expanded="true"]::before {
+                transform: rotate(90deg);
+            }
+        }
+    }
+}
+
+// $grayScale50: hsl(0, 0%, 50%);
+// $grayScale90: hsl(0, 0%, 90%);
+// $grayScale95: hsl(0, 0%, 95%);
+
+.sidebar-table-list-item {
+    &-btn-main {
+        font-size: 80%;
+        width: 100%;
+        text-align: left;
+
+        &:hover {
+            background-color: hsl(0, 0%, 95%);
+        }
+    }
+
+    &.active &-btn-main {
+        font-weight: bolder;
+        background-color: hsl(0, 0%, 90%);
+    }
+}

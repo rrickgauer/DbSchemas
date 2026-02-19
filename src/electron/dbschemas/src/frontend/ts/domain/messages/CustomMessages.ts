@@ -10,10 +10,6 @@ export const ShowConnectionFormMessage = new CustomMessage<{
     connectionId?: number | null;
 }>();
 
-export const ConnectionsListViewConnectionMessage = new CustomMessage<{
-    connectionId: number;
-}>();
-
 //#endregion
 
 

@@ -1,0 +1,11 @@
+@use "sass:map";
+
+$connectionTypeColors: (
+    "postgres": #ff00ff,
+    "mysql": #3333cc,
+    "access": #00cc99,
+    "sqlite": #cc3300,
+);
+
+
+
