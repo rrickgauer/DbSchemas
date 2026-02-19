@@ -1,0 +1,79 @@
+@use "_mixins.scss" as mixins;
+
+.open-table-cards {
+    &-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+    }
+
+    & {
+        display: flex;
+        padding-right: 5rem;
+    }
+}
+
+$tableFontSize: 70%;
+
+.open-table-card {
+    & {
+        min-width: 600px;
+        margin: .5rem;
+        height: fit-content;
+        @include mixins.custom-shadow;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+    }
+
+    &-table-name {
+        margin: 0;
+    }
+
+    &-btn-close {
+        margin-left: auto;
+    }
+
+
+    &-table {
+        font-size: $tableFontSize;
+
+        & td {
+            white-space: nowrap;
+        }
+    }
+
+    &-spinner {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    &-action-buttons {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    &-action-button {
+        font-size: $tableFontSize;
+    }
+
+    &-row {
+        &-cell-copy-row {
+            display: flex;
+            justify-content: center;
+        }
+        
+        &-btn-copy {
+            font-size: 90%;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+    }
+}

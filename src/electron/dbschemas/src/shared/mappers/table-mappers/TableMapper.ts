@@ -1,4 +1,4 @@
-import { DataRow, DataTable } from "../../domain/types/types";
+import { DataRow, DataTable } from "../../domain/types/CustomTypes";
 
 
 

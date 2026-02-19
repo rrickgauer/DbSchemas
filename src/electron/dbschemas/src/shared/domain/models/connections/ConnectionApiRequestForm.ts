@@ -1,5 +1,5 @@
 import { ConnectionType } from "../../enums/ConnectionType";
-import { Nullable } from "../../types/types";
+import { Nullable } from "../../types/CustomTypes";
 
 
 

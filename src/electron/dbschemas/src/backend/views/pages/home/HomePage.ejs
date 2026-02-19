@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../../includes/PageHeader'); -%>
+    <title><%= title %></title>
+</head>
+
+<body>
+    
+    <div class="app">
+        <div class="app-column app-column-sidebar">
+            <%- include('ConnectionsList'); -%>
+        </div>
+
+        <div class="app-column app-column-sidebar">
+            <%- include('TablesList'); -%>
+        </div>
+
+        <div class="app-column">
+            <%- include('OpenTables'); -%>
+        </div>
+    </div>
+
+    <%- include('ConnectionModal'); -%>
+    <%- include('../../includes/PageTopBundle'); -%>
+    <%- include('../../includes/PageFooter'); -%>
+    <script src="frontend/home.js"></script>
+</body>
+
+</html>

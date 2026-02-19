@@ -1,0 +1,27 @@
+body {
+    height: 100vh;
+}
+
+.app
+, .app-column
+, .app-column-content {
+    height: 100%;
+    max-height: 100%;
+}
+
+.app {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.app-column {
+    overflow-y: auto;
+}
+
+.app-column-sidebar {
+    width: 500px;
+}
+
+.app-column-content {
+    padding: 0.5rem;
+}

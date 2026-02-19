@@ -2,11 +2,11 @@ import { ConnectionApiResponse } from "../../../shared/domain/models/connections
 import { ConnectionApiRequestForm } from "../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../shared/domain/models/connections/ConnectionModel";
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
-import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connection-mappers";
-import { notNull, setNullValues } from "../../../shared/utilities/nullable";
+import { notNull, setNullValues } from "../../../shared/utilities/NullableUtility";
 import { ApiConnections } from "../api/ApiConnections";
-import { toServiceResponse, toServiceResponseNoContent } from "../api/responses";
+import { toServiceResponse, toServiceResponseNoContent } from "../utilities/ApiResponseHandlers";
 import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
+import { ConnectionModelApiResponseMapper } from "../../../shared/mappers/basic-mappers/connections/ConnectionModelApiResponseMapper";
 
 export class ConnectionsServiceGui
 {
@@ -66,3 +66,5 @@ export class ConnectionsServiceGui
         return await toServiceResponseNoContent(response);
     }
 }
+
+

@@ -4,7 +4,7 @@ import { ConnectionModel } from "../../../shared/domain/models/connections/Conne
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
 import { ServiceResponseBase } from "../../../shared/domain/ServiceResponses/ServiceResponseBase";
 import { ConnectionTableMapper } from "../../../shared/mappers/table-mappers/ConnectionTableMapper";
-import { isNull } from "../../../shared/utilities/nullable";
+import { isNull } from "../../../shared/utilities/NullableUtility";
 import { IConnectionRepository } from "../../repositories/connections/IConnectionRepository";
 import { IConnectionService } from "./IConnectionService";
 

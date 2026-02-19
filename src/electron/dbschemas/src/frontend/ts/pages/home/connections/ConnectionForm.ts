@@ -1,21 +1,21 @@
-import { NativeEventChange, NativeEventSubmit } from "../../../../../shared/domain/constants/native-events";
+import { NativeEventChange, NativeEventSubmit } from "../../../../../shared/domain/constants/NativeEvents";
 import { ConnectionType } from "../../../../../shared/domain/enums/ConnectionType";
 import { ConnectionApiRequestForm } from "../../../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
-import { Nullable } from "../../../../../shared/domain/types/types";
-import { isNull, notNull } from "../../../../../shared/utilities/nullable";
+import { Nullable } from "../../../../../shared/domain/types/CustomTypes";
+import { isNull, notNull } from "../../../../../shared/utilities/NullableUtility";
 import { IController } from "../../../contracts/IController";
 import { ConnectionsListRefreshMessage, ShowConnectionFormMessage } from "../../../domain/messages/CustomMessages";
 import { FormInput } from "../../../helpers/form-inputs/FormInput";
 import { FormInputSelect } from "../../../helpers/form-inputs/FormInputSelect";
 import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
-import { toastShowStandard } from "../../../helpers/toasts/toasts";
+import { toastShowStandard } from "../../../helpers/toasts/ToastUtility";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
-import { bootstrapHideElement, bootstrapHideModal, bootstrapShowElement, bootstrapShowModal } from "../../../utilities/bootstrap";
-import { domGetClass, domGetFormInputById, domQuery } from "../../../utilities/dom";
-import { formsSetIsDisabled as formsToggleIsDisabled } from "../../../utilities/forms";
-import { executeServiceCall } from "../../../utilities/ServiceResponses";
+import { bootstrapHideElement, bootstrapHideModal, bootstrapShowElement, bootstrapShowModal } from "../../../utilities/BootstrapUtility";
+import { domGetClass, domGetFormInputById, domQuery } from "../../../utilities/DomUtility";
+import { formsSetIsDisabled as formsToggleIsDisabled } from "../../../utilities/FormUtility";
+import { executeServiceCall } from "../../../utilities/ServiceUtility";
 
 class ConnectionFormElements
 {

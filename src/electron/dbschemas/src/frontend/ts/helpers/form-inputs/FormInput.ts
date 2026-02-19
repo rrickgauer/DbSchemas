@@ -1,4 +1,4 @@
-import { domFocusInput, domGetClass, domGetClosestClass, domIsSpecificElement } from "../../utilities/dom";
+import { domFocusInput, domGetClass, domGetClosestClass, domIsSpecificElement } from "../../utilities/DomUtility";
 
 export type FormInputConstructor = new (element: Element) => FormInput<any>;
 

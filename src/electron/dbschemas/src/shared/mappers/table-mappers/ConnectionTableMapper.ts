@@ -1,8 +1,8 @@
 
 import { ConnectionModel } from "../../domain/models/connections/ConnectionModel";
-import { DataRow } from "../../domain/types/types";
-import { datesParseString } from "../../utilities/dates";
-import { getValueDefault } from "../../utilities/misc";
+import { DataRow } from "../../domain/types/CustomTypes";
+import { datesParseString } from "../../utilities/DatesUtility";
+import { getValueDefault } from "../../utilities/MiscUtility";
 import { TableMapper } from "./TableMapper";
 
 export class ConnectionTableMapper extends TableMapper<ConnectionModel>

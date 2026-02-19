@@ -1,5 +1,5 @@
-import { isNull } from "../../utilities/nullable";
-import { Nullable } from "../types/types";
+import { isNull } from "../../utilities/NullableUtility";
+import { Nullable } from "../types/CustomTypes";
 
 export type ServiceResponseBaseArgs = {
     errorMessage?: Nullable<string>;
