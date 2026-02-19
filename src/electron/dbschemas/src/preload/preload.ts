@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS } from '../shared/domain/constants/IpcEventNames';
 
 /**
  * Everything exposed here becomes available on `window.api`
@@ -21,6 +22,9 @@ contextBridge.exposeInMainWorld('api', {
     return ipcRenderer.invoke('app:get-version');
   },
 
+  onNewConnection: (callback) => ipcRenderer.on(IPC_EVENT_NEW_CONNECTION, (_event, value) => callback(value)),
+  onRefreshConnections: (callback) => ipcRenderer.on(IPC_EVENT_REFRESH_CONNECTIONS, (_event, value) => callback(value)),
+
   /**
    * Example: generic invoke helper (optional)
    * Use sparingly.
@@ -28,6 +32,7 @@ contextBridge.exposeInMainWorld('api', {
   invoke: <T = unknown>(channel: string, ...args: unknown[]): Promise<T> => {
     return ipcRenderer.invoke(channel, ...args);
   }
+
 });
 
 /**

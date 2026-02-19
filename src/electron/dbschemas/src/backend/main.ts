@@ -1,6 +1,6 @@
-import { app, BrowserWindow, protocol } from 'electron';
-import path from 'path';
+import { app, protocol } from 'electron';
 import { router } from './protocol/RoutesMapper';
+import { buildApplicationWindow } from './main-routines';
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -14,23 +14,13 @@ protocol.registerSchemesAsPrivileged([
     }
 ]);
 
-
 app.whenReady().then(() =>
 {
     protocol.handle('app', (req) => router.handle(req));
 
-    const win = new BrowserWindow({
-        webPreferences: {
-            devTools: true,
-            preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false,
-        },
-    });
-
-    win.maximize();
-
-    win.loadURL('app:///home');
+    const appWindow = buildApplicationWindow();
+    appWindow.maximize();
+    appWindow.loadURL('app:///home');
 
     // win.webContents.openDevTools();
 });
@@ -43,4 +33,3 @@ app.on('window-all-closed', () =>
         app.quit();
     }
 });
-
