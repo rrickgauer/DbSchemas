@@ -1,4 +1,4 @@
-import { NativeEventChange, NativeEventSubmit } from "../../../../../shared/domain/constants/NativeEvents";
+import { NativeEventChange, NativeEventClick, NativeEventSubmit } from "../../../../../shared/domain/constants/NativeEvents";
 import { ConnectionType } from "../../../../../shared/domain/enums/ConnectionType";
 import { ConnectionApiRequestForm } from "../../../../../shared/domain/models/connections/ConnectionApiRequestForm";
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
@@ -12,9 +12,10 @@ import { FormInputText } from "../../../helpers/form-inputs/FormInputText";
 import { SpinnerButton } from "../../../helpers/spinner-button/SpinnerButton";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { bootstrapHideElement, bootstrapHideModal, bootstrapShowElement, bootstrapShowModal } from "../../../utilities/BootstrapUtility";
-import { domGetClass, domGetFormInputById, domQuery } from "../../../utilities/DomUtility";
+import { domGetClass, domGetFormInputById, domGetSpinnerButton, domQuery } from "../../../utilities/DomUtility";
 import { formsSetIsDisabled as formsToggleIsDisabled } from "../../../utilities/FormUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
+import { ipcOpenFilePicker as ipcOpenNativeFileDialog } from "../../../helpers/ipc/IpcHandler";
 
 class ConnectionFormElements
 {
@@ -28,6 +29,7 @@ class ConnectionFormElements
     public readonly inputUsernameId = `${this.formClass}-input-username`;
     public readonly inputPasswordId = `${this.formClass}-input-password`;
     public readonly spinner = `${this.formClass}-spinner`;
+    public readonly btnSelectFileClass = `${this.formClass}-btn-select-file`;
 }
 
 const ELE = new ConnectionFormElements();
@@ -49,6 +51,8 @@ export class ConnectionForm implements IController
     private readonly _fieldset: HTMLFieldSetElement;
     private readonly _connectionService: ConnectionsServiceGui;
     private readonly _spinner: HTMLDivElement;
+    private readonly _btnSelectFile: HTMLButtonElement;
+
     private _activeConnectionId: Nullable<number> = null;
 
     private get _selectedConnectionType(): ConnectionType
@@ -83,10 +87,11 @@ export class ConnectionForm implements IController
         this._inputFile = domGetFormInputById(ELE.inputFileId, FormInputText);
         this._inputUsername = domGetFormInputById(ELE.inputUsernameId, FormInputText);
         this._inputPassword = domGetFormInputById(ELE.inputPasswordId, FormInputText);
-        this._btnSubmit = new SpinnerButton(domGetClass('btn-submit', this._container));
+        this._btnSubmit = domGetSpinnerButton(this._container);
         this._fieldset = domQuery<HTMLFieldSetElement>('fieldset', this._container);
         this._connectionService = new ConnectionsServiceGui();
         this._spinner = domGetClass<HTMLDivElement>(ELE.spinner, this._container);
+        this._btnSelectFile = domGetClass<HTMLButtonElement>(ELE.btnSelectFileClass);
     }
 
     public control(): void
@@ -97,12 +102,13 @@ export class ConnectionForm implements IController
     //#region - Event Listeners -
     private addListeners(): void
     {
-        this.addFormSubmitListener();
-        this.addShowConnectionFormMessageListener();
-        this.addConnectionTypeChangeEvent();
+        this.addListener_FormSubmit();
+        this.addListener_ShowConnectionFormMessage();
+        this.addListener_ConnectionTypeChange();
+        this.addListener_SelectFileButtonClick();
     }
 
-    private addFormSubmitListener(): void
+    private addListener_FormSubmit(): void
     {
         this._form.addEventListener(NativeEventSubmit, async (e) =>
         {
@@ -111,7 +117,7 @@ export class ConnectionForm implements IController
         });
     }
 
-    private addShowConnectionFormMessageListener(): void
+    private addListener_ShowConnectionFormMessage(): void
     {
         ShowConnectionFormMessage.addListener(async (data) =>
         {
@@ -120,13 +126,22 @@ export class ConnectionForm implements IController
         });
     }
 
-    private addConnectionTypeChangeEvent(): void
+    private addListener_ConnectionTypeChange(): void
     {
         this._inputConnectionType.input.addEventListener(NativeEventChange, (e) =>
         {
             this.updateInputVisibilities(this._selectedConnectionType);
         });
     }
+
+    private addListener_SelectFileButtonClick(): void
+    {
+        this._btnSelectFile.addEventListener(NativeEventClick, async (e) =>
+        {
+            await this.selectFile();
+        });
+    }
+
 
 
 
@@ -341,6 +356,16 @@ export class ConnectionForm implements IController
             bootstrapHideElement(this._spinner);
         }
     }
+
+    private async selectFile(): Promise<void>
+    {
+        const selectedFile = await ipcOpenNativeFileDialog();
+        if (notNull(selectedFile))
+        {
+            this._inputFile.value = selectedFile;
+        }
+    }
+
     //#endregion
 
     public static initialize()
@@ -353,4 +378,6 @@ export class ConnectionForm implements IController
 
         return this._singleton;
     }
+
+
 }

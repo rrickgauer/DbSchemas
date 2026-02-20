@@ -69,7 +69,7 @@ export class OpenTablesCardItem
         this._table = domGetClass<HTMLTableElement>(ELE.tableClass, this._container);
         this._tableService = new TableServiceGui();
         this._rowHtmlEngine = new TableColumnListItemTemplate();
-        this._bodyContent = domGetClass<HTMLDivElement>(ELE.bodyClass);
+        this._bodyContent = domGetClass<HTMLDivElement>(ELE.bodyClass, this._container);
     }
 
     public isEqual(tableInfo: TableColumnsRequestData): boolean

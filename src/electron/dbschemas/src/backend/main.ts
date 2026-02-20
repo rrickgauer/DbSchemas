@@ -1,6 +1,7 @@
-import { app, protocol } from 'electron';
+import { app, BrowserWindow, ipcMain, protocol } from 'electron';
 import { router } from './protocol/RoutesMapper';
-import { buildApplicationWindow } from './main-routines';
+import { buildApplicationWindow, openFilePicker } from './main-routines';
+import { IPC_EVENT_OPEN_FILE_PICKER } from '../shared/domain/constants/IpcEventNames';
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -32,4 +33,11 @@ app.on('window-all-closed', () =>
     {
         app.quit();
     }
+});
+
+
+ipcMain.handle(IPC_EVENT_OPEN_FILE_PICKER, async (event) =>
+{
+    const win = BrowserWindow.fromWebContents(event.sender)!;
+    return await openFilePicker(win);
 });

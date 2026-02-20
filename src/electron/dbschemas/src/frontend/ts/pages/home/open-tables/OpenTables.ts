@@ -143,8 +143,6 @@ export class OpenTables implements IController
         await newItem.refreshColumns();
     }
 
-
-    
     private getOpenCardFromEventTargetClass(e: Event, childClass: string): OpenTablesCardItem | null
     {
         const childElement = domGetElementOrParentWithClassName(e.target, childClass);
