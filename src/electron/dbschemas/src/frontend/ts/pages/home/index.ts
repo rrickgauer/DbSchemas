@@ -1,9 +1,9 @@
 
 import { ipcRegisterGuiEventHandlers } from "../../helpers/ipc/IpcHandler";
-import { pageReady } from "../../utilities/PageUtility";
+import { pageOnReady } from "../../utilities/PageUtility";
 import { HomePage } from "./HomePage";
 
-pageReady(async () =>
+pageOnReady(async () =>
 {
     ipcRegisterGuiEventHandlers();
     

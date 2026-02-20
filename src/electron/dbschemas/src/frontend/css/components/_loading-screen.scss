@@ -1,0 +1,7 @@
+@use "mixins" as mixins;
+
+.loading-screen {
+    @include mixins.element-overlay;
+    background-color: white;
+    height: 100%;
+}

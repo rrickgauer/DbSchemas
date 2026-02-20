@@ -2,6 +2,7 @@ import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
 import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
 import { domGetClass } from "../../utilities/DomUtility";
+import { pageHideLoadingScreen, pageShowLoadingScreen } from "../../utilities/PageUtility";
 import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
 import { OpenTables } from "./open-tables/OpenTables";
 import { ConnectionForm } from "./sidebar/ConnectionForm";
@@ -30,6 +31,7 @@ export class HomePage implements IControllerAsync
 
     public async control(): Promise<void>
     {
+        pageShowLoadingScreen();
         ConnectionForm.initialize();
         this.addListeners();
         this._openTables.control();
@@ -43,9 +45,11 @@ export class HomePage implements IControllerAsync
 
     private async restoreCachedTables(): Promise<void>
     {
+        pageShowLoadingScreen();
         const cachedTables = sessionGetOpenTables();
         this._sidebar.setItemsToActive(cachedTables);
         await this._openTables.showTables(cachedTables);
+        pageHideLoadingScreen();
     }
 
 
