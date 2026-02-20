@@ -1,5 +1,6 @@
 import { TableColumnsRequestData } from "../../../shared/domain/models/column-definitions/TableColumnsRequestData";
-import { SessionData, SessionWrapper } from "../helpers/session/SessionWrapper";
+import { SessionWrapper } from "../helpers/session/SessionWrapper";
+import { SessionData } from "../helpers/session/SessionData";
 
 
 const SESSION = new SessionWrapper();
@@ -48,9 +49,19 @@ export function sessionGetOpenTables(): TableColumnsRequestData[]
     return SESSION.openTables;
 }
 
-export function sessionSaveOpenTables(openTables: TableColumnsRequestData[])
+export function sessionSaveOpenTables(openTables: TableColumnsRequestData[]): void
 {
     SESSION.openTables = openTables;
+}
+
+export function sessionSaveIsSidebarOpen(isOpen: boolean): void
+{
+    SESSION.isSidebarOpen = isOpen;
+}
+
+export function sessionGetIsSidebarOpen(): boolean
+{
+    return SESSION.isSidebarOpen;
 }
 
 export function sessionGetSessionData(): SessionData

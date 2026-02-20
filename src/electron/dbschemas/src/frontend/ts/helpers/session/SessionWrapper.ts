@@ -1,8 +1,5 @@
 import { TableColumnsRequestData } from "../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
-
-export type SessionData = {
-    openTables: TableColumnsRequestData[];
-}
+import { SessionData } from "./SessionData";
 
 const SESSION_KEY = 'dbschemas.data';
 
@@ -18,6 +15,18 @@ export class SessionWrapper
     {
         const currentData = this.getSessionData();
         currentData.openTables = value;
+        this.saveSessionData(currentData);
+    }
+
+    public get isSidebarOpen(): boolean
+    {
+        return this.getSessionData().isSidebarOpen;
+    }
+
+    public set isSidebarOpen(value: boolean)
+    {
+        const currentData = this.getSessionData();
+        currentData.isSidebarOpen = value;
         this.saveSessionData(currentData);
     }
 
@@ -47,6 +56,7 @@ export class SessionWrapper
     {
         return {
             openTables: [],
+            isSidebarOpen: true,
         };
     }
 }

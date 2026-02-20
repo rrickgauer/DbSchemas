@@ -2,7 +2,7 @@ import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
 import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
 import { domGetClass } from "../../utilities/DomUtility";
-import { sessionAppendOpenTable, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
+import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
 import { OpenTables } from "./open-tables/OpenTables";
 import { ConnectionForm } from "./sidebar/ConnectionForm";
 import { SidebarListController } from "./sidebar/SidebarList";
@@ -33,6 +33,8 @@ export class HomePage implements IControllerAsync
         ConnectionForm.initialize();
         this.addListeners();
         this._openTables.control();
+
+        this._sidebar.toggleSidebarVisibility(sessionGetIsSidebarOpen());
         await this._sidebar.control();
 
         // display cached tables
@@ -67,8 +69,6 @@ export class HomePage implements IControllerAsync
             }
         });
     }
-
-
 
     private addListener_ConnectionsListRefreshMessage(): void
     {

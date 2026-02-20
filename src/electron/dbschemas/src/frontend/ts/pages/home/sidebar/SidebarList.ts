@@ -10,6 +10,7 @@ import { TableSidebarListItemTemplateElements } from "../../../templates/connect
 import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
+import { sessionGetIsSidebarOpen, sessionSaveIsSidebarOpen } from "../../../utilities/SessionUtility";
 import { SidebarConnectionListItem } from "./SidebarConnectionListItem";
 import { SidebarTableListItem } from "./SidebarTableListItem";
 
@@ -36,6 +37,11 @@ export class SidebarListController implements IControllerAsync
     private readonly _btnCloseSidebar: HTMLButtonElement;
     private readonly _btnOpenSidebar: HTMLButtonElement;
     private readonly _appSidebar: HTMLDivElement;
+
+    private get _isSidebarOpen(): boolean
+    {
+        return !this._container.classList.contains('collapsed');
+    }
 
     constructor ()
     {
@@ -119,6 +125,7 @@ export class SidebarListController implements IControllerAsync
         this._btnCloseSidebar.addEventListener(NativeEventClick, (e) =>
         {
             this.toggleSidebarVisibility(false);
+            this.cacheSidebarState();
         });
     }
 
@@ -127,6 +134,7 @@ export class SidebarListController implements IControllerAsync
         this._btnOpenSidebar.addEventListener(NativeEventClick, (e) =>
         {
             this.toggleSidebarVisibility(true);
+            this.cacheSidebarState();
         });
     }
 
@@ -224,7 +232,7 @@ export class SidebarListController implements IControllerAsync
     //#endregion
 
     //#region Show/Hide Sidebar -
-    private toggleSidebarVisibility(isVisible: boolean): void
+    public toggleSidebarVisibility(isVisible: boolean): void
     {
         if (isVisible)
         {
@@ -239,6 +247,12 @@ export class SidebarListController implements IControllerAsync
             bootstrapShowElement(this._btnOpenSidebar);
         }
     }
+
+    private cacheSidebarState(): void
+    {
+        sessionSaveIsSidebarOpen(this._isSidebarOpen);
+    }
+
     //#endregion
 }
 
