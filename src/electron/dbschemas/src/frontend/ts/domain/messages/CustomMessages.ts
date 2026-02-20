@@ -6,19 +6,21 @@ import { CustomMessage } from "../../helpers/messages/CustomMessage";
 
 export const ConnectionsListRefreshMessage = new CustomEmptyMessage();
 
-export const ShowConnectionFormMessage = new CustomMessage<{
+type ShowConnectionFormMessageArgs = {
     connectionId?: number | null;
-}>();
+}
+export const ShowConnectionFormMessage = new CustomMessage<ShowConnectionFormMessageArgs>();
 
-//#endregion
 
 
-//#region - Tables Sidebar List -
-
-export const TableSidebarListItemClickedMessage = new CustomMessage<{
+type TableSidebarListItemClickedMessageArgs = {
     tableRequestData: TableColumnsRequestData;
     isActive: boolean;
-}>();
+}
+
+export const TableSidebarListItemClickedMessage = new CustomMessage<TableSidebarListItemClickedMessageArgs>();
+
+export const ConnectionDeletedMessage = new CustomMessage<number>();
 
 //#endregion
 
