@@ -187,7 +187,7 @@ export class OpenTablesCardItem
         tbody?.insertAdjacentHTML("afterbegin", html);
     }
 
-    private getConnectionTableRequestData(): TableColumnsRequestData
+    public getConnectionTableRequestData(): TableColumnsRequestData
     {
         return {
             connectionId: this.connectionId,

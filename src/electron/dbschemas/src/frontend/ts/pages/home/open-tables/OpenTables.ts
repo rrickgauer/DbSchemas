@@ -1,10 +1,11 @@
-import { NativeEventClick } from "../../../../../shared/domain/constants/NativeEvents";
+import { NativeEventClick, NativeEventDragEnd, NativeEventDragOver, NativeEventDragStart, NativeEventDrop } from "../../../../../shared/domain/constants/NativeEvents";
 import { TableColumnsRequestData } from "../../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
 import { IController } from "../../../contracts/IController";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
-import { domGetClass, domGetClasses, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
+import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
+import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
@@ -22,17 +23,19 @@ const ITEM = new TableColumnListItemTemplateElements();
 
 export class OpenTables implements IController
 {
-    private _container: HTMLDivElement;
-    private _list: HTMLDivElement;
-    private _tableService: TableServiceGui;
-    private _cardHtmlEngine: OpenTableCardTemplate;
+    private readonly _container: HTMLDivElement;
+    private readonly _list: HTMLDivElement;
+    private readonly _tableService: TableServiceGui;
+    private readonly _cardHtmlEngine: OpenTableCardTemplate;
+    private _draggedCard: HTMLElement | null;
 
-    constructor ()
+    constructor()
     {
         this._container = domGetClass<HTMLDivElement>(ELE.containerClass);
         this._list = domGetClass<HTMLDivElement>(ELE.listClass, this._container);
         this._tableService = new TableServiceGui();
         this._cardHtmlEngine = new OpenTableCardTemplate();
+        this._draggedCard = null;
     }
 
     public control(): void
@@ -51,6 +54,7 @@ export class OpenTables implements IController
         this.addListener_BtnRefreshClick();
         this.addListener_BtnSelectAllRowsClick();
         this.addListener_BtnDeselectAllRowsClick();
+        this.addListener_Dragging();
     }
 
     private addListener_BtnCopyAllRowsClick()
@@ -133,6 +137,89 @@ export class OpenTables implements IController
             }
         });
     }
+
+    
+
+    private addListener_Dragging(): void
+    {
+        this._container.addEventListener(NativeEventDragStart, (event) =>
+        {
+            const draggedElement = domGetElementOrParentWithClassName(event.target, CARD.dragItem);
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            if (draggedElement && cardElement)
+            {
+                event.stopPropagation();
+                this._draggedCard = cardElement;
+                this._draggedCard.classList.add('dragging');
+                event.dataTransfer!.effectAllowed = "move";
+                event.dataTransfer!.setDragImage(cardElement, 0, 0);
+            }
+        });
+
+        this._container.addEventListener(NativeEventDragOver, (event) =>
+        {
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            if (cardElement)
+            {
+                event.preventDefault();
+                event.stopPropagation();
+                event!.dataTransfer!.effectAllowed = "move";
+            }
+        });
+
+
+        this._container.addEventListener(NativeEventDragEnd, (event) =>
+        {
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            cardElement?.classList.remove('dragging');
+        });
+
+        this._container.addEventListener(NativeEventDrop, (event) =>
+        {
+            const droppedCard = this.getParentCardHtmlElementFromEvent(event);
+            if (!this._draggedCard || !droppedCard)
+            {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const cardElements = domGetClasses<HTMLElement>(CARD.containerClass, this._container);
+            const droppedIndex = cardElements.indexOf(droppedCard);
+
+            if (droppedIndex === cardElements.length - 1)
+            {
+                droppedCard.insertAdjacentElement("afterend", this._draggedCard);
+            }
+            else
+            {
+                droppedCard.insertAdjacentElement("beforebegin", this._draggedCard);
+            }
+
+            this.cacheOpenTableOrder();
+        });
+    }
+
+    private getParentCardHtmlElementFromEvent(event: Event): HTMLElement | null
+    {
+        if (!domIsElement(event.target))
+        {
+            return null;
+        }
+
+        return event.target.closest<HTMLElement>(`.${CARD.containerClass}`);
+    }
+
+    private cacheOpenTableOrder(): void
+    {
+        const cardItems = this.getAllOpenCards().map(c => c.getConnectionTableRequestData());
+        sessionSaveOpenTables(cardItems);
+    }
+
+
+
+
     //#endregion
 
     public async showTables(tableInfos: TableColumnsRequestData[]): Promise<void>

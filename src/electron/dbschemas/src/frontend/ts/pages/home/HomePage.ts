@@ -1,7 +1,6 @@
 import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
 import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
-import { ipcRegisterGuiEventHandlers } from "../../helpers/ipc/IpcHandler";
 import { domGetClass } from "../../utilities/DomUtility";
 import { sessionAppendOpenTable, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
 import { OpenTables } from "./open-tables/OpenTables";
