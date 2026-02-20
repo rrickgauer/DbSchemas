@@ -1,3 +1,4 @@
+import { isNull } from "./NullableUtility";
 
 
 
@@ -22,7 +23,7 @@ export function isValidEnumValue<T extends object>(enumObj: T, value: unknown): 
 
 export function toDictionary<K extends keyof T, T extends object>(elements: T[], propertyKey: K): Map<T[K], T>
 {
-    const result = new Map<T[K], T>
+    const result = new Map<T[K], T>;
 
     elements.forEach((element) =>
     {
@@ -43,5 +44,24 @@ export function isString(value: unknown): value is string
     return typeof value === "string" && value != null;
 }
 
+export function isBoolean(value: unknown): value is boolean
+{
+    return typeof value === "boolean" && value != null;
+}
+
+export function convertToBool(value: string | boolean | null): boolean | null
+{
+    if (value == null)
+    {
+        return null;
+    }
+
+    if (isBoolean(value))
+    {
+        return value;
+    }
+
+    return value.toLowerCase() === "true";
+}
 
 

@@ -55,10 +55,12 @@ export class SidebarConnectionListItem
     //#region - Refresh tables -
     public async refreshTables(): Promise<void>
     {
-        if (this.connectionType != ConnectionType.Postgres)
+        switch(this.connectionType)
         {
-            console.assert(false, `Can't retrieve columns for this type`);
-            return;
+            case ConnectionType.MySQL:
+            case ConnectionType.Access:
+                console.assert(false, `Can't retrieve columns for this type`);
+                return;
         }
 
         const tableNames = await this.getTableNamesFromApi();

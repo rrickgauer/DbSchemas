@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { GetBaseOperatingSystemPath } from '../../utilities/OperatingSystem';
+import { osGetBaseOperatingSystemPath } from '../../utilities/OperatingSystem';
 import { IApplicationData } from './IApplicationData';
 
 
@@ -22,7 +22,7 @@ export class ApplicationDataProduction implements IApplicationData
 
     public get BaseDirectory(): string
     {
-        return path.join(GetBaseOperatingSystemPath(), this.ApplicationName);
+        return path.join(osGetBaseOperatingSystemPath(), this.ApplicationName);
     }
 
     public get DataDirectory(): string

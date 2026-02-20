@@ -6,6 +6,7 @@ import { ConnectionModel } from "../../../shared/domain/models/connections/Conne
 import { ServiceResponse } from "../../../shared/domain/ServiceResponses/ServiceResponse";
 import { ISchemaReader } from "../../schema-readers/ISchemaReader";
 import { SchemaReaderPostgres } from "../../schema-readers/postgres/SchemaReaderPostgres";
+import { SchemaReaderSqlite } from "../../schema-readers/sqlite/SchemaReaderSqlite";
 import { ISchemaReaderService } from "./ISchemaReaderService";
 
 type SchemaReaderServiceArgs = {
@@ -27,6 +28,9 @@ export class SchemaReaderService implements ISchemaReaderService
         {
             case ConnectionType.Postgres:
                 return await this.getTableColumnsPostgres(connection, tableName);
+            
+                case ConnectionType.SQLite:
+                return await this.getTableColumnsSqlite(connection, tableName);
         }
 
         throw new NotImplementedException();
@@ -38,6 +42,9 @@ export class SchemaReaderService implements ISchemaReaderService
         {
             case ConnectionType.Postgres:
                 return await this.getTableNamesPostgres(connection);
+            
+            case ConnectionType.SQLite:
+                return await this.getTableNamesSqlite(connection);
         }
 
         throw new NotImplementedException();
@@ -73,4 +80,26 @@ export class SchemaReaderService implements ISchemaReaderService
     }
     //#endregion
 
+    //#region - SQLite -
+
+
+    private async getTableColumnsSqlite(connection: ConnectionModel, tableName: string)
+    {
+        const schemaReader = new SchemaReaderSqlite({
+            connection: connection,
+        });
+
+        return await schemaReader.getTableColumns(tableName);
+    }
+
+    private async getTableNamesSqlite(connection: ConnectionModel): Promise<ServiceResponse<string[]>>
+    {
+        const schemaReader = new SchemaReaderSqlite({
+            connection: connection,
+        });
+
+        return await schemaReader.getAllTableNames();
+    }
+
+    //#endregion
 }
