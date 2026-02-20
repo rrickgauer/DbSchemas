@@ -50,31 +50,31 @@ export class SidebarListController implements IControllerAsync
     public async control(): Promise<void>
     {
         this.addListeners();
-        await this.refreshAll();
+        await this.resetListItems();
+    }
+
+
+    public setItemsToActive(tableInfos: TableColumnsRequestData[]): void
+    {
+        const itemsToActivate = tableInfos.map(x => this.getTableListItem(x)).filter(x => x != null);
+
+        itemsToActivate.forEach((item) =>
+        {
+            item.isActive = true;
+            const parent = this.getConnectionListItem(item.connectionId);
+            parent.expand();
+        });
     }
 
     //#region - Event listeners -
     private addListeners(): void
     {
         this.addListener_TableButtonClick();
-        this.addListener_OpenTableCardClosedMessage();
         this.addListener_EditConnectionButtonClick()
         this.addListener_RefreshTablesButtonClick();
         this.addListener_DeleteConnectionButtonClick();
         this.addListener_CloseSidebarButtonClick();
         this.addListener_OpenSidebarButtonClick();
-    }
-
-    private addListener_OpenTableCardClosedMessage(): void
-    {
-        OpenTableCardClosedMessage.addListener((message) =>
-        {
-            const tableData = message.data;
-            if (notNull(tableData))
-            {
-                this.closeTable(tableData);
-            }
-        });
     }
 
     private addListener_TableButtonClick(): void
@@ -133,7 +133,7 @@ export class SidebarListController implements IControllerAsync
     //#endregion
 
     //#region - Refresh tables -
-    public async refreshAll(): Promise<void>
+    public async resetListItems(): Promise<void>
     {
         // refresh connection list items
         const connectionModels = await this.getConnectionModelsFromApi();
@@ -166,9 +166,9 @@ export class SidebarListController implements IControllerAsync
     //#endregion
 
     //#region - Close table -
-    private closeTable(tableData: TableColumnsRequestData): void
+    public deactivateItem(tableInfo: TableColumnsRequestData): void
     {
-        const table = this.getTableListItem(tableData);
+        const table = this.getTableListItem(tableInfo);
         if (notNull(table))
         {
             table.isActive = false;
@@ -177,6 +177,13 @@ export class SidebarListController implements IControllerAsync
     //#endregion
 
     //#region - Item retrieval -
+
+    private getConnectionListItem(connectionId: number): SidebarConnectionListItem
+    {
+        const connections = this.getAllConnectionListItems();
+        return connections.find(c => c.connectionId === connectionId)!;
+    }
+
     private getAllConnectionListItems(): SidebarConnectionListItem[]
     {
         const elements = domGetClasses<HTMLLIElement>(CONNECTION.containerClass, this._list);

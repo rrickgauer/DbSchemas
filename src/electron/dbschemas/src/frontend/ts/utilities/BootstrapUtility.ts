@@ -1,4 +1,4 @@
-import { Dropdown, Modal, Offcanvas, Tab } from "bootstrap";
+import { Collapse, Dropdown, Modal, Offcanvas, Tab } from "bootstrap";
 
 const BS_DISPLAY_NONE = 'd-none';
 
@@ -68,4 +68,16 @@ export function bootstrapGetNav(element: string | Element): Tab
 }
 
 
+export function bootstrapShowCollapse(element: Element): Collapse
+{
+    const collapse = Collapse.getOrCreateInstance(element);
+    collapse.show();
+    return collapse;
+}
 
+export function bootstrapHideCollapse(element: Element): Collapse
+{
+    const collapse = Collapse.getOrCreateInstance(element);
+    collapse.hide();
+    return collapse;
+}

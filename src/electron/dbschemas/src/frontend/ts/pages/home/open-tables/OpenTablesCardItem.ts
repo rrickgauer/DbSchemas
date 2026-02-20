@@ -72,6 +72,11 @@ export class OpenTablesCardItem
         this._bodyContent = domGetClass<HTMLDivElement>(ELE.bodyClass, this._container);
     }
 
+    public remove(): void
+    {
+        this._container.remove();
+    }
+
     public isEqual(tableInfo: TableColumnsRequestData): boolean
     {
         if (this.connectionId != tableInfo.connectionId)

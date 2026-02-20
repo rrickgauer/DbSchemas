@@ -70,7 +70,7 @@ export class SidebarTableListItem
         });
     }
 
-    private getTableColumnsRequestData(): TableColumnsRequestData
+    public getTableColumnsRequestData(): TableColumnsRequestData
     {
         return {
             connectionId: this.connectionId,

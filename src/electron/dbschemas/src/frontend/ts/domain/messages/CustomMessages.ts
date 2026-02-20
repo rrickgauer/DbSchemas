@@ -5,6 +5,7 @@ import { CustomMessage } from "../../helpers/messages/CustomMessage";
 //#region - Connections List -
 
 export const ConnectionsListRefreshMessage = new CustomEmptyMessage();
+export const RefreshPageMessage = new CustomEmptyMessage();
 
 type ShowConnectionFormMessageArgs = {
     connectionId?: number | null;

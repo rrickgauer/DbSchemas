@@ -4,7 +4,7 @@ import { IController } from "../../../contracts/IController";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
-import { domGetClass, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
+import { domGetClass, domGetClasses, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
@@ -27,7 +27,7 @@ export class OpenTables implements IController
     private _tableService: TableServiceGui;
     private _cardHtmlEngine: OpenTableCardTemplate;
 
-    constructor()
+    constructor ()
     {
         this._container = domGetClass<HTMLDivElement>(ELE.containerClass);
         this._list = domGetClass<HTMLDivElement>(ELE.listClass, this._container);
@@ -43,17 +43,17 @@ export class OpenTables implements IController
     //#region - Event listeners -
     private addListeners(): void
     {
-        this.addCloseCardButtonClickListener();
-        this.addCopyRowButtonClickListener();
-        this.addTableRowClickListener();
-        this.addBtnCopyAllRowsClickListener();
-        this.addBtnCopySelectedRowsClickListener();
-        this.addBtnRefreshClickListener();
-        this.addBtnSelectAllRowsClickListener();
-        this.addBtnDeselectAllRowsClickListener();
+        this.addListener_CloseCardButtonClick();
+        this.addListener_CopyRowButtonClick();
+        this.addListener_TableRowClick();
+        this.addListener_BtnCopyAllRowsClick();
+        this.addListener_BtnCopySelectedRowsClick();
+        this.addListener_BtnRefreshClick();
+        this.addListener_BtnSelectAllRowsClick();
+        this.addListener_BtnDeselectAllRowsClick();
     }
 
-    private addBtnCopyAllRowsClickListener()
+    private addListener_BtnCopyAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -61,8 +61,8 @@ export class OpenTables implements IController
             card?.copyAllRows();
         });
     }
-    
-    private addBtnCopySelectedRowsClickListener()
+
+    private addListener_BtnCopySelectedRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -71,7 +71,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addBtnRefreshClickListener()
+    private addListener_BtnRefreshClick()
     {
         this._list.addEventListener(NativeEventClick, async (e) =>
         {
@@ -80,7 +80,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addBtnSelectAllRowsClickListener()
+    private addListener_BtnSelectAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -90,17 +90,16 @@ export class OpenTables implements IController
     }
 
 
-    private addBtnDeselectAllRowsClickListener()
+    private addListener_BtnDeselectAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
             const card = this.getOpenCardFromEventTargetClass(e, CARD.btnDeselectAllRows);
             card?.deselectAllRows();
         });
-
     }
 
-    private addCloseCardButtonClickListener()
+    private addListener_CloseCardButtonClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -109,7 +108,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addCopyRowButtonClickListener()
+    private addListener_CopyRowButtonClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -122,7 +121,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addTableRowClickListener()
+    private addListener_TableRowClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -136,10 +135,26 @@ export class OpenTables implements IController
     }
     //#endregion
 
-
-    public async showTable(data: TableColumnsRequestData): Promise<void>
+    public async showTables(tableInfos: TableColumnsRequestData[]): Promise<void>
     {
-        const newItem = createEmptyOpenTablesCardItem(data, this._list);
+        this.removeAllCardItems();
+
+        const cards = tableInfos.map(t => createEmptyOpenTablesCardItem(t, this._list));
+
+        for (const tableItem of cards)
+        {
+            await tableItem.refreshColumns();
+        }
+    }
+
+    private removeAllCardItems(): void
+    {
+        this.getAllOpenCards().forEach(c => c.remove());
+    }
+
+    public async showTable(tableInfo: TableColumnsRequestData): Promise<void>
+    {
+        const newItem = createEmptyOpenTablesCardItem(tableInfo, this._list);
         await newItem.refreshColumns();
     }
 
@@ -151,6 +166,12 @@ export class OpenTables implements IController
             return new OpenTablesCardItem(childElement);
         }
         return null;
+    }
+
+    private getAllOpenCards(): OpenTablesCardItem[]
+    {
+        const elements = domGetClasses<HTMLElement>(CARD.containerClass);
+        return elements.map(e => new OpenTablesCardItem(e));
     }
 }
 
