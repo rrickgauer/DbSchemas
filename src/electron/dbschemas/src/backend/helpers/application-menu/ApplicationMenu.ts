@@ -1,5 +1,6 @@
 import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
 import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS } from "../../../shared/domain/constants/IpcEventNames";
+import { ipcSendMessageToFrontEnd } from "../../utilities/IpcHandlers";
 
 type ApplicationMenuArgs = {
     menu: Menu;
@@ -32,11 +33,11 @@ export class ApplicationMenu
             submenu: [
                 {
                     label: 'New',
-                    click: () => this._window.webContents.send(IPC_EVENT_NEW_CONNECTION),
+                    click: () => ipcSendMessageToFrontEnd(IPC_EVENT_NEW_CONNECTION),
                 },
                 {
                     label: 'Refresh',
-                    click: () => this._window.webContents.send(IPC_EVENT_REFRESH_CONNECTIONS),
+                    click: () => ipcSendMessageToFrontEnd(IPC_EVENT_REFRESH_CONNECTIONS),
                 },
             ],
         });

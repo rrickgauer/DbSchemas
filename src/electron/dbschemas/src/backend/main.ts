@@ -1,7 +1,7 @@
 import { app, protocol } from 'electron';
 import { router } from './protocol/RoutesMapper';
 import { buildApplicationWindow } from './main-routines';
-import { IpcHandlers } from './utilities/IpcHandlers';
+import { ipcAddInboundMessageHandlers } from './utilities/IpcHandlers';
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -35,5 +35,4 @@ app.on('window-all-closed', () =>
 });
 
 
-const ipcHandler = new IpcHandlers({});
-ipcHandler.addInboundMessageHandlers();
+ipcAddInboundMessageHandlers();

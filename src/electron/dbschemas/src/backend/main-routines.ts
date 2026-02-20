@@ -4,7 +4,7 @@ import { ApplicationMenu } from "./helpers/application-menu/ApplicationMenu";
 
 export function buildApplicationWindow(): BrowserWindow
 {
-    const win = new BrowserWindow({
+    const browserWindow = new BrowserWindow({
         webPreferences: {
             devTools: true,
             preload: path.join(__dirname, 'preload.js'),
@@ -13,12 +13,12 @@ export function buildApplicationWindow(): BrowserWindow
         },
     });
 
-    setApplicationMenu(win);
+    customizeApplicationMenus(browserWindow);
 
-    return win;
+    return browserWindow;
 }
 
-export function setApplicationMenu(browserWindow: BrowserWindow): void
+export function customizeApplicationMenus(browserWindow: BrowserWindow): void
 {
     const existingMenu = Menu.getApplicationMenu();
     if (existingMenu == null)
