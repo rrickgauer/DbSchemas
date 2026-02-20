@@ -1,7 +1,9 @@
 import { app, BrowserWindow, ipcMain, protocol } from 'electron';
 import { router } from './protocol/RoutesMapper';
-import { buildApplicationWindow, openFilePicker } from './main-routines';
+
 import { IPC_EVENT_OPEN_FILE_PICKER } from '../shared/domain/constants/IpcEventNames';
+import { buildApplicationWindow } from './main-routines';
+import { openFilePicker } from './utilities/OperatingSystem';
 
 protocol.registerSchemesAsPrivileged([
     {
