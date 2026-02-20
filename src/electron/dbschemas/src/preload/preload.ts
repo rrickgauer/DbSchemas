@@ -24,9 +24,6 @@ contextBridge.exposeInMainWorld('api', {
         return ipcRenderer.invoke('app:get-version');
     },
 
-    onNewConnection: (callback) => ipcRenderer.on(IPC_EVENT_NEW_CONNECTION, (_event, value) => callback(value)),
-    onRefreshConnections: (callback) => ipcRenderer.on(IPC_EVENT_REFRESH_CONNECTIONS, (_event, value) => callback(value)),
-
     /**
      * Example: generic invoke helper (optional)
      * Use sparingly.
@@ -36,11 +33,21 @@ contextBridge.exposeInMainWorld('api', {
         return ipcRenderer.invoke(channel, ...args);
     },
 
+    /********************************************************************
+    The frontend can call these methods with the window.api:
+
+        window.api.onNewConnection((args) => {
+            console.log(args);
+        });
+
+        window.api.openFilePicker();
+    *********************************************************************/
+    // Backend -> Frontend
+    onNewConnection: (callback) => ipcRenderer.on(IPC_EVENT_NEW_CONNECTION, (_event, value) => callback(value)),
+    onRefreshConnections: (callback) => ipcRenderer.on(IPC_EVENT_REFRESH_CONNECTIONS, (_event, value) => callback(value)),
     
-    openFilePicker: () =>
-    {
-        return ipcRenderer.invoke(IPC_EVENT_OPEN_FILE_PICKER);
-    },
+    // Frontend -> Backend
+    openFilePicker: () => ipcRenderer.invoke(IPC_EVENT_OPEN_FILE_PICKER),
 });
 
 
