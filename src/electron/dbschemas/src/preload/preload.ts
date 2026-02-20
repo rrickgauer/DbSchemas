@@ -1,5 +1,5 @@
-import { contextBridge, ipcRenderer } from 'electron';
-import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_OPEN_FILE_PICKER, IPC_EVENT_REFRESH_CONNECTIONS } from '../shared/domain/constants/IpcEventNames';
+import { contextBridge, IpcRenderer, ipcRenderer } from 'electron';
+import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_OPEN_FILE_PICKER, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_TOGGLE_TABLE_COLUMN } from '../shared/domain/constants/IpcEventNames';
 
 /**
  * Everything exposed here becomes available on `window.api`
@@ -43,12 +43,21 @@ contextBridge.exposeInMainWorld('api', {
         window.api.openFilePicker();
     *********************************************************************/
     // Backend -> Frontend
-    onNewConnection: (callback) => ipcRenderer.on(IPC_EVENT_NEW_CONNECTION, (_event, value) => callback(value)),
-    onRefreshConnections: (callback) => ipcRenderer.on(IPC_EVENT_REFRESH_CONNECTIONS, (_event, value) => callback(value)),
+    onNewConnection: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_NEW_CONNECTION, callback),
+    onRefreshConnections: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_REFRESH_CONNECTIONS, callback),
+    onFilterTableColumn: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_TOGGLE_TABLE_COLUMN, callback),
     
     // Frontend -> Backend
     openFilePicker: () => ipcRenderer.invoke(IPC_EVENT_OPEN_FILE_PICKER),
 });
+
+
+type ipcCallback = (event: Electron.IpcRendererEvent, ...args: any[]) => void;
+
+function registerBasicCallback(eventName: string, callback: ipcCallback): IpcRenderer
+{
+    return ipcRenderer.on(eventName, (_event, value) => callback(value));
+}
 
 
 /**

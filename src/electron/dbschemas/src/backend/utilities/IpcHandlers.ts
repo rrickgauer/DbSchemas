@@ -26,10 +26,13 @@ function getWindowFromEvent(event: IpcMainInvokeEvent): BrowserWindow | null
 }
 
 
-export function ipcSendMessageToFrontEnd(message: string, ...args: any[]): void
+export function ipcSendMessageToFrontEnd(window: BrowserWindow, message: string, ...args: any[]): void
 {
-    const window = getCurrentBrowserWindow();
-    window.webContents.send(message, args);
+    if (Array.isArray(args))
+    {
+
+    }
+    window.webContents.send(message, ...args);
 }
 
 function getCurrentBrowserWindow(): BrowserWindow
