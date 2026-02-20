@@ -1,4 +1,5 @@
 import { TableColumnsRequestData } from "../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
+import { IpcEventArgsFilterTableColumn } from "../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { CustomEmptyMessage } from "../../helpers/messages/CustomEmptyMessage";
 import { CustomMessage } from "../../helpers/messages/CustomMessage";
 
@@ -32,3 +33,6 @@ export const OpenTableCardClosedMessage = new CustomMessage<TableColumnsRequestD
 //#endregion
 
 
+
+export const FilterOpenTableColumnsMessage = new CustomMessage<IpcEventArgsFilterTableColumn>();
+export const ShowAllOpenTableColumnsMessage = new CustomEmptyMessage();
