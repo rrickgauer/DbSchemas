@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, MenuItem } from "electron";
+import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
 import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS } from "../../../shared/domain/constants/IpcEventNames";
 
 type ApplicationMenuArgs = {
@@ -43,4 +43,29 @@ export class ApplicationMenu
 
         return connectionsMenu;
     }
+
+
+    private buildTablesMenu(): void
+    {
+
+        const filterMenuItems: MenuItemConstructorOptions[] = [];
+
+        filterMenuItems.push({
+            label: 'Position',
+            type: "checkbox",
+            // click: () => 
+        });
+
+
+        const filterMenu: MenuItemConstructorOptions = {
+
+        }
+
+
+        const connectionsMenu = new MenuItem({
+            label: 'Tables',
+            submenu: [filterMenu],
+        });
+    }
+
 }

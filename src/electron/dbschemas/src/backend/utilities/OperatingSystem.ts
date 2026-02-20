@@ -35,9 +35,15 @@ export async function osDoesFileExist(file: string): Promise<boolean>
 }
 
 
-export async function openFilePicker(win: BrowserWindow)
+export async function osOpenFilePicker(window: BrowserWindow | null)
 {
-    const result = await dialog.showOpenDialog(win, {
+    if (window == null)
+    {
+        console.assert(false, `Window is null`);
+        return null;
+    }
+    
+    const result = await dialog.showOpenDialog(window, {
         properties: ['openFile'],
     });
 
