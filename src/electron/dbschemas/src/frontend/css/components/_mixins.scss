@@ -36,3 +36,19 @@
 @mixin custom-shadow-light {
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
 }
+
+
+@mixin element-overlay {
+    position: absolute; /* Stay in place */
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50; /* Sit on top */
+
+    /* Center the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

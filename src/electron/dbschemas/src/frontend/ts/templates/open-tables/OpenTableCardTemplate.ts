@@ -14,13 +14,14 @@ export class OpenTableCardTemplateElements
     public readonly spinnerClass = `${this.containerClass}-spinner`;
     public readonly bodyClass = `${this.containerClass}-body-content`;
     public readonly actionButtonsContainerClass = `${this.containerClass}-action-buttons`;
-
     public readonly actionButtonClass = `${this.containerClass}-action-button`;
     public readonly btnCopyAllRowsClass = `${this.actionButtonClass}-copy-all`;
     public readonly btnCopySelectedRowsClass = `${this.actionButtonClass}-copy-selected`;
     public readonly btnRefreshClass = `${this.actionButtonClass}-refresh-columns`;
     public readonly btnSelectAllRows = `${this.actionButtonClass}-select-all-rows`;
     public readonly btnDeselectAllRows = `${this.actionButtonClass}-deselect-all-rows`;
+
+    public readonly dragItem = `${this.containerClass}-drag`;
 
 }
 
@@ -39,8 +40,9 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
         let html = //html
         `
         <div class="card ${ELE.containerClass}" ${ELE.cardIdAttr}="${cardId}" ${ELE.connectionIdAttr}="${model.connectionId}">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 <h5 class="${ELE.tableNameClass}">${model.tableName}</h5>
+                <div class="${ELE.dragItem} ms-auto" draggable="true"><i class='bx bx-grid-horizontal'></i></div>
                 <button type="button" class="btn-close ${ELE.btnCloseClass}" aria-label="Close"></button>
             </div>
             <div class="card-body">
@@ -52,10 +54,8 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                     <div class="${ELE.actionButtonsContainerClass}">
                         <button type="button" class="${topButtonClasses} me-1 ${ELE.btnCopyAllRowsClass}" title="Copy all rows">Copy all</button>
                         <button type="button" class="${topButtonClasses} me-3 ${ELE.btnCopySelectedRowsClass}" title="Copy the selected rows">Copy selected</button>
-                        
                         <button type="button" class="${topButtonClasses} me-1 ${ELE.btnSelectAllRows}" title="Select all rows">Select all</button>
                         <button type="button" class="${topButtonClasses} me-3 ${ELE.btnDeselectAllRows}" title="Deselect all rows">Deselect all</button>
-                        
                         <button type="button" class="${topButtonClasses} ${ELE.btnRefreshClass}" title="Refresh the columns">Refresh</button>
                     </div>
 

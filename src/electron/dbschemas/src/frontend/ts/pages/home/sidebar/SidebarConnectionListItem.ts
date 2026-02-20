@@ -5,7 +5,7 @@ import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { ConnectionSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/ConnectionSidebarListItemTemplate";
 import { TableSidebarListItemTemplate } from "../../../templates/connections-sidebar/TableSidebarListItemTemplate";
-import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
+import { bootstrapHideElement, bootstrapShowCollapse, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
 import { domGetClass, domGetClosestClass } from "../../../utilities/DomUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
 
@@ -17,6 +17,7 @@ export class SidebarConnectionListItem
     private _tableService: TableServiceGui;
     private _tablesList: HTMLUListElement;
     private _connectionService: ConnectionsServiceGui;
+    private _collapseContainer: HTMLDivElement;
 
     public get connectionType(): ConnectionType
     {
@@ -34,6 +35,7 @@ export class SidebarConnectionListItem
         this._tableService = new TableServiceGui();
         this._tablesList = domGetClass<HTMLUListElement>(ELE.tablesListClass, this._container);
         this._connectionService = new ConnectionsServiceGui();
+        this._collapseContainer = domGetClass<HTMLDivElement>(ELE.tablesContainerClass, this._container);
     }
 
 
@@ -43,6 +45,11 @@ export class SidebarConnectionListItem
         ShowConnectionFormMessage.invoke(this, {
             connectionId: this.connectionId,
         });
+    }
+
+    public expand(): void
+    {
+        bootstrapShowCollapse(this._collapseContainer);
     }
 
     //#region - Refresh tables -

@@ -1,10 +1,11 @@
-import { NativeEventClick } from "../../../../../shared/domain/constants/NativeEvents";
+import { NativeEventClick, NativeEventDragEnd, NativeEventDragOver, NativeEventDragStart, NativeEventDrop } from "../../../../../shared/domain/constants/NativeEvents";
 import { TableColumnsRequestData } from "../../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
 import { IController } from "../../../contracts/IController";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
-import { domGetClass, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
+import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
+import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
@@ -22,10 +23,11 @@ const ITEM = new TableColumnListItemTemplateElements();
 
 export class OpenTables implements IController
 {
-    private _container: HTMLDivElement;
-    private _list: HTMLDivElement;
-    private _tableService: TableServiceGui;
-    private _cardHtmlEngine: OpenTableCardTemplate;
+    private readonly _container: HTMLDivElement;
+    private readonly _list: HTMLDivElement;
+    private readonly _tableService: TableServiceGui;
+    private readonly _cardHtmlEngine: OpenTableCardTemplate;
+    private _draggedCard: HTMLElement | null;
 
     constructor()
     {
@@ -33,6 +35,7 @@ export class OpenTables implements IController
         this._list = domGetClass<HTMLDivElement>(ELE.listClass, this._container);
         this._tableService = new TableServiceGui();
         this._cardHtmlEngine = new OpenTableCardTemplate();
+        this._draggedCard = null;
     }
 
     public control(): void
@@ -43,17 +46,18 @@ export class OpenTables implements IController
     //#region - Event listeners -
     private addListeners(): void
     {
-        this.addCloseCardButtonClickListener();
-        this.addCopyRowButtonClickListener();
-        this.addTableRowClickListener();
-        this.addBtnCopyAllRowsClickListener();
-        this.addBtnCopySelectedRowsClickListener();
-        this.addBtnRefreshClickListener();
-        this.addBtnSelectAllRowsClickListener();
-        this.addBtnDeselectAllRowsClickListener();
+        this.addListener_CloseCardButtonClick();
+        this.addListener_CopyRowButtonClick();
+        this.addListener_TableRowClick();
+        this.addListener_BtnCopyAllRowsClick();
+        this.addListener_BtnCopySelectedRowsClick();
+        this.addListener_BtnRefreshClick();
+        this.addListener_BtnSelectAllRowsClick();
+        this.addListener_BtnDeselectAllRowsClick();
+        this.addListener_Dragging();
     }
 
-    private addBtnCopyAllRowsClickListener()
+    private addListener_BtnCopyAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -61,8 +65,8 @@ export class OpenTables implements IController
             card?.copyAllRows();
         });
     }
-    
-    private addBtnCopySelectedRowsClickListener()
+
+    private addListener_BtnCopySelectedRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -71,7 +75,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addBtnRefreshClickListener()
+    private addListener_BtnRefreshClick()
     {
         this._list.addEventListener(NativeEventClick, async (e) =>
         {
@@ -80,7 +84,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addBtnSelectAllRowsClickListener()
+    private addListener_BtnSelectAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
@@ -90,17 +94,16 @@ export class OpenTables implements IController
     }
 
 
-    private addBtnDeselectAllRowsClickListener()
+    private addListener_BtnDeselectAllRowsClick()
     {
         this._list.addEventListener(NativeEventClick, (e) =>
         {
             const card = this.getOpenCardFromEventTargetClass(e, CARD.btnDeselectAllRows);
             card?.deselectAllRows();
         });
-
     }
 
-    private addCloseCardButtonClickListener()
+    private addListener_CloseCardButtonClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -109,7 +112,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addCopyRowButtonClickListener()
+    private addListener_CopyRowButtonClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -122,7 +125,7 @@ export class OpenTables implements IController
         });
     }
 
-    private addTableRowClickListener()
+    private addListener_TableRowClick()
     {
         this._container.addEventListener(NativeEventClick, (e) =>
         {
@@ -134,12 +137,111 @@ export class OpenTables implements IController
             }
         });
     }
+
+    
+
+    private addListener_Dragging(): void
+    {
+        this._container.addEventListener(NativeEventDragStart, (event) =>
+        {
+            const draggedElement = domGetElementOrParentWithClassName(event.target, CARD.dragItem);
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            if (draggedElement && cardElement)
+            {
+                event.stopPropagation();
+                this._draggedCard = cardElement;
+                this._draggedCard.classList.add('dragging');
+                event.dataTransfer!.effectAllowed = "move";
+                event.dataTransfer!.setDragImage(cardElement, 0, 0);
+            }
+        });
+
+        this._container.addEventListener(NativeEventDragOver, (event) =>
+        {
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            if (cardElement)
+            {
+                event.preventDefault();
+                event.stopPropagation();
+                event!.dataTransfer!.effectAllowed = "move";
+            }
+        });
+
+
+        this._container.addEventListener(NativeEventDragEnd, (event) =>
+        {
+            const cardElement = this.getParentCardHtmlElementFromEvent(event);
+            cardElement?.classList.remove('dragging');
+        });
+
+        this._container.addEventListener(NativeEventDrop, (event) =>
+        {
+            const droppedCard = this.getParentCardHtmlElementFromEvent(event);
+            if (!this._draggedCard || !droppedCard)
+            {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const cardElements = domGetClasses<HTMLElement>(CARD.containerClass, this._container);
+            const droppedIndex = cardElements.indexOf(droppedCard);
+
+            if (droppedIndex === cardElements.length - 1)
+            {
+                droppedCard.insertAdjacentElement("afterend", this._draggedCard);
+            }
+            else
+            {
+                droppedCard.insertAdjacentElement("beforebegin", this._draggedCard);
+            }
+
+            this.cacheOpenTableOrder();
+        });
+    }
+
+    private getParentCardHtmlElementFromEvent(event: Event): HTMLElement | null
+    {
+        if (!domIsElement(event.target))
+        {
+            return null;
+        }
+
+        return event.target.closest<HTMLElement>(`.${CARD.containerClass}`);
+    }
+
+    private cacheOpenTableOrder(): void
+    {
+        const cardItems = this.getAllOpenCards().map(c => c.getConnectionTableRequestData());
+        sessionSaveOpenTables(cardItems);
+    }
+
+
+
+
     //#endregion
 
-
-    public async showTable(data: TableColumnsRequestData): Promise<void>
+    public async showTables(tableInfos: TableColumnsRequestData[]): Promise<void>
     {
-        const newItem = createEmptyOpenTablesCardItem(data, this._list);
+        this.removeAllCardItems();
+
+        const cards = tableInfos.map(t => createEmptyOpenTablesCardItem(t, this._list));
+
+        for (const tableItem of cards)
+        {
+            await tableItem.refreshColumns();
+        }
+    }
+
+    private removeAllCardItems(): void
+    {
+        this.getAllOpenCards().forEach(c => c.remove());
+    }
+
+    public async showTable(tableInfo: TableColumnsRequestData): Promise<void>
+    {
+        const newItem = createEmptyOpenTablesCardItem(tableInfo, this._list);
         await newItem.refreshColumns();
     }
 
@@ -151,6 +253,12 @@ export class OpenTables implements IController
             return new OpenTablesCardItem(childElement);
         }
         return null;
+    }
+
+    private getAllOpenCards(): OpenTablesCardItem[]
+    {
+        const elements = domGetClasses<HTMLElement>(CARD.containerClass);
+        return elements.map(e => new OpenTablesCardItem(e));
     }
 }
 

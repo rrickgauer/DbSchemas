@@ -1,8 +1,9 @@
 import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
-import { ConnectionsListRefreshMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
-import { ipcRegisterGuiEventHandlers } from "../../helpers/ipc/IpcHandler";
+import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
 import { domGetClass } from "../../utilities/DomUtility";
+import { pageHideLoadingScreen, pageShowLoadingScreen } from "../../utilities/PageUtility";
+import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
 import { OpenTables } from "./open-tables/OpenTables";
 import { ConnectionForm } from "./sidebar/ConnectionForm";
 import { SidebarListController } from "./sidebar/SidebarList";
@@ -21,7 +22,7 @@ export class HomePage implements IControllerAsync
     private readonly _sidebar: SidebarListController;
     private readonly _container: HTMLDivElement;
 
-    constructor()
+    constructor ()
     {
         this._openTables = new OpenTables();
         this._sidebar = new SidebarListController();
@@ -30,17 +31,34 @@ export class HomePage implements IControllerAsync
 
     public async control(): Promise<void>
     {
-        ipcRegisterGuiEventHandlers();
+        pageShowLoadingScreen();
         ConnectionForm.initialize();
         this.addListeners();
         this._openTables.control();
+
+        this._sidebar.toggleSidebarVisibility(sessionGetIsSidebarOpen());
         await this._sidebar.control();
+
+        // display cached tables
+        await this.restoreCachedTables();
     }
+
+    private async restoreCachedTables(): Promise<void>
+    {
+        pageShowLoadingScreen();
+        const cachedTables = sessionGetOpenTables();
+        this._sidebar.setItemsToActive(cachedTables);
+        await this._openTables.showTables(cachedTables);
+        pageHideLoadingScreen();
+    }
+
 
     private addListeners(): void
     {
         this.addListener_TableSidebarListItemClickedMessage();
         this.addListener_ConnectionsListRefreshMessage();
+        this.addListener_OpenTableCardClosedMessage();
+        this.addListener_RefreshPageMessage();
     }
 
     private addListener_TableSidebarListItemClickedMessage(): void
@@ -50,6 +68,7 @@ export class HomePage implements IControllerAsync
             const tableData = message.data?.tableRequestData;
             if (notNull(tableData))
             {
+                sessionAppendOpenTable(tableData);
                 await this._openTables.showTable(tableData);
             }
         });
@@ -59,7 +78,30 @@ export class HomePage implements IControllerAsync
     {
         ConnectionsListRefreshMessage.addListener(async (message) =>
         {
-            await this._sidebar.refreshAll();
+            await this._sidebar.resetListItems();
+        });
+    }
+
+    private addListener_OpenTableCardClosedMessage(): void
+    {
+        OpenTableCardClosedMessage.addListener((message) =>
+        {
+            const tableData = message.data;
+            if (tableData == null)
+            {
+                return;
+            }
+
+            this._sidebar.deactivateItem(tableData);
+            sessionRemoveOpenTable(tableData);
+        });
+    }
+
+    private addListener_RefreshPageMessage()
+    {
+        RefreshPageMessage.addListener(async (message) =>
+        {
+            await this.restoreCachedTables();
         });
     }
 }
