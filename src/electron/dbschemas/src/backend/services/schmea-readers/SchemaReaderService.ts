@@ -28,6 +28,9 @@ export class SchemaReaderService implements ISchemaReaderService
         {
             case ConnectionType.Postgres:
                 return await this.getTableColumnsPostgres(connection, tableName);
+            
+                case ConnectionType.SQLite:
+                return await this.getTableColumnsSqlite(connection, tableName);
         }
 
         throw new NotImplementedException();
@@ -78,6 +81,16 @@ export class SchemaReaderService implements ISchemaReaderService
     //#endregion
 
     //#region - SQLite -
+
+
+    private async getTableColumnsSqlite(connection: ConnectionModel, tableName: string)
+    {
+        const schemaReader = new SchemaReaderSqlite({
+            connection: connection,
+        });
+
+        return await schemaReader.getTableColumns(tableName);
+    }
 
     private async getTableNamesSqlite(connection: ConnectionModel): Promise<ServiceResponse<string[]>>
     {
