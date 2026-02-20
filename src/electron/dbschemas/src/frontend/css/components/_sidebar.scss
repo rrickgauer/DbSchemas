@@ -1,7 +1,14 @@
 .connection-form {
+    font-size: 80%;
+
+    button {
+        font-size: inherit;
+    }
+
     .form-input {
         margin-bottom: 1rem;
     }
+    
 }
 
 

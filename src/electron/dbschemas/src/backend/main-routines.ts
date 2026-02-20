@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, MenuItem } from "electron";
+import { BrowserWindow, dialog, Menu, MenuItem } from "electron";
 import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS } from "../shared/domain/constants/IpcEventNames";
 import path from "path";
 
@@ -43,4 +43,19 @@ export function setApplicationMenu(browserWindow: BrowserWindow): void
 
     existingMenu.insert(2, connectionsMenu);
     Menu.setApplicationMenu(existingMenu);
+}
+
+
+export async function openFilePicker(win: BrowserWindow)
+{
+    const result = await dialog.showOpenDialog(win, {
+        properties: ['openFile'],
+    });
+
+    if (result.canceled || result.filePaths.length === 0)
+    {
+        return null;
+    }
+
+    return result.filePaths[0];
 }

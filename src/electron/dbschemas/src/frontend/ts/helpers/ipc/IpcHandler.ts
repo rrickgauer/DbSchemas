@@ -4,7 +4,7 @@ import { ConnectionsListRefreshMessage, ShowConnectionFormMessage } from "../../
 //@ts-ignore
 const IPC_SERVER = window.api as IpcRoutines;
 
-export function registerIpcEventHandlers(): void
+export function ipcRegisterGuiEventHandlers(): void
 {
     IPC_SERVER.onNewConnection(() =>
     {
@@ -17,5 +17,11 @@ export function registerIpcEventHandlers(): void
     {
         ConnectionsListRefreshMessage.invoke(this, null);
     });
+}
+
+
+export async function ipcOpenFilePicker(): Promise<string | null>
+{
+    return await IPC_SERVER.openFilePicker();
 }
 

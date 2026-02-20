@@ -1,4 +1,5 @@
 import { FormInputConstructor } from "../helpers/form-inputs/FormInput";
+import { SpinnerButton } from "../helpers/spinner-button/SpinnerButton";
 
 export function domGetFormInputById<T extends FormInputConstructor>(id: string, instanceConstructor: T): InstanceType<T>
 {
@@ -96,3 +97,15 @@ export function domFocusInput(input: HTMLInputElement | HTMLTextAreaElement)
     input.value = value;
     input.focus();
 }
+
+
+export function domGetSpinnerButton(container: Element): SpinnerButton;
+export function domGetSpinnerButton(container: Element, buttonClass?: string | null): SpinnerButton;
+export function domGetSpinnerButton(container: Element, buttonClass?: string | null): SpinnerButton
+{
+    buttonClass ??= 'btn-submit';
+    const button = domGetClass<HTMLButtonElement>(buttonClass, container);
+    return new SpinnerButton(button);
+}
+
+

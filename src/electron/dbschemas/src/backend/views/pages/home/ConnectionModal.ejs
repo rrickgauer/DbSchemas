@@ -1,5 +1,7 @@
 <%
     const FORM_INPUT = 'form-input';
+    const FORM_CONTROL = 'form-control form-control-sm';
+    const FORM_SELECT = 'form-select form-select-sm';
 
     class ConnectionElements
     {
@@ -13,6 +15,7 @@
         inputUsernameId = `${this.formClass}-input-username`;
         inputPasswordId = `${this.formClass}-input-password`;
         spinner = `${this.formClass}-spinner`;
+        btnSelectFileClass = `${this.formClass}-btn-select-file`;
     }
 
     const ELE = new ConnectionElements();
@@ -32,17 +35,19 @@
                     <%- include('../../includes/Spinner'); -%>
                 </div>
 
-
                 <form class="<%= ELE.formClass %>">
                     <fieldset>
+
+                        <!-- Connection name -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputNameId %>">Name</label>
-                            <input type="text" class="form-control" id="<%= ELE.inputNameId %>" />
+                            <input type="text" class="<%= FORM_CONTROL %>" id="<%= ELE.inputNameId %>" />
                         </div>
 
+                        <!-- Connection type -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputTypeId %>">Type</label>
-                            <select class="form-select" id="<%= ELE.inputTypeId %>">
+                            <select class="<%= FORM_SELECT %>" id="<%= ELE.inputTypeId %>">
                                 <option value="1" selected>MySQL</option>
                                 <option value="2">SQLite</option>
                                 <option value="3">Access</option>
@@ -50,33 +55,43 @@
                             </select>
                         </div>
 
+                        <!-- database name -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputDatabaseNameId %>">Database Name</label>
-                            <input type="text" class="form-control" id="<%= ELE.inputDatabaseNameId %>" />
+                            <input type="text" class="<%= FORM_CONTROL %>" id="<%= ELE.inputDatabaseNameId %>" />
                         </div>
                         
+                        <!-- host -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputHostId %>">Host</label>
-                            <input type="text" class="form-control" id="<%= ELE.inputHostId %>" />
+                            <input type="text" class="<%= FORM_CONTROL %>" id="<%= ELE.inputHostId %>" />
                         </div>
                         
+                        <!-- file -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputFileId %>">File</label>
-                            <input type="text" class="form-control" id="<%= ELE.inputFileId %>" />
+                            <div class="d-flex align-items-center">
+                                <input type="text" class="<%= FORM_CONTROL %> me-1" id="<%= ELE.inputFileId %>" />
+                                <button type="button" class="btn btn-light border-light-subtle text-nowrap <%= ELE.btnSelectFileClass %>" title="Select a file">
+                                    <i class='bx bx-folder-open'></i>
+                                </button>
+                            </div>
                         </div>
-                        
+
+                        <!-- Username -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputUsernameId %>">Username</label>
-                            <input type="text" class="form-control" id="<%= ELE.inputUsernameId %>" />
+                            <input type="text" class="<%= FORM_CONTROL %>" id="<%= ELE.inputUsernameId %>" />
                         </div>
                         
+                        <!-- password -->
                         <div class="<%= FORM_INPUT %>">
                             <label for="<%= ELE.inputPasswordId %>">Password</label>
-                            <input type="password" class="form-control" id="<%= ELE.inputPasswordId %>" />
+                            <input type="password" class="<%= FORM_CONTROL %>" id="<%= ELE.inputPasswordId %>" />
                         </div>
 
                         <div class="d-flex">
-                            <button type="submit" class="btn btn-success btn-submit">Save</button>
+                            <button type="submit" class="btn btn-sm btn-success btn-submit">Save</button>
                         </div>
                     </fieldset>
                 </form>
