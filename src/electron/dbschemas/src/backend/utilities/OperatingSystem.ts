@@ -1,7 +1,8 @@
 import path from "path";
 import os from 'os';
+import { access as fileAccess } from "fs";
 
-export function GetBaseOperatingSystemPath(): string
+export function osGetBaseOperatingSystemPath(): string
 {
     switch (process.platform)
     {
@@ -16,5 +17,18 @@ export function GetBaseOperatingSystemPath(): string
         default:
             // Linux (rough equivalent to LocalApplicationData)
             return process.env.XDG_DATA_HOME ?? path.join(os.homedir(), '.local', 'share');
+    }
+}
+
+export async function osDoesFileExist(file: string): Promise<boolean>
+{
+    try
+    {
+        await fileAccess(file, () => { });
+        return true;
+    }
+    catch
+    {
+        return false;
     }
 }
