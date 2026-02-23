@@ -16,6 +16,7 @@ import { domGetClass, domGetFormInputById, domGetSpinnerButton, domQuery } from 
 import { formsSetIsDisabled as formsToggleIsDisabled } from "../../../utilities/FormUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
 import { ipcOpenFilePicker as ipcOpenNativeFileDialog } from "../../../helpers/ipc/IpcHandler";
+import { toastShowSuccess } from "../../../helpers/toasts/ToastUtility";
 
 class ConnectionFormElements
 {
@@ -30,6 +31,9 @@ class ConnectionFormElements
     public readonly inputPasswordId = `${this.formClass}-input-password`;
     public readonly spinner = `${this.formClass}-spinner`;
     public readonly btnSelectFileClass = `${this.formClass}-btn-select-file`;
+    public readonly btnShowPasswordClass = `${this.formClass}-btn-show-password`;
+    public readonly showPasswordIconClass = `bx-show`;
+    public readonly hidePasswordIconClass = `bx-hide`;
 }
 
 const ELE = new ConnectionFormElements();
@@ -37,7 +41,7 @@ const ELE = new ConnectionFormElements();
 export class ConnectionForm implements IController
 {
     private static _singleton: Nullable<ConnectionForm> = null;
-
+    private _activeConnectionId: Nullable<number> = null;
     private readonly _container: HTMLDivElement;
     private readonly _form: HTMLFormElement;
     private readonly _inputConnectionName: FormInputText;
@@ -52,8 +56,7 @@ export class ConnectionForm implements IController
     private readonly _connectionService: ConnectionsServiceGui;
     private readonly _spinner: HTMLDivElement;
     private readonly _btnSelectFile: HTMLButtonElement;
-
-    private _activeConnectionId: Nullable<number> = null;
+    private readonly _btnShowPassword: HTMLButtonElement;
 
     private get _selectedConnectionType(): ConnectionType
     {
@@ -76,7 +79,32 @@ export class ConnectionForm implements IController
         domGetClass<HTMLHeadingElement>('modal-title', this._container).innerText = value;
     }
 
-    constructor ()
+    private get _isPasswordHidden(): boolean
+    {
+        return this._inputPassword.input.type == 'password';
+    }
+
+    private set _isPasswordHidden(isHidden: boolean)
+    {
+        const toggleButtonInnerIcon = domGetClass<HTMLElement>('bx', this._btnShowPassword);
+
+        if (isHidden)
+        {
+            toggleButtonInnerIcon.classList.remove(ELE.hidePasswordIconClass);
+            toggleButtonInnerIcon.classList.add(ELE.showPasswordIconClass);
+            this._inputPassword.input.type = 'password';
+            this._btnShowPassword.title = `Show password`;
+        }
+        else
+        {
+            toggleButtonInnerIcon.classList.add(ELE.hidePasswordIconClass);
+            toggleButtonInnerIcon.classList.remove(ELE.showPasswordIconClass);
+            this._inputPassword.input.type = 'text';
+            this._btnShowPassword.title = `Hide password`;
+        }
+    }
+
+    constructor()
     {
         this._container = domGetClass<HTMLDivElement>(ELE.containerClass);
         this._form = domGetClass<HTMLFormElement>(ELE.formClass, this._container);
@@ -91,7 +119,8 @@ export class ConnectionForm implements IController
         this._fieldset = domQuery<HTMLFieldSetElement>('fieldset', this._container);
         this._connectionService = new ConnectionsServiceGui();
         this._spinner = domGetClass<HTMLDivElement>(ELE.spinner, this._container);
-        this._btnSelectFile = domGetClass<HTMLButtonElement>(ELE.btnSelectFileClass);
+        this._btnSelectFile = domGetClass<HTMLButtonElement>(ELE.btnSelectFileClass, this._container);
+        this._btnShowPassword = domGetClass<HTMLButtonElement>(ELE.btnShowPasswordClass, this._container);
     }
 
     public control(): void
@@ -106,6 +135,7 @@ export class ConnectionForm implements IController
         this.addListener_ShowConnectionFormMessage();
         this.addListener_ConnectionTypeChange();
         this.addListener_SelectFileButtonClick();
+        this.addListener_ShowPasswordButtonClick();
     }
 
     private addListener_FormSubmit(): void
@@ -142,9 +172,18 @@ export class ConnectionForm implements IController
         });
     }
 
+    private addListener_ShowPasswordButtonClick(): void
+    {
+        this._btnShowPassword.addEventListener(NativeEventClick, (e) =>
+        {
+            this.togglePasswordVisibility();
+        });
+    }
 
-
-
+    private togglePasswordVisibility(): void
+    {
+        this._isPasswordHidden = !this._isPasswordHidden;
+    }
 
     //#endregion
 
@@ -309,7 +348,7 @@ export class ConnectionForm implements IController
             this._inputFile,
             this._inputUsername,
             this._inputPassword,
-        ]
+        ];
     }
 
     private updateInputVisibilities(connectionType: ConnectionType): void
