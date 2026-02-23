@@ -204,6 +204,7 @@ export class ConnectionForm implements IController
         }
 
         this.updateInputVisibilities(this._selectedConnectionType);
+        this._isPasswordHidden = true;
 
         this.toggleSpinner(false);
 
