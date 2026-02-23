@@ -21,7 +21,7 @@ app.whenReady().then(() =>
 
     const appWindow = buildApplicationWindow();
     appWindow.maximize();
-    appWindow.webContents.openDevTools();
+    // appWindow.webContents.openDevTools();
     appWindow.loadURL('app:///home');
 });
 
