@@ -1,10 +1,12 @@
 import { getValueNullable } from "../../../../../shared/utilities/NullableUtility";
 import { toastShowSuccess } from "../../../helpers/toasts/ToastUtility";
+import { TableColumnCellElements } from "../../../templates/open-tables/TableColumnCellElements";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
 import { copyToClipboard } from "../../../utilities/ClipboardUtility";
 import { domGetClass, domGetClosestClass, domQuery } from "../../../utilities/DomUtility";
 
 const ELE = new TableColumnListItemTemplateElements();
+const CELL = new TableColumnCellElements();
 
 export class OpenTableColumnDefinitionItem
 {
@@ -63,12 +65,12 @@ export class OpenTableColumnDefinitionItem
     {
         this._container = domGetClosestClass<HTMLTableRowElement>(ELE.containerClass, e);
 
-        this._cellPosition = domGetClass<HTMLTableCellElement>(ELE.cellPositionClass, this._container);
-        this._cellName = domGetClass<HTMLTableCellElement>(ELE.cellNameClass, this._container);
-        this._cellColumnType = domGetClass<HTMLTableCellElement>(ELE.cellColumnTypeClass, this._container);
-        this._cellIsNullable = domGetClass<HTMLTableCellElement>(ELE.cellIsNullableClass, this._container);
-        this._cellDefaultValue = domGetClass<HTMLTableCellElement>(ELE.cellDefaultValueClass, this._container);
-        this._cellCopyRow = domGetClass<HTMLTableCellElement>(ELE.cellCopyRowClass, this._container);
+        this._cellPosition = domGetClass<HTMLTableCellElement>(CELL.positionClass, this._container);
+        this._cellName = domGetClass<HTMLTableCellElement>(CELL.nameClass, this._container);
+        this._cellColumnType = domGetClass<HTMLTableCellElement>(CELL.columnTypeClass, this._container);
+        this._cellIsNullable = domGetClass<HTMLTableCellElement>(CELL.isNullableClass, this._container);
+        this._cellDefaultValue = domGetClass<HTMLTableCellElement>(CELL.defaultValueClass, this._container);
+        this._cellCopyRow = domGetClass<HTMLTableCellElement>(CELL.copyRowClass, this._container);
         this._isNullableCheckbox = domQuery<HTMLInputElement>(`input`, this._cellIsNullable);
     }
 

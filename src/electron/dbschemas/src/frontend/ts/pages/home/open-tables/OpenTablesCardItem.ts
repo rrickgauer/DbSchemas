@@ -1,5 +1,8 @@
+import { TableFilterColumn } from "../../../../../shared/domain/constants/TableColumnFilter";
+import { NotImplementedException } from "../../../../../shared/domain/errors/NotImplementedException";
 import { ColumnDefinitionModel } from "../../../../../shared/domain/models/column-definitions/ColumnDefinitionModel";
 import { TableColumnsRequestData } from "../../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
+import { IpcEventArgsFilterTableColumn } from "../../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { TableDefinitionModel } from "../../../../../shared/domain/models/table-definitions/TableDefinitionModel";
 import { notNull } from "../../../../../shared/utilities/NullableUtility";
 import { BS_DISPLAY_NONE } from "../../../domain/bootstrap/BootstrapUtilityClasses";
@@ -7,6 +10,7 @@ import { OpenTableCardClosedMessage } from "../../../domain/messages/CustomMessa
 import { toastShowSuccess } from "../../../helpers/toasts/ToastUtility";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
+import { TableColumnCellElements } from "../../../templates/open-tables/TableColumnCellElements";
 import { TableColumnListItemTemplate, TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
 import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
 import { copyToClipboard } from "../../../utilities/ClipboardUtility";
@@ -16,6 +20,7 @@ import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 
 const ELE = new OpenTableCardTemplateElements();
 const ROW = new TableColumnListItemTemplateElements();
+const CELL = new TableColumnCellElements();
 
 export class OpenTablesCardItem
 {
@@ -72,6 +77,62 @@ export class OpenTablesCardItem
         this._bodyContent = domGetClass<HTMLDivElement>(ELE.bodyClass, this._container);
     }
 
+    public clearColumnFilters(): void
+    {
+        // const classes = Array.from(this._container.classList);
+        // const classesToRemove = classes.filter(c => c.startsWith(`hide-`));
+        // classesToRemove.forEach(c => this._container.classList.remove(c));
+
+        const columns = Object.keys(TableFilterColumn) as TableFilterColumn[];
+        const classes = columns.map(c => this.getHideColumnClassName(c));
+        classes.forEach(c => this._container.classList.remove(c));
+    }
+
+    public filterColumns(filter: IpcEventArgsFilterTableColumn): void
+    {
+        const className = this.getHideColumnClassName(filter.columnName);
+
+        if (filter.isChecked)
+        {
+            this._container.classList.remove(className);
+        }
+        else
+        {
+            this._container.classList.add(className);
+        }
+    }
+
+    private getHideColumnClassName(column: TableFilterColumn): string
+    {
+        let suffix = '';
+
+        switch (column)
+        {
+            case TableFilterColumn.Position:
+                suffix = CELL.positionClass; break;
+
+            case TableFilterColumn.Name:
+                suffix = CELL.nameClass; break;
+
+            case TableFilterColumn.Default:
+                suffix = CELL.defaultValueClass; break;
+
+            case TableFilterColumn.Nullable:
+                suffix = CELL.isNullableClass; break;
+
+            case TableFilterColumn.Type:
+                suffix = CELL.columnTypeClass; break;
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        const className = `hide-${suffix}`;
+
+        return className;
+    }
+
+
     public remove(): void
     {
         this._container.remove();
@@ -114,7 +175,7 @@ export class OpenTablesCardItem
         let text = '';
         let isFirst = true;
 
-        for(const row of rows)
+        for (const row of rows)
         {
             if (isFirst)
             {
@@ -128,7 +189,7 @@ export class OpenTablesCardItem
         }
 
         copyToClipboard(text);
-        toastShowSuccess({message: 'Copied to clipboard'});
+        toastShowSuccess({ message: 'Copied to clipboard' });
     }
 
     public selectAllRows(): void

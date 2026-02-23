@@ -1,6 +1,7 @@
 import path from "path";
 import os from 'os';
 import { access as fileAccess } from "fs";
+import { BrowserWindow, dialog } from "electron";
 
 export function osGetBaseOperatingSystemPath(): string
 {
@@ -31,4 +32,25 @@ export async function osDoesFileExist(file: string): Promise<boolean>
     {
         return false;
     }
+}
+
+
+export async function osOpenFilePicker(window: BrowserWindow | null)
+{
+    if (window == null)
+    {
+        console.assert(false, `Window is null`);
+        return null;
+    }
+    
+    const result = await dialog.showOpenDialog(window, {
+        properties: ['openFile'],
+    });
+
+    if (result.canceled || result.filePaths.length === 0)
+    {
+        return null;
+    }
+
+    return result.filePaths[0];
 }

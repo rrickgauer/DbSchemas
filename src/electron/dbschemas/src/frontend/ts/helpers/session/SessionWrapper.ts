@@ -1,4 +1,6 @@
+import { TableFilterColumn } from "../../../../shared/domain/constants/TableColumnFilter";
 import { TableColumnsRequestData } from "../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
+import { IpcEventArgsFilterTableColumn } from "../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { SessionData } from "./SessionData";
 
 const SESSION_KEY = 'dbschemas.data';
@@ -57,7 +59,24 @@ export class SessionWrapper
         return {
             openTables: [],
             isSidebarOpen: true,
+            visibleOpenTableColumns: getEmptyVisibleOpenTableColumns(),
         };
     }
+}
+
+export function getEmptyVisibleOpenTableColumns(): IpcEventArgsFilterTableColumn[]
+{
+    const result: IpcEventArgsFilterTableColumn[] = [];
+    const keys = Object.keys(TableFilterColumn) as TableFilterColumn[];
+
+    for(const column of keys)
+    {
+        result.push({
+            columnName: column,
+            isChecked: true,
+        });
+    }
+
+    return result;
 }
 

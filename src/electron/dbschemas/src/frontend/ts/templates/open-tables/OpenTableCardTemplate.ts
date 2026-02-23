@@ -1,6 +1,7 @@
 import { SPINNER_HTML } from "../../../../shared/domain/constants/HtmlSnippets";
 import { TableDefinitionModel } from "../../../../shared/domain/models/table-definitions/TableDefinitionModel";
 import { HtmlTemplate } from "../HtmlTemplate";
+import { TableColumnCellElements } from "./TableColumnCellElements";
 import { TableColumnListItemTemplate } from "./TableColumnListItemTemplate";
 
 export class OpenTableCardTemplateElements
@@ -20,10 +21,10 @@ export class OpenTableCardTemplateElements
     public readonly btnRefreshClass = `${this.actionButtonClass}-refresh-columns`;
     public readonly btnSelectAllRows = `${this.actionButtonClass}-select-all-rows`;
     public readonly btnDeselectAllRows = `${this.actionButtonClass}-deselect-all-rows`;
-
     public readonly dragItem = `${this.containerClass}-drag`;
-
 }
+
+const CELL = new TableColumnCellElements();
 
 const ELE = new OpenTableCardTemplateElements();
 
@@ -63,12 +64,12 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                         <table class="table table-sm table-hover ${ELE.tableClass}">
                             <thead>
                                 <tr>
-                                    <th scope="col">Position</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Nullable</th>
-                                    <th scope="col">Default</th>
-                                    <th scope="col">Action</th>
+                                    <th class="${CELL.cellClass} ${CELL.positionClass}" scope="col">Position</th>
+                                    <th class="${CELL.cellClass} ${CELL.nameClass}" scope="col">Name</th>
+                                    <th class="${CELL.cellClass} ${CELL.columnTypeClass}" scope="col">Type</th>
+                                    <th class="${CELL.cellClass} ${CELL.isNullableClass}" scope="col">Nullable</th>
+                                    <th class="${CELL.cellClass} ${CELL.defaultValueClass}" scope="col">Default</th>
+                                    <th class="${CELL.cellClass} ${CELL.copyRowClass}" scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

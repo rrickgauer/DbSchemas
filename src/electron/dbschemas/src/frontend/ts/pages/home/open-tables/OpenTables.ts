@@ -1,15 +1,16 @@
 import { NativeEventClick, NativeEventDragEnd, NativeEventDragOver, NativeEventDragStart, NativeEventDrop } from "../../../../../shared/domain/constants/NativeEvents";
 import { TableColumnsRequestData } from "../../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
+import { IpcEventArgsFilterTableColumn } from "../../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { IController } from "../../../contracts/IController";
+import { FilterOpenTableColumnsMessage, ShowAllOpenTableColumnsMessage } from "../../../domain/messages/CustomMessages";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
-import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
+import { sessionGetOpenTableColumns, sessionSaveOpenTables, sessionSetOpenTableColumns } from "../../../utilities/SessionUtility";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
-
 
 class OpenTablesElements
 {
@@ -54,6 +55,8 @@ export class OpenTables implements IController
         this.addListener_BtnRefreshClick();
         this.addListener_BtnSelectAllRowsClick();
         this.addListener_BtnDeselectAllRowsClick();
+        this.addListener_FilterOpenTableColumnsMessage();
+        this.addListener_ShowAllOpenTableColumnsMessage();
         this.addListener_Dragging();
     }
 
@@ -138,7 +141,27 @@ export class OpenTables implements IController
         });
     }
 
-    
+    private addListener_FilterOpenTableColumnsMessage(): void
+    {
+        FilterOpenTableColumnsMessage.addListener((message) =>
+        {
+            const data = message.data;
+            if (data != null)
+            {
+                sessionSetOpenTableColumns(data.isChecked, data.columnName);
+                this.filterOpenTableColumns(data);
+            }
+        });
+    }
+
+    private addListener_ShowAllOpenTableColumnsMessage(): void
+    {
+        ShowAllOpenTableColumnsMessage.addListener((message) =>
+        {
+            sessionSetOpenTableColumns(true);
+            this.getAllOpenCards().forEach(i => i.clearColumnFilters());
+        });
+    }
 
     private addListener_Dragging(): void
     {
@@ -232,6 +255,15 @@ export class OpenTables implements IController
         {
             await tableItem.refreshColumns();
         }
+
+        const openTableColumns = sessionGetOpenTableColumns();
+        openTableColumns.forEach((isChecked, column) =>
+        {
+            this.filterOpenTableColumns({
+                columnName: column,
+                isChecked: isChecked,
+            });
+        });
     }
 
     private removeAllCardItems(): void
@@ -243,6 +275,14 @@ export class OpenTables implements IController
     {
         const newItem = createEmptyOpenTablesCardItem(tableInfo, this._list);
         await newItem.refreshColumns();
+    }
+
+    private filterOpenTableColumns(filter: IpcEventArgsFilterTableColumn): void
+    {
+        this.getAllOpenCards().forEach(c =>
+        {
+            c.filterColumns(filter);
+        });
     }
 
     private getOpenCardFromEventTargetClass(e: Event, childClass: string): OpenTablesCardItem | null
@@ -260,6 +300,8 @@ export class OpenTables implements IController
         const elements = domGetClasses<HTMLElement>(CARD.containerClass);
         return elements.map(e => new OpenTablesCardItem(e));
     }
+
+
 }
 
 

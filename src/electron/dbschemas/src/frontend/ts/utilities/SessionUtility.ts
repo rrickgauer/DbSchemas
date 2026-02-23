@@ -1,9 +1,57 @@
 import { TableColumnsRequestData } from "../../../shared/domain/models/column-definitions/TableColumnsRequestData";
 import { SessionWrapper } from "../helpers/session/SessionWrapper";
 import { SessionData } from "../helpers/session/SessionData";
+import { TableFilterColumn } from "../../../shared/domain/constants/TableColumnFilter";
 
 
 const SESSION = new SessionWrapper();
+
+type TableFilterColumnMap = Map<TableFilterColumn, boolean>;
+
+
+
+export function sessionSetOpenTableColumns(isChecked: boolean): void;
+export function sessionSetOpenTableColumns(isChecked: boolean, column: TableFilterColumn): void;
+export function sessionSetOpenTableColumns(isChecked: boolean, column?: TableFilterColumn): void
+{
+    const sessionData = sessionGetSessionData();
+    const list = sessionData.visibleOpenTableColumns;
+
+    console.log('hi');
+
+    if (column != null)
+    {
+        const element = list.find(x => x.columnName === column) ?? null;
+        if (element != null)
+        {
+            element.isChecked = isChecked;
+        }
+    }
+    else
+    {
+        for(const item of list)
+        {
+            item.isChecked = isChecked;
+        }
+    }
+
+    sessionData.visibleOpenTableColumns = list;
+    SESSION.saveSessionData(sessionData);
+}
+
+export function sessionGetOpenTableColumns(): TableFilterColumnMap
+{
+    const list = sessionGetSessionData().visibleOpenTableColumns;
+
+    const result = new Map<TableFilterColumn, boolean>();
+
+    list.forEach((x) => {
+        result.set(x.columnName, x.isChecked);
+    });
+
+    return result;
+}
+
 
 export function sessionAppendOpenTable(tableData: TableColumnsRequestData): TableColumnsRequestData[]
 {

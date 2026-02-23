@@ -1,11 +1,10 @@
-import { BrowserWindow, dialog, Menu, MenuItem } from "electron";
-import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS } from "../shared/domain/constants/IpcEventNames";
+import { BrowserWindow, Menu } from "electron";
 import path from "path";
-
+import { ApplicationMenu } from "./helpers/application-menu/ApplicationMenu";
 
 export function buildApplicationWindow(): BrowserWindow
 {
-    const win = new BrowserWindow({
+    const browserWindow = new BrowserWindow({
         webPreferences: {
             devTools: true,
             preload: path.join(__dirname, 'preload.js'),
@@ -14,12 +13,12 @@ export function buildApplicationWindow(): BrowserWindow
         },
     });
 
-    setApplicationMenu(win);
+    customizeApplicationMenus(browserWindow);
 
-    return win;
+    return browserWindow;
 }
 
-export function setApplicationMenu(browserWindow: BrowserWindow): void
+export function customizeApplicationMenus(browserWindow: BrowserWindow): void
 {
     const existingMenu = Menu.getApplicationMenu();
     if (existingMenu == null)
@@ -27,35 +26,12 @@ export function setApplicationMenu(browserWindow: BrowserWindow): void
         return;
     }
 
-    const connectionsMenu = new MenuItem({
-        label: 'Connections',
-        submenu: [
-            {
-                label: 'New',
-                click: () => browserWindow.webContents.send(IPC_EVENT_NEW_CONNECTION),
-            },
-            {
-                label: 'Refresh',
-                click: () => browserWindow.webContents.send(IPC_EVENT_REFRESH_CONNECTIONS),
-            },
-        ],
+    const menuBuilder = new ApplicationMenu({
+        menu: existingMenu,
+        window: browserWindow,
     });
 
-    existingMenu.insert(2, connectionsMenu);
-    Menu.setApplicationMenu(existingMenu);
+    menuBuilder.setupApplicationMenu();
 }
 
 
-export async function openFilePicker(win: BrowserWindow)
-{
-    const result = await dialog.showOpenDialog(win, {
-        properties: ['openFile'],
-    });
-
-    if (result.canceled || result.filePaths.length === 0)
-    {
-        return null;
-    }
-
-    return result.filePaths[0];
-}
