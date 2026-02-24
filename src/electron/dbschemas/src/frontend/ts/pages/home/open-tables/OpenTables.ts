@@ -3,11 +3,12 @@ import { TableColumnsRequestData } from "../../../../../shared/domain/models/col
 import { IpcEventArgsFilterTableColumn } from "../../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { IController } from "../../../contracts/IController";
 import { FilterOpenTableColumnsMessage, ShowAllOpenTableColumnsMessage } from "../../../domain/messages/CustomMessages";
+import { ipcGetCurrentColumnFilters } from "../../../helpers/ipc/IpcHandler";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
-import { sessionGetOpenTableColumns, sessionSaveOpenTables, sessionSetOpenTableColumns } from "../../../utilities/SessionUtility";
+import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
@@ -148,7 +149,6 @@ export class OpenTables implements IController
             const data = message.data;
             if (data != null)
             {
-                sessionSetOpenTableColumns(data.isChecked, data.columnName);
                 this.filterOpenTableColumns(data);
             }
         });
@@ -158,7 +158,6 @@ export class OpenTables implements IController
     {
         ShowAllOpenTableColumnsMessage.addListener((message) =>
         {
-            sessionSetOpenTableColumns(true);
             this.getAllOpenCards().forEach(i => i.clearColumnFilters());
         });
     }
@@ -256,14 +255,8 @@ export class OpenTables implements IController
             await tableItem.refreshColumns();
         }
 
-        const openTableColumns = sessionGetOpenTableColumns();
-        openTableColumns.forEach((isChecked, column) =>
-        {
-            this.filterOpenTableColumns({
-                columnName: column,
-                isChecked: isChecked,
-            });
-        });
+        const openTableColumns = await ipcGetCurrentColumnFilters();
+        openTableColumns?.forEach((item) => this.filterOpenTableColumns(item));
     }
 
     private removeAllCardItems(): void

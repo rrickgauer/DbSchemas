@@ -1,5 +1,5 @@
 import { contextBridge, IpcRenderer, ipcRenderer } from 'electron';
-import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_OPEN_FILE_PICKER, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_TOGGLE_TABLE_COLUMN, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS } from '../shared/domain/constants/IpcEventNames';
+import * as ipcEvents from '../shared/domain/constants/IpcEventNames';
 
 /**
  * Everything exposed here becomes available on `window.api`
@@ -43,13 +43,14 @@ contextBridge.exposeInMainWorld('api', {
         window.api.openFilePicker();
     *********************************************************************/
     // Backend -> Frontend
-    onNewConnection: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_NEW_CONNECTION, callback),
-    onRefreshConnections: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_REFRESH_CONNECTIONS, callback),
-    onFilterTableColumn: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_TOGGLE_TABLE_COLUMN, callback),
-    onShowAllTableColumns: (callback: ipcCallback) => registerBasicCallback(IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, callback),
-    
+    onNewConnection: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_NEW_CONNECTION, callback),
+    onRefreshConnections: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_REFRESH_CONNECTIONS, callback),
+    onFilterTableColumn: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_TOGGLE_TABLE_COLUMN, callback),
+    onShowAllTableColumns: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, callback),
+
     // Frontend -> Backend
-    openFilePicker: () => ipcRenderer.invoke(IPC_EVENT_OPEN_FILE_PICKER),
+    openFilePicker: () => ipcRenderer.invoke(ipcEvents.IPC_EVENT_OPEN_FILE_PICKER),
+    getFilterTableColumns: () => ipcRenderer.invoke(ipcEvents.IPC_EVENT_GET_FILTER_COLUMNS),
 });
 
 

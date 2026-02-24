@@ -1,3 +1,4 @@
+import { TableFilterColumn } from "../../../../shared/domain/constants/TableColumnFilter";
 import { IpcRoutines } from "../../../../shared/domain/contracts/IpcRoutines";
 import { IpcEventArgsFilterTableColumn } from "../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { ShowAllOpenTableColumnsMessage, ConnectionsListRefreshMessage, FilterOpenTableColumnsMessage, RefreshPageMessage, ShowConnectionFormMessage } from "../../domain/messages/CustomMessages";
@@ -35,5 +36,12 @@ export function ipcRegisterGuiEventHandlers(): void
 export async function ipcOpenFilePicker(): Promise<string | null>
 {
     return await IPC_SERVER.openFilePicker();
+}
+
+export async function ipcGetCurrentColumnFilters(): Promise<IpcEventArgsFilterTableColumn[] | null>
+{
+    const result = await IPC_SERVER.getFilterTableColumns();
+    console.log({result});
+    return result;
 }
 

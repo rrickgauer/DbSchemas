@@ -1,6 +1,7 @@
 import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
 import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
+import { ipcGetCurrentColumnFilters } from "../../helpers/ipc/IpcHandler";
 import { domGetClass } from "../../utilities/DomUtility";
 import { pageHideLoadingScreen, pageShowLoadingScreen } from "../../utilities/PageUtility";
 import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
@@ -41,6 +42,8 @@ export class HomePage implements IControllerAsync
 
         // display cached tables
         await this.restoreCachedTables();
+
+        const ttt = await ipcGetCurrentColumnFilters();
     }
 
     private async restoreCachedTables(): Promise<void>
