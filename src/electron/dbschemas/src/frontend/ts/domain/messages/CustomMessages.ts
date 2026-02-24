@@ -32,7 +32,7 @@ export const OpenTableCardClosedMessage = new CustomMessage<TableColumnsRequestD
 
 //#endregion
 
-
-
 export const FilterOpenTableColumnsMessage = new CustomMessage<IpcEventArgsFilterTableColumn>();
 export const ShowAllOpenTableColumnsMessage = new CustomEmptyMessage();
+
+export const ShowSearchModalMessage = new CustomEmptyMessage();

@@ -1,0 +1,30 @@
+
+@use "./variables" as variables;
+
+
+$compSpacing: 1.5rem;
+
+@mixin spacing {
+    margin-bottom: $compSpacing;
+}
+
+.form-search {
+    @include spacing;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid variables.$lightGrayDark;
+}
+
+.form-search-results {
+    @include spacing;
+}
+
+.search-results-list-item {
+    font-size: 75%;
+    
+    .table-name {
+        font-weight: 500;
+    }
+    .connection-name {
+        font-weight: 300;
+    }
+}

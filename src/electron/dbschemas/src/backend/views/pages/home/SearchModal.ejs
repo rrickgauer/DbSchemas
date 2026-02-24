@@ -1,0 +1,37 @@
+<%
+    const formClass = `form-search`;
+    const containerClass = `${formClass}-container`;
+    const inputSearchId = `${formClass}-input-search`;
+    const resultsClass = `${formClass}-results`;
+%>
+
+<div class="modal <%= containerClass %>" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <form class="<%= formClass %>">
+                    <fieldset>
+                        <div class="d-flex align-items-center">
+                            <div class="form-input input-group-sm me-auto w-100">
+                                <div class="input-group me-auto">
+                                    <span class="input-group-text"><i class='bx bx-search'></i></span>
+                                    <input type="search" class="form-control" id="<%= inputSearchId %>" placeholder="Item name...">
+                                </div>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-sm btn-success ms-2 text-nowrap btn-submit h-100">Find item</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div class="list-group <%= resultsClass %>"></div>
+
+            </div>
+        </div>
+    </div>
+</div>

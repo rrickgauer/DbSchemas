@@ -1,5 +1,5 @@
 import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
-import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, IPC_EVENT_TOGGLE_TABLE_COLUMN } from "../../../shared/domain/constants/IpcEventNames";
+import { IPC_EVENT_FIND, IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, IPC_EVENT_TOGGLE_TABLE_COLUMN } from "../../../shared/domain/constants/IpcEventNames";
 import { ipcSendMessageToFrontEnd } from "../../utilities/IpcHandlers";
 import { IpcEventArgsFilterTableColumn } from "../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { TableFilterColumn } from "../../../shared/domain/constants/TableColumnFilter";
@@ -51,6 +51,11 @@ export class ApplicationMenu
                 {
                     label: 'Refresh',
                     click: () => ipcSendMessageToFrontEnd(this._window, IPC_EVENT_REFRESH_CONNECTIONS),
+                },
+                {
+                    label: 'Search',
+                    click: () => ipcSendMessageToFrontEnd(this._window, IPC_EVENT_FIND),
+                    accelerator: `CommandOrControl+F`,
                 },
             ],
         });

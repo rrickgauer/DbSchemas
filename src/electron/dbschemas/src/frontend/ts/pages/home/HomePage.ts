@@ -6,6 +6,7 @@ import { domGetClass } from "../../utilities/DomUtility";
 import { pageHideLoadingScreen, pageShowLoadingScreen } from "../../utilities/PageUtility";
 import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
 import { OpenTables } from "./open-tables/OpenTables";
+import { initializeSearchModal } from "./search/SearchModalUtilities";
 import { ConnectionForm } from "./sidebar/ConnectionForm";
 import { SidebarListController } from "./sidebar/SidebarList";
 
@@ -33,6 +34,7 @@ export class HomePage implements IControllerAsync
     public async control(): Promise<void>
     {
         pageShowLoadingScreen();
+        initializeSearchModal();
         ConnectionForm.initialize();
         this.addListeners();
         this._openTables.control();
