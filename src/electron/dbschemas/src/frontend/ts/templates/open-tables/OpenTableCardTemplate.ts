@@ -44,7 +44,7 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                 <h5 class="${ELE.tableNameClass}">${model.tableName}</h5>
                 <div class="${ELE.dragItem}" draggable="true"><i class='bx bx-grid-horizontal'></i></div>
                 <div class="d-flex">
-                    <div class="dropdown">
+                    <div class="dropstart">
                         <button class="btn btn-sm" data-bs-toggle="dropdown" title="Table actions"><i class='bx bx-dots-horizontal-rounded'></i></button>
                         <div class="dropdown-menu">
                             <button class="${actionButtonClass} ${ELE.btnCopyAllRowsClass}">Copy all rows</button>
@@ -73,12 +73,12 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                         <table class="table table-sm table-hover ${ELE.tableClass}">
                             <thead>
                                 <tr>
-                                    <th class="${CELL.cellClass} ${CELL.positionClass}" scope="col">Position</th>
-                                    <th class="${CELL.cellClass} ${CELL.nameClass}" scope="col">Name</th>
-                                    <th class="${CELL.cellClass} ${CELL.columnTypeClass}" scope="col">Type</th>
-                                    <th class="${CELL.cellClass} ${CELL.isNullableClass}" scope="col">Nullable</th>
-                                    <th class="${CELL.cellClass} ${CELL.defaultValueClass}" scope="col">Default</th>
-                                    <th class="${CELL.cellClass} ${CELL.copyRowClass}" scope="col">Action</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.positionClass}">Position</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.nameClass}">Name</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.columnTypeClass}">Type</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.isNullableClass}">Nullable</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.defaultValueClass}">Default</th>
+                                    <th scope="col" class="${CELL.cellClass} ${CELL.copyRowClass}">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>

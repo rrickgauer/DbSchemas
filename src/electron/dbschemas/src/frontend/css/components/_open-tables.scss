@@ -1,26 +1,18 @@
 @use "sass:map";
 @use "_mixins.scss" as mixins;
 
+$tableFontSize: 70%;
+
 .open-table-cards {
+    display: flex;
+    padding-right: 5rem;
+
     &-container {
         overflow-x: auto;
         overflow-y: hidden;
         display: flex;
     }
-
-    & {
-        display: flex;
-        padding-right: 5rem;
-    }
 }
-
-$tableFontSize: 70%;
-
-
-
-
-
-
 
 .open-table-card {
     & {
@@ -70,7 +62,7 @@ $tableFontSize: 70%;
     &-row {
         .copy-row {
             display: flex;
-            justify-content: center;
+            justify-content: end;
         }
 
         &-btn-copy {
@@ -79,6 +71,11 @@ $tableFontSize: 70%;
             padding-bottom: 2px;
             padding-left: 4px;
             padding-right: 4px;
+            visibility: hidden;
+        }
+
+        &:hover &-btn-copy {
+            visibility: visible;
         }
     }
 }
@@ -103,5 +100,3 @@ $openTableCells: (
         }
     }
 }
-
-
