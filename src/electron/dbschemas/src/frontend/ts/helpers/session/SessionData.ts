@@ -5,5 +5,4 @@ import { IpcEventArgsFilterTableColumn } from "../../../../shared/domain/models/
 export type SessionData = {
     openTables: TableColumnsRequestData[];
     isSidebarOpen: boolean;
-    visibleOpenTableColumns: IpcEventArgsFilterTableColumn[];
 };

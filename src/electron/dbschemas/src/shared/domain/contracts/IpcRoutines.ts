@@ -1,6 +1,5 @@
 import { IpcEventArgsFilterTableColumn } from "../models/ipc-event-args/IpcEventArgs";
 
-
 export interface IpcRoutines
 {
     onNewConnection(callback: () => void): void;
@@ -9,4 +8,5 @@ export interface IpcRoutines
     onShowAllTableColumns(callback: () => void): void;
 
     openFilePicker(): Promise<string | null>;
+    getFilterTableColumns(): Promise<IpcEventArgsFilterTableColumn[] | null>;
 }

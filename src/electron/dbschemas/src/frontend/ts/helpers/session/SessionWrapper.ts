@@ -59,24 +59,7 @@ export class SessionWrapper
         return {
             openTables: [],
             isSidebarOpen: true,
-            visibleOpenTableColumns: getEmptyVisibleOpenTableColumns(),
         };
     }
-}
-
-export function getEmptyVisibleOpenTableColumns(): IpcEventArgsFilterTableColumn[]
-{
-    const result: IpcEventArgsFilterTableColumn[] = [];
-    const keys = Object.keys(TableFilterColumn) as TableFilterColumn[];
-
-    for(const column of keys)
-    {
-        result.push({
-            columnName: column,
-            isChecked: true,
-        });
-    }
-
-    return result;
 }
 

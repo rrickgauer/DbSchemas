@@ -3,20 +3,16 @@ import { IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_SHOW
 import { ipcSendMessageToFrontEnd } from "../../utilities/IpcHandlers";
 import { IpcEventArgsFilterTableColumn } from "../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { TableFilterColumn } from "../../../shared/domain/constants/TableColumnFilter";
+import { MENU_INDEX_CONNECTIONS, MENU_INDEX_COLUMNS } from "./ApplicationMenuUtility";
 
 type ApplicationMenuArgs = {
     menu: Menu;
     window: BrowserWindow;
 };
 
-
 const SEPARATOR_MENU_ITEM: MenuItemConstructorOptions = {
     type: 'separator',
 };
-
-
-const MENU_INDEX_CONNECTIONS = 2;
-const MENU_INDEX_COLUMNS = MENU_INDEX_CONNECTIONS + 1;
 
 export class ApplicationMenu
 {
@@ -75,11 +71,11 @@ export class ApplicationMenu
                 label: 'Select all...',
                 click: () =>
                 {
-                    ipcSendMessageToFrontEnd(this._window, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS);
-                    
                     const columnsMenu = Menu.getApplicationMenu()?.items[MENU_INDEX_COLUMNS];
                     const checkboxes = columnsMenu?.submenu?.items.filter(i => i.type === "checkbox");
                     checkboxes?.forEach(i => i.checked = true);
+
+                    ipcSendMessageToFrontEnd(this._window, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS);
                 },
             },
             {
@@ -118,6 +114,4 @@ export class ApplicationMenu
             },
         };
     }
-
-
 }

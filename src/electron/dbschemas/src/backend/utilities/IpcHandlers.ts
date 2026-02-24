@@ -1,10 +1,20 @@
-import { BrowserWindow, ipcMain, IpcMain, IpcMainInvokeEvent } from "electron";
-import { IPC_EVENT_OPEN_FILE_PICKER } from "../../shared/domain/constants/IpcEventNames";
+import { BrowserWindow, ipcMain, IpcMainInvokeEvent } from "electron";
+import { IPC_EVENT_GET_FILTER_COLUMNS, IPC_EVENT_OPEN_FILE_PICKER } from "../../shared/domain/constants/IpcEventNames";
 import { osOpenFilePicker } from "./OperatingSystem";
+import { getCurrentFilterTableColumnMenuItems } from "../helpers/application-menu/ApplicationMenuUtility";
 
 export function ipcAddInboundMessageHandlers(): void
 {
+    addListener_GetFilterColumns();
     addListener_OpenFilePicker();
+}
+
+function addListener_GetFilterColumns(): void
+{
+    ipcMain.handle(IPC_EVENT_GET_FILTER_COLUMNS, async (e) =>
+    {
+        return getCurrentFilterTableColumnMenuItems();
+    });
 }
 
 function addListener_OpenFilePicker(): void
@@ -25,18 +35,7 @@ function getWindowFromEvent(event: IpcMainInvokeEvent): BrowserWindow | null
     return browserWindow;
 }
 
-
 export function ipcSendMessageToFrontEnd(window: BrowserWindow, message: string, ...args: any[]): void
 {
     window.webContents.send(message, ...args);
 }
-
-function getCurrentBrowserWindow(): BrowserWindow
-{
-    return BrowserWindow.getAllWindows()[0];
-}
-
-
-
-
-
