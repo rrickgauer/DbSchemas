@@ -46,6 +46,7 @@ export class ApplicationMenu
                 {
                     label: 'New',
                     click: () => ipcSendMessageToFrontEnd(this._window, IPC_EVENT_NEW_CONNECTION),
+                    accelerator: `CommandOrControl+N`,
                 },
                 {
                     label: 'Refresh',
