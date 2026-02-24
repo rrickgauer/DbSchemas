@@ -11,6 +11,9 @@ export function buildApplicationWindow(): BrowserWindow
             contextIsolation: true,
             nodeIntegration: false,
         },
+
+        icon: path.join(__dirname, '../assets/icons/dev-icon.png'),
+        title: 'Database Schemas',
     });
 
     customizeApplicationMenus(browserWindow);

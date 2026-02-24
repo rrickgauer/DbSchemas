@@ -66,7 +66,7 @@ export class ApplicationMenu
     {
         const filterMenuItems: MenuItemConstructorOptions[] = [
             this.getFilterMenuItemCheckbox(TableFilterColumn.Position),
-            this.getFilterMenuItemCheckbox(TableFilterColumn.Name),
+            this.getFilterMenuItemCheckbox(TableFilterColumn.Name, false),
             this.getFilterMenuItemCheckbox(TableFilterColumn.Type),
             this.getFilterMenuItemCheckbox(TableFilterColumn.Nullable),
             this.getFilterMenuItemCheckbox(TableFilterColumn.Default),
@@ -96,12 +96,16 @@ export class ApplicationMenu
         return tablesMenu;
     }
 
-    private getFilterMenuItemCheckbox(label: TableFilterColumn): MenuItemConstructorOptions
+
+    private getFilterMenuItemCheckbox(label: TableFilterColumn): MenuItemConstructorOptions;
+    private getFilterMenuItemCheckbox(label: TableFilterColumn, isEnabled: boolean | null): MenuItemConstructorOptions;
+    private getFilterMenuItemCheckbox(label: TableFilterColumn, isEnabled?: boolean | null): MenuItemConstructorOptions
     {
         return {
             label: label,
             type: "checkbox",
             checked: true,
+            enabled: isEnabled ?? true,
 
             click: (menuItem, window, event) =>
             {
