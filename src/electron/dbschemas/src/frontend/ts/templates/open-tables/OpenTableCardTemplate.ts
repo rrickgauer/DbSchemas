@@ -14,7 +14,6 @@ export class OpenTableCardTemplateElements
     public readonly tableNameClass = `${this.containerClass}-table-name`;
     public readonly spinnerClass = `${this.containerClass}-spinner`;
     public readonly bodyClass = `${this.containerClass}-body-content`;
-    public readonly actionButtonsContainerClass = `${this.containerClass}-action-buttons`;
     public readonly actionButtonClass = `${this.containerClass}-action-button`;
     public readonly btnCopyAllRowsClass = `${this.actionButtonClass}-copy-all`;
     public readonly btnCopySelectedRowsClass = `${this.actionButtonClass}-copy-selected`;
@@ -36,15 +35,33 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
     {
         const cardId = `${model.connectionId}-${model.tableName}`;
 
-        const topButtonClasses = `btn btn-sm btn-light border-light-subtle ${ELE.actionButtonClass}`;
+        const actionButtonClass = `dropdown-item ${ELE.actionButtonClass}`;
 
         let html = //html
         `
         <div class="card ${ELE.containerClass}" ${ELE.cardIdAttr}="${cardId}" ${ELE.connectionIdAttr}="${model.connectionId}">
             <div class="card-header d-flex justify-content-between">
                 <h5 class="${ELE.tableNameClass}">${model.tableName}</h5>
-                <div class="${ELE.dragItem} ms-auto" draggable="true"><i class='bx bx-grid-horizontal'></i></div>
-                <button type="button" class="btn-close ${ELE.btnCloseClass}" aria-label="Close"></button>
+                <div class="${ELE.dragItem}" draggable="true"><i class='bx bx-grid-horizontal'></i></div>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-sm" data-bs-toggle="dropdown" title="Table actions"><i class='bx bx-dots-horizontal-rounded'></i></button>
+                        <div class="dropdown-menu">
+                            <button class="${actionButtonClass} ${ELE.btnCopyAllRowsClass}">Copy all rows</button>
+                            <button class="${actionButtonClass} ${ELE.btnCopySelectedRowsClass}">Copy selected rows</button>
+                            <hr class="dropdown-divider" />
+
+                            <button class="${actionButtonClass} ${ELE.btnSelectAllRows}">Select all rows</button>
+                            <button class="${actionButtonClass} ${ELE.btnDeselectAllRows}">Clear selection</button>
+
+                            <hr class="dropdown-divider" />
+                            <button class="${actionButtonClass} ${ELE.btnRefreshClass}">Refresh columns</button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-close ${ELE.btnCloseClass}" aria-label="Close"></button>
+                </div>
+                
             </div>
             <div class="card-body">
                 <div class="${ELE.spinnerClass}">
@@ -52,14 +69,6 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                 </div>
 
                 <div class="${ELE.bodyClass}">
-                    <div class="${ELE.actionButtonsContainerClass}">
-                        <button type="button" class="${topButtonClasses} me-1 ${ELE.btnCopyAllRowsClass}" title="Copy all rows">Copy all</button>
-                        <button type="button" class="${topButtonClasses} me-3 ${ELE.btnCopySelectedRowsClass}" title="Copy the selected rows">Copy selected</button>
-                        <button type="button" class="${topButtonClasses} me-1 ${ELE.btnSelectAllRows}" title="Select all rows">Select all</button>
-                        <button type="button" class="${topButtonClasses} me-3 ${ELE.btnDeselectAllRows}" title="Deselect all rows">Deselect all</button>
-                        <button type="button" class="${topButtonClasses} ${ELE.btnRefreshClass}" title="Refresh the columns">Refresh</button>
-                    </div>
-
                     <div class="table-responsive">
                         <table class="table table-sm table-hover ${ELE.tableClass}">
                             <thead>
@@ -78,6 +87,7 @@ export class OpenTableCardTemplate extends HtmlTemplate<TableDefinitionModel>
                         </table>
                     </div>
                 </div>
+
             </div>
         </div>
         `;
