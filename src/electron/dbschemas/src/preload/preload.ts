@@ -48,6 +48,8 @@ contextBridge.exposeInMainWorld('api', {
     onFilterTableColumn: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_TOGGLE_TABLE_COLUMN, callback),
     onShowAllTableColumns: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, callback),
     onSearch: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_FIND, callback),
+    onCopyAllOpenTables: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_COPY_OPEN_TABLES, callback),
+    onCloseAllOpenTables: (callback: ipcCallback) => registerBasicCallback(ipcEvents.IPC_EVENT_CLOSE_OPEN_TABLES, callback),
 
     // Frontend -> Backend
     openFilePicker: () => ipcRenderer.invoke(ipcEvents.IPC_EVENT_OPEN_FILE_PICKER),

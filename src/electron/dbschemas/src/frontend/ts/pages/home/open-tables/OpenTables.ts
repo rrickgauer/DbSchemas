@@ -4,12 +4,14 @@ import { IpcEventArgsFilterTableColumn } from "../../../../../shared/domain/mode
 import { IController } from "../../../contracts/IController";
 import { FilterOpenTableColumnsMessage, ShowAllOpenTableColumnsMessage } from "../../../domain/messages/CustomMessages";
 import { ipcGetCurrentColumnFilters } from "../../../helpers/ipc/IpcHandler";
+import { toastShowSuccess } from "../../../helpers/toasts/ToastUtility";
 import { TableServiceGui } from "../../../services/TableServiceGui";
 import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../templates/open-tables/OpenTableCardTemplate";
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
+import { copyToClipboard } from "../../../utilities/ClipboardUtility";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
 import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
-import { createEmptyOpenTablesCardItem } from "../HomePageRoutines";
+import { createEmptyOpenTablesCardItem, getAllOpenTableCardItems } from "../HomePageRoutines";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
 
@@ -158,7 +160,7 @@ export class OpenTables implements IController
     {
         ShowAllOpenTableColumnsMessage.addListener((message) =>
         {
-            this.getAllOpenCards().forEach(i => i.clearColumnFilters());
+            getAllOpenTableCardItems().forEach(i => i.clearColumnFilters());
         });
     }
 
@@ -235,7 +237,7 @@ export class OpenTables implements IController
 
     private cacheOpenTableOrder(): void
     {
-        const cardItems = this.getAllOpenCards().map(c => c.getConnectionTableRequestData());
+        const cardItems = getAllOpenTableCardItems().map(c => c.getConnectionTableRequestData());
         sessionSaveOpenTables(cardItems);
     }
 
@@ -261,7 +263,7 @@ export class OpenTables implements IController
 
     private removeAllCardItems(): void
     {
-        this.getAllOpenCards().forEach(c => c.remove());
+        getAllOpenTableCardItems().forEach(c => c.remove());
     }
 
     public async showTable(tableInfo: TableColumnsRequestData): Promise<void>
@@ -272,7 +274,7 @@ export class OpenTables implements IController
 
     private filterOpenTableColumns(filter: IpcEventArgsFilterTableColumn): void
     {
-        this.getAllOpenCards().forEach(c =>
+        getAllOpenTableCardItems().forEach(c =>
         {
             c.filterColumns(filter);
         });
@@ -288,12 +290,34 @@ export class OpenTables implements IController
         return null;
     }
 
-    private getAllOpenCards(): OpenTablesCardItem[]
+
+    public copyAll(): void
     {
-        const elements = domGetClasses<HTMLElement>(CARD.containerClass);
-        return elements.map(e => new OpenTablesCardItem(e));
+        let text = '';
+        let isFirst = true;
+        const openTables = getAllOpenTableCardItems();
+        for (const table of openTables)
+        {
+            if (isFirst)
+            {
+                isFirst = false;
+                text = table.getClipboardText();
+            }
+            else
+            {
+                text += `\n\n${table.getClipboardText()}`;
+            }
+        }
+
+        copyToClipboard(text);
+        toastShowSuccess({ message: 'Copied to clipboard' });
     }
 
+    public closeAll(): void
+    {
+        const openTables = getAllOpenTableCardItems();
+        openTables.forEach(t => t.closeCard());
+    }
 
 }
 

@@ -79,10 +79,6 @@ export class OpenTablesCardItem
 
     public clearColumnFilters(): void
     {
-        // const classes = Array.from(this._container.classList);
-        // const classesToRemove = classes.filter(c => c.startsWith(`hide-`));
-        // classesToRemove.forEach(c => this._container.classList.remove(c));
-
         const columns = Object.keys(TableFilterColumn) as TableFilterColumn[];
         const classes = columns.map(c => this.getHideColumnClassName(c));
         classes.forEach(c => this._container.classList.remove(c));
@@ -172,6 +168,18 @@ export class OpenTablesCardItem
 
     private copyRowNamesToClipboard(rows: OpenTableColumnDefinitionItem[]): void
     {
+        const text = this.getClipboardText(rows);
+        copyToClipboard(text);
+        toastShowSuccess({ message: 'Copied to clipboard' });
+    }
+
+    public getClipboardText(rows?: OpenTableColumnDefinitionItem[] | null): string
+    {
+        if (rows == null)
+        {
+            rows = this.getAllRows();
+        }
+
         let text = '';
         let isFirst = true;
 
@@ -188,8 +196,8 @@ export class OpenTablesCardItem
             }
         }
 
-        copyToClipboard(text);
-        toastShowSuccess({ message: 'Copied to clipboard' });
+        return text;
+
     }
 
     public selectAllRows(): void

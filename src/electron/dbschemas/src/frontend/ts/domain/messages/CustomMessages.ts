@@ -36,3 +36,6 @@ export const FilterOpenTableColumnsMessage = new CustomMessage<IpcEventArgsFilte
 export const ShowAllOpenTableColumnsMessage = new CustomEmptyMessage();
 
 export const ShowSearchModalMessage = new CustomEmptyMessage();
+
+export const CopyAllOpenTablesMessage = new CustomEmptyMessage();
+export const CloseAllOpenTablesMessage = new CustomEmptyMessage();
