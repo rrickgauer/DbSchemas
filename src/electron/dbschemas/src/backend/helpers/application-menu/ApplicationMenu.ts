@@ -27,6 +27,8 @@ export class ApplicationMenu
 
     public setupApplicationMenu(): void
     {
+        this.removeExtraMenuItems();
+
         // connections
         const connectionsMenu = this.getConnectionsMenu();
         this._menu.insert(MENU_INDEX_CONNECTIONS, connectionsMenu);
@@ -39,7 +41,9 @@ export class ApplicationMenu
         const columnsMenu = this.getColumnsMenu();
         this._menu.insert(MENU_INDEX_COLUMNS, columnsMenu);
 
-        Menu.setApplicationMenu(this._menu);
+        const m = Menu.buildFromTemplate(this._menu.items);
+        Menu.setApplicationMenu(m);
+
     }
 
     private getConnectionsMenu(): MenuItem
@@ -142,5 +146,22 @@ export class ApplicationMenu
                 ipcSendMessageToFrontEnd(this._window, IPC_EVENT_TOGGLE_TABLE_COLUMN, data);
             },
         };
+    }
+
+    private removeExtraMenuItems(): void
+    {
+        // hide unused items
+        const menuLabelsToHide = [
+            'Help',
+            'Edit',
+        ];
+
+        const itemsToRemove = this._menu.items.filter(i => menuLabelsToHide.includes(i.label));
+
+        itemsToRemove.forEach(i =>
+        {
+            const index = this._menu.items.indexOf(i);
+            this._menu.items.splice(index, 1);
+        });
     }
 }
