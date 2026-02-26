@@ -3,17 +3,15 @@ import { TableColumnsRequestData } from "../../../../../shared/domain/models/col
 import { ConnectionModel } from "../../../../../shared/domain/models/connections/ConnectionModel";
 import { notNull } from "../../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../../contracts/IController";
-import { OpenTableCardClosedMessage } from "../../../domain/messages/CustomMessages";
 import { ConnectionsServiceGui } from "../../../services/ConnectionsServiceGui";
 import { ConnectionSidebarListItemTemplate, ConnectionSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/ConnectionSidebarListItemTemplate";
 import { TableSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/TableSidebarListItemTemplate";
 import { bootstrapHideElement, bootstrapShowElement } from "../../../utilities/BootstrapUtility";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName } from "../../../utilities/DomUtility";
 import { executeServiceCall } from "../../../utilities/ServiceUtility";
-import { sessionGetIsSidebarOpen, sessionSaveIsSidebarOpen } from "../../../utilities/SessionUtility";
+import { sessionSaveIsSidebarOpen } from "../../../utilities/SessionUtility";
 import { SidebarConnectionListItem } from "./SidebarConnectionListItem";
 import { SidebarTableListItem } from "./SidebarTableListItem";
-
 
 class SidebarListControllerElements
 {

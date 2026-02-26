@@ -48,6 +48,8 @@ export abstract class FormInput<T>
         }
 
         this.input.classList.add(ELE.isInvalidClassName);
+
+        this._invalidFeedback.style.display = 'block';
     }
 
     public clearValidation(): void

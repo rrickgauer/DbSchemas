@@ -1,7 +1,7 @@
 import { TableFilterColumn } from "../../../../shared/domain/constants/TableColumnFilter";
 import { IpcRoutines } from "../../../../shared/domain/contracts/IpcRoutines";
 import { IpcEventArgsFilterTableColumn } from "../../../../shared/domain/models/ipc-event-args/IpcEventArgs";
-import { ShowAllOpenTableColumnsMessage, ConnectionsListRefreshMessage, FilterOpenTableColumnsMessage, RefreshPageMessage, ShowConnectionFormMessage } from "../../domain/messages/CustomMessages";
+import { ShowAllOpenTableColumnsMessage, ConnectionsListRefreshMessage, FilterOpenTableColumnsMessage, RefreshPageMessage, ShowConnectionFormMessage, ShowSearchModalMessage } from "../../domain/messages/CustomMessages";
 import { toastShowStandard } from "../toasts/ToastUtility";
 
 //@ts-ignore
@@ -30,6 +30,11 @@ export function ipcRegisterGuiEventHandlers(): void
     {
         ShowAllOpenTableColumnsMessage.invoke(this, null);
     });
+
+    IPC_SERVER.onSearch(() =>
+    {
+        ShowSearchModalMessage.invoke(this, null);
+    });
 }
 
 
@@ -41,7 +46,6 @@ export async function ipcOpenFilePicker(): Promise<string | null>
 export async function ipcGetCurrentColumnFilters(): Promise<IpcEventArgsFilterTableColumn[] | null>
 {
     const result = await IPC_SERVER.getFilterTableColumns();
-    console.log({result});
     return result;
 }
 

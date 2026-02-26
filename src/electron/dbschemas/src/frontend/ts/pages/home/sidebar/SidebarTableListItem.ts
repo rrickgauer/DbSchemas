@@ -1,10 +1,11 @@
 import { TableColumnsRequestData } from "../../../../../shared/domain/models/column-definitions/TableColumnsRequestData";
 import { TableSidebarListItemClickedMessage } from "../../../domain/messages/CustomMessages";
-import { toastShowStandard } from "../../../helpers/toasts/ToastUtility";
+import { ConnectionSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/ConnectionSidebarListItemTemplate";
 import { TableSidebarListItemTemplateElements } from "../../../templates/connections-sidebar/TableSidebarListItemTemplate";
 import { domGetClosestClass } from "../../../utilities/DomUtility";
 
 const ELE = new TableSidebarListItemTemplateElements();
+const CONNECTION = new ConnectionSidebarListItemTemplateElements();
 
 export class SidebarTableListItem
 {

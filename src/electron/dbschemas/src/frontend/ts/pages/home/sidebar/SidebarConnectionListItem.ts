@@ -29,6 +29,11 @@ export class SidebarConnectionListItem
         return parseInt(this._container.getAttribute(ELE.connnectionIdAttr)!);
     }
 
+    public get connectionName(): string
+    {
+        return domGetClass<HTMLButtonElement>(ELE.btnToggleClass, this._container).innerText;
+    }
+
     constructor (e: Element)
     {
         this._container = domGetClosestClass<HTMLLIElement>(ELE.containerClass, e);

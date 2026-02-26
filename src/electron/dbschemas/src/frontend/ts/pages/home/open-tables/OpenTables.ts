@@ -9,9 +9,9 @@ import { OpenTableCardTemplate, OpenTableCardTemplateElements } from "../../../t
 import { TableColumnListItemTemplateElements } from "../../../templates/open-tables/TableColumnListItemTemplate";
 import { domGetClass, domGetClasses, domGetElementOrParentWithClassName, domIsElement } from "../../../utilities/DomUtility";
 import { sessionSaveOpenTables } from "../../../utilities/SessionUtility";
+import { createEmptyOpenTablesCardItem } from "../HomePageRoutines";
 import { OpenTableColumnDefinitionItem } from "./OpenTableColumnDefinitionItem";
 import { OpenTablesCardItem } from "./OpenTablesCardItem";
-import { createEmptyOpenTablesCardItem } from "./OpenTablesRoutines";
 
 class OpenTablesElements
 {

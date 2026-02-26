@@ -6,6 +6,7 @@ export interface IpcRoutines
     onRefreshConnections(callback: () => void): void;
     onFilterTableColumn(callback: (data: IpcEventArgsFilterTableColumn) => void): void;
     onShowAllTableColumns(callback: () => void): void;
+    onSearch(callback: () => void): void;
 
     openFilePicker(): Promise<string | null>;
     getFilterTableColumns(): Promise<IpcEventArgsFilterTableColumn[] | null>;
