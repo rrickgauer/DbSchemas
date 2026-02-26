@@ -291,7 +291,7 @@ export class OpenTables implements IController
     }
 
 
-    public copyAllOpenTables(): void
+    public copyAll(): void
     {
         let text = '';
         let isFirst = true;
@@ -311,6 +311,12 @@ export class OpenTables implements IController
 
         copyToClipboard(text);
         toastShowSuccess({ message: 'Copied to clipboard' });
+    }
+
+    public closeAll(): void
+    {
+        const openTables = getAllOpenTableCardItems();
+        openTables.forEach(t => t.closeCard());
     }
 
 }

@@ -117,7 +117,7 @@ export class HomePage implements IControllerAsync
     {
         CopyAllOpenTablesMessage.addListener((message) =>
         {
-            this._openTables.copyAllOpenTables();
+            this._openTables.copyAll();
         });
     }
 
@@ -125,7 +125,7 @@ export class HomePage implements IControllerAsync
     {
         CloseAllOpenTablesMessage.addListener((message) =>
         {
-
+            this._openTables.closeAll();
         });
     }
 
