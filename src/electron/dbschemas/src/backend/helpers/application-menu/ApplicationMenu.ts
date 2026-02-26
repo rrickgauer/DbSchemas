@@ -1,9 +1,9 @@
 import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
-import { IPC_EVENT_FIND, IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, IPC_EVENT_TOGGLE_TABLE_COLUMN } from "../../../shared/domain/constants/IpcEventNames";
+import { IPC_EVENT_CLOSE_OPEN_TABLES, IPC_EVENT_COPY_OPEN_TABLES, IPC_EVENT_FIND, IPC_EVENT_NEW_CONNECTION, IPC_EVENT_REFRESH_CONNECTIONS, IPC_EVENT_SHOW_ALL_TABLE_COLUMNS, IPC_EVENT_TOGGLE_TABLE_COLUMN } from "../../../shared/domain/constants/IpcEventNames";
 import { ipcSendMessageToFrontEnd } from "../../utilities/IpcHandlers";
 import { IpcEventArgsFilterTableColumn } from "../../../shared/domain/models/ipc-event-args/IpcEventArgs";
 import { TableFilterColumn } from "../../../shared/domain/constants/TableColumnFilter";
-import { MENU_INDEX_CONNECTIONS, MENU_INDEX_COLUMNS } from "./ApplicationMenuUtility";
+import { MENU_INDEX_CONNECTIONS, MENU_INDEX_COLUMNS, MENU_INDEX_TABLES } from "./ApplicationMenuUtility";
 
 type ApplicationMenuArgs = {
     menu: Menu;
@@ -31,9 +31,13 @@ export class ApplicationMenu
         const connectionsMenu = this.getConnectionsMenu();
         this._menu.insert(MENU_INDEX_CONNECTIONS, connectionsMenu);
 
+        // tables
+        const tablesMenu = this.getTablesMenu();
+        this._menu.insert(MENU_INDEX_TABLES, tablesMenu);
+
         // columns
-        const tablesMenu = this.getColumnsMenu();
-        this._menu.insert(MENU_INDEX_COLUMNS, tablesMenu);
+        const columnsMenu = this.getColumnsMenu();
+        this._menu.insert(MENU_INDEX_COLUMNS, columnsMenu);
 
         Menu.setApplicationMenu(this._menu);
     }
@@ -61,6 +65,25 @@ export class ApplicationMenu
         });
 
         return connectionsMenu;
+    }
+
+    private getTablesMenu(): MenuItem
+    {
+        const openTablesMenu = new MenuItem({
+            label: 'Tables',
+            submenu: [
+                {
+                    label: 'Copy all open tables',
+                    click: () => ipcSendMessageToFrontEnd(this._window, IPC_EVENT_COPY_OPEN_TABLES),
+                },
+                {
+                    label: 'Close all open tables',
+                    click: () => ipcSendMessageToFrontEnd(this._window, IPC_EVENT_CLOSE_OPEN_TABLES),
+                }
+            ],
+        });
+
+        return openTablesMenu;
     }
 
 

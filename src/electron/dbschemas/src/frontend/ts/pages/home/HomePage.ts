@@ -1,10 +1,13 @@
 import { notNull } from "../../../../shared/utilities/NullableUtility";
 import { IControllerAsync } from "../../contracts/IController";
-import { ConnectionsListRefreshMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
+import { CloseAllOpenTablesMessage, ConnectionsListRefreshMessage, CopyAllOpenTablesMessage, OpenTableCardClosedMessage, RefreshPageMessage, TableSidebarListItemClickedMessage } from "../../domain/messages/CustomMessages";
 import { ipcGetCurrentColumnFilters } from "../../helpers/ipc/IpcHandler";
+import { toastShowSuccess } from "../../helpers/toasts/ToastUtility";
+import { copyToClipboard } from "../../utilities/ClipboardUtility";
 import { domGetClass } from "../../utilities/DomUtility";
 import { pageHideLoadingScreen, pageShowLoadingScreen } from "../../utilities/PageUtility";
 import { sessionAppendOpenTable, sessionGetIsSidebarOpen, sessionGetOpenTables, sessionRemoveOpenTable } from "../../utilities/SessionUtility";
+import { getAllOpenTableCardItems } from "./HomePageRoutines";
 import { OpenTables } from "./open-tables/OpenTables";
 import { initializeSearchModal } from "./search/SearchModalUtilities";
 import { ConnectionForm } from "./sidebar/ConnectionForm";
@@ -24,7 +27,7 @@ export class HomePage implements IControllerAsync
     private readonly _sidebar: SidebarListController;
     private readonly _container: HTMLDivElement;
 
-    constructor ()
+    constructor()
     {
         this._openTables = new OpenTables();
         this._sidebar = new SidebarListController();
@@ -44,8 +47,6 @@ export class HomePage implements IControllerAsync
 
         // display cached tables
         await this.restoreCachedTables();
-
-        const ttt = await ipcGetCurrentColumnFilters();
     }
 
     private async restoreCachedTables(): Promise<void>
@@ -64,6 +65,8 @@ export class HomePage implements IControllerAsync
         this.addListener_ConnectionsListRefreshMessage();
         this.addListener_OpenTableCardClosedMessage();
         this.addListener_RefreshPageMessage();
+        this.addListener_CopyAllOpenTablesMessage();
+        this.addListener_CloseAllOpenTablesMessage();
     }
 
     private addListener_TableSidebarListItemClickedMessage(): void
@@ -109,6 +112,23 @@ export class HomePage implements IControllerAsync
             await this.restoreCachedTables();
         });
     }
+
+    private addListener_CopyAllOpenTablesMessage(): void
+    {
+        CopyAllOpenTablesMessage.addListener((message) =>
+        {
+            this._openTables.copyAllOpenTables();
+        });
+    }
+
+    private addListener_CloseAllOpenTablesMessage(): void
+    {
+        CloseAllOpenTablesMessage.addListener((message) =>
+        {
+
+        });
+    }
+
 }
 
 
