@@ -5,6 +5,7 @@ import { HttpMethods } from '../../shared/domain/constants/HttpMethods';
 import { ControllerEndpointArgs } from './ControllerEndpointArgs';
 import { match, MatchFunction } from 'path-to-regexp';
 import { HTTP_RESPONSE_NOT_FOUND } from '../../shared/domain/constants/HttpResponses';
+import { app } from 'electron';
 
 export type RouteHandler = (args: ControllerEndpointArgs) => Promise<Response>;
 
@@ -87,7 +88,9 @@ export class AppRouter
 
     private tryReturnStaticFile(parsedUrl: URL): Response | null
     {
-        const staticFilePath = path.join(process.cwd(), 'dist', parsedUrl.pathname);
+        // Strip leading slash
+        const relativePath = parsedUrl.pathname.replace(/^\/+/, '');
+        const staticFilePath = path.join(app.getAppPath(),'dist',relativePath);
 
         if (!fs.existsSync(staticFilePath) || !fs.statSync(staticFilePath).isFile())
         {

@@ -1,6 +1,7 @@
 import Database, { Database as DbConnection } from 'better-sqlite3';
 import { DataRow, ParameterBindings } from '../../../shared/domain/types/CustomTypes';
 import { IApplicationData } from '../../domain/ApplicationData/IApplicationData';
+import { dialog } from 'electron';
 
 const EMPTY_PARMS = {} as ParameterBindings;
 
@@ -9,7 +10,7 @@ export class SqlEngine
     private readonly _applicationData: IApplicationData;
     private readonly _dbFile: string;
 
-    constructor (applicationData: IApplicationData)
+    constructor(applicationData: IApplicationData)
     {
         this._applicationData = applicationData;
         this._dbFile = this._applicationData.DatabaseFile;
@@ -76,18 +77,26 @@ export class SqlEngine
 
     private getDbConnection(): DbConnection
     {
-        const db = new Database(this._dbFile, {
-            fileMustExist: true,
-        });
+        try
+        {
+            const db = new Database(this._dbFile, {
+                fileMustExist: true,
+            });
 
-        db.pragma('foreign_keys = ON');
-        db.pragma('journal_mode = WAL');
-        db.pragma('synchronous = NORMAL');
-        db.pragma('recursive_triggers = ON');
-        db.pragma('strict = ON');
-        db.pragma('compile_options = ENABLE_JSON1');
+            db.pragma('foreign_keys = ON');
+            db.pragma('journal_mode = WAL');
+            db.pragma('synchronous = NORMAL');
+            db.pragma('recursive_triggers = ON');
+            db.pragma('strict = ON');
+            db.pragma('compile_options = ENABLE_JSON1');
 
-        return db;
+            return db;
+        }
+        catch (error)
+        {
+            console.error(error);
+            throw error;
+        }
     }
 
 
