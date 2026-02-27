@@ -270,3 +270,5 @@ __pycache__/
 
 ConfigurationProduction.cs
 
+sql/.data.sql
+sql/.schemas.sql
